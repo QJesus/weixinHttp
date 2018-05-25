@@ -1,9 +1,5 @@
 ﻿using HttpSocket;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace demo_win_httpsocket
 {
@@ -19,10 +15,10 @@ namespace demo_win_httpsocket
         /// <param name="type"></param>
         void _15_WEBWXSENDEMOTICON(string FromUserName, string ToUserName, string MediaID, int type = 47)
         {
-            Dictionary<string,string> KEYS = new Dictionary<string,string>();
+            Dictionary<string, string> KEYS = new Dictionary<string, string>();
             KEYS["FROMUSERNAME"] = ToUserName;
             KEYS["TOUSERNAME"] = FromUserName;
-            KEYS["TYPE"] = type+"";
+            KEYS["TYPE"] = type + "";
             KEYS["MEDIAID"] = MediaID;
 
             _ShowMessage(System.Reflection.MethodInfo.GetCurrentMethod().Name);

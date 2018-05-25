@@ -1,9 +1,4 @@
 ﻿using HttpSocket;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace demo_win_httpsocket
 {

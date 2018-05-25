@@ -1,23 +1,21 @@
 ﻿using HttpSocket;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace demo_win_httpsocket
 {
     partial class MainForm
     {
-        void _10_WEBWXSENDMSG(string FromUserName,string ToUserName,string message,int type = 1)
+        void _10_WEBWXSENDMSG(string FromUserName, string ToUserName, string message, int type = 1)
         {
-            Dictionary<string,string> KEYS = new Dictionary<string,string>();
-            KEYS["FROMUSERNAME"] = ToUserName;
-            KEYS["TOUSERNAME"] = FromUserName;
-            KEYS["MSG"] = message;
-            KEYS["TYPE"] = type+"";
+            var KEYS = new Dictionary<string, string>
+            {
+                ["FROMUSERNAME"] = ToUserName,
+                ["TOUSERNAME"] = FromUserName,
+                ["MSG"] = message,
+                ["TYPE"] = type + ""
+            };
 
-            _ShowMessage(System.Reflection.MethodInfo.GetCurrentMethod().Name);
+            _ShowMessage(message, new FluorineFx.Json.JavaScriptObject { ["FromUserName"] = ToUserName, ["ToUserName"] = FromUserName, });
 
             var response = WEB.SendRequest(@"POST https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?lang=zh_CN&pass_ticket={PASS_TICKET} HTTP/1.1
 Host: wx.qq.com

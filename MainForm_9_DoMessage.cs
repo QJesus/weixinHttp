@@ -1,9 +1,5 @@
 ﻿using FluorineFx.Json;
-using HttpSocket;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace demo_win_httpsocket
 {
@@ -23,10 +19,9 @@ namespace demo_win_httpsocket
             var FormUserName = GetDIName(_FormUserName);
             var ToUserName = GetDIName(_ToUserName);
 
-            
 
             var MsgType = json["MsgType"] + "";
-            _ShowMessage("["+MsgType+"]"+msg, json);
+            _ShowMessage("[" + MsgType + "]" + msg, json);
 
             //图片
             if (MsgType == "3")
@@ -38,7 +33,7 @@ namespace demo_win_httpsocket
             //文件
             if (MsgType == "49")
             {
-                _14_WEBWXGETMEDIA(json["MsgId"] + "",  json);
+                _14_WEBWXGETMEDIA(json["MsgId"] + "", json);
                 return;
             }
 
@@ -111,7 +106,7 @@ namespace demo_win_httpsocket
                 return;
             }
 
-            if (_FormUserName.StartsWith("@@")|| _ToUserName.StartsWith("@@"))
+            if (_FormUserName.StartsWith("@@") || _ToUserName.StartsWith("@@"))
             {
                 Console.WriteLine("6=>" + _FormUserName + ">" + _ToUserName);
                 return;

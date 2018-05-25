@@ -2,8 +2,6 @@
 using HttpSocket;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace demo_win_httpsocket
 {
@@ -45,14 +43,16 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             UserName = User["UserName"] + "";
             NickName = User["NickName"] + "";
 
-            this.Text = NickName + ">>>微信模拟客户端 V1.0 20160111  By LXW";
+            this.Text = NickName + $">>>微信模拟客户端 V1.0";
 
             JavaScriptObject obj = retJSON["SyncKey"] as JavaScriptObject;
             JavaScriptArray list = obj["List"] as JavaScriptArray;
 
             List<string> temp = new List<string>();
             foreach (JavaScriptObject kv in list)
+            {
                 temp.Add(kv["Key"] + "_" + kv["Val"]);
+            }
 
             WEB.Add(SYNCKEY, string.Join("|", temp.ToArray()));
             if (obj != null && obj.ContainsKey("Count"))

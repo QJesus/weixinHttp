@@ -1,9 +1,6 @@
-﻿using FluorineFx.Json;
-using HttpSocket;
-using System;
-using System.Collections.Generic;
+﻿using HttpSocket;
+using Newtonsoft.Json;
 using System.Linq;
-using System.Text;
 
 namespace demo_win_httpsocket
 {
@@ -29,24 +26,70 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
         void _6_Response(LxwResponse o)
         {
-            var value = o.Value;
-            var USER_LIST = JavaScriptConvert.DeserializeObject(value) as JavaScriptObject;
-
-            //显示到list中
-            var arr = USER_LIST["MemberList"] as JavaScriptArray;
-
-            lstBoxUser.Items.Clear();
-            foreach (JavaScriptObject user in arr)
+            var ro = JsonConvert.DeserializeObject<WEBWXGETCONTACTRootObject>(o.Value);
+            var members = ro.MemberList.Where(x => !string.IsNullOrEmpty(x.RemarkName)).OrderBy(x => x.RemarkName)
+                .Concat(ro.MemberList.Where(x => string.IsNullOrEmpty(x.RemarkName)).OrderBy(x => x.RemarkName)).ToArray();
+            for (var i = 0; i < members.Length; i++)
             {
-                USER_DI[user["UserName"] + ""] = user["NickName"] + "";                
+                var item = members[i];
+                USER_DI[item.UserName] = $"{i + 1:D2}. {item.RemarkName}({item.NickName})";
             }
-
-            //排序
-            var lst = from obj in USER_DI orderby obj.Value ascending select obj;
-
-            lst.Foreach(K=> {
-                lstBoxUser.Items.Add(K.Value + ">" + K.Key);
-            });            
+            lstBoxUser.Items.Clear();
+            lstBoxUser.Items.AddRange(USER_DI.Select(k => $"{k.Value}>{k.Key}").ToArray());
+            lstBoxUser.SelectedIndex = 25;
         }
     }
+
+    public class WEBWXGETCONTACTRootObject
+    {
+        public Baseresponse BaseResponse { get; set; }
+        public int MemberCount { get; set; }
+        public Memberlist[] MemberList { get; set; }
+        public int Seq { get; set; }
+    }
+
+    public class Baseresponse
+    {
+        public int Ret { get; set; }
+        public string ErrMsg { get; set; }
+    }
+
+    public class Memberlist
+    {
+        public int Uin { get; set; }
+        public string UserName { get; set; }
+        public string NickName { get; set; }
+        public string HeadImgUrl { get; set; }
+        public int ContactFlag { get; set; }
+        public int MemberCount { get; set; }
+        public object[] MemberList { get; set; }
+        public string RemarkName { get; set; }
+        public int HideInputBarFlag { get; set; }
+        public int Sex { get; set; }
+        public string Signature { get; set; }
+        public int VerifyFlag { get; set; }
+        public int OwnerUin { get; set; }
+        public string PYInitial { get; set; }
+        public string PYQuanPin { get; set; }
+        public string RemarkPYInitial { get; set; }
+        public string RemarkPYQuanPin { get; set; }
+        public int StarFriend { get; set; }
+        public int AppAccountFlag { get; set; }
+        public int Statues { get; set; }
+        public long AttrStatus { get; set; }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public string Alias { get; set; }
+        public int SnsFlag { get; set; }
+        public int UniFriend { get; set; }
+        public string DisplayName { get; set; }
+        public int ChatRoomId { get; set; }
+        public string KeyWord { get; set; }
+        public string EncryChatRoomId { get; set; }
+        public int IsOwner { get; set; }
+
+        public override string ToString() => $"{RemarkName}, {NickName}, {UserName}";
+    }
+
 }
+

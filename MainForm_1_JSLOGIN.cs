@@ -1,8 +1,4 @@
 ﻿using HttpSocket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace demo_win_httpsocket
 {
@@ -26,7 +22,8 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             _1_Response(response);
         }
 
-        void _1_Response(LxwResponse o){
+        void _1_Response(LxwResponse o)
+        {
             var value = SearchKey(o.Value, "200", "\"(.*?)\"");
             WEB.Add(UUID, value);
         }

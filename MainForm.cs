@@ -1,21 +1,10 @@
 ﻿using FluorineFx.Json;
 using HttpSocket;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.Data.Entity.ModelConfiguration;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Data.SQLite.EF6.Migrations;
-using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 

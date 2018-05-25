@@ -1,9 +1,5 @@
 ﻿using HttpSocket;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace demo_win_httpsocket
 {
@@ -43,7 +39,7 @@ Cookie: webwxuvid=bebe27f97a88e8ce573a38b4c48984e8f578650b8ba48b2bacce4ec572e41a
 ",
 @"{""BaseRequest"":{""Uin"":{WXUIN},""Sid"":""{WXSID}"",""Skey"":""{SKEY}"",""DeviceID"":""{DEVICEID}""},""Msg"":{""Type"":{TYPE},""Content"":""{MSG}"",""FromUserName"":""{FROMUSERNAME}"",""ToUserName"":""{TOUSERNAME}"",""LocalID"":""{TIME}"",""ClientMsgId"":""{TIME}""}}"
 
-                , KEYS,true);
+                , KEYS, true);
             _16_Response(response);
         }
 

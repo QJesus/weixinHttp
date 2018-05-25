@@ -2,12 +2,7 @@
 using HttpSocket;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace demo_win_httpsocket
 {
@@ -23,9 +18,8 @@ namespace demo_win_httpsocket
             _ShowMessage(System.Reflection.MethodInfo.GetCurrentMethod().Name);
 
             Dictionary<string, string> KEYS = new Dictionary<string, string>();
-            KEYS["MEDIAID"] = json["MediaId"]+"";
-            KEYS["FILENAME"] = System.Web.HttpUtility.UrlEncode(
-                json["FileName"]+"", WEB.Encoding);
+            KEYS["MEDIAID"] = json["MediaId"] + "";
+            KEYS["FILENAME"] = System.Web.HttpUtility.UrlEncode(json["FileName"] + "", WEB.Encoding);
             KEYS["FROMUSER"] = json["FromUserName"] + "";
 
             var response = WEB.SendRequest(@"GET https://file{NUMBER}.wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetmedia?sender={FROMUSER}&mediaid={MEDIAID}&filename={FILENAME}&fromuser={WXUIN}&pass_ticket={PASS_TICKET}&webwx_data_ticket={WEBWX_DATA_TICKET} HTTP/1.1
@@ -42,7 +36,8 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             _14_Response(response);
         }
 
-        void _14_Response(LxwResponse o){
+        void _14_Response(LxwResponse o)
+        {
 
             var folders = CreateWeiXinFilesFolder();
 

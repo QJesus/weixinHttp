@@ -1,11 +1,8 @@
 ﻿using FluorineFx.Json;
 using HttpSocket;
-using Microsoft.Win32;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace demo_win_httpsocket
 {
@@ -15,25 +12,30 @@ namespace demo_win_httpsocket
         {
             DelegateFun.ExeControlFun(lstMessage, new DelegateFun.delegateExeControlFun(delegate
             {
-                //全部清除
-                if (lstMessage.Items.Count > 3000) lstMessage.Items.Clear();
-
-                if (obj != null)
+                // 全部清除
+                if (lstMessage.Items.Count > 3000)
                 {
-                    var _FormUserName = obj["FromUserName"] + "";
-                    var _ToUserName = obj["ToUserName"] + "";
-                    var FormUserName = GetDIName(_FormUserName);
-                    var ToUserName = GetDIName(_ToUserName);
+                    lstMessage.Items.Clear();
+                }
 
-                    lstMessage.Items.Add(DateTime.Now.ToString("MM-dd HH:mm") + ">" + FormUserName + ">" + ToUserName + ":" + msg);
+                string row = null;
+                if (obj == null)
+                {
+                    row = $"{DateTime.Now:MM-dd HH:mm:ss}\tnoJson\t{msg}";
                 }
                 else
                 {
-                    lstMessage.Items.Add(DateTime.Now.ToString("MM-dd HH:mm") + ">noJson=>" + msg);
+                    var jo = new JObject();
+                    foreach (var item in obj)
+                    {
+                        jo[item.Key] = item.Value.ToString();
+                    }
+                    var json = JsonConvert.SerializeObject(jo);
+                    var data = JsonConvert.DeserializeObject<FunRootObject>(json);
+                    row = $"{DateTime.Now:MM-dd HH:mm:ss}\t{GetDIName(data.FromUserName)}>{GetDIName(data.ToUserName)}\t{msg}";
                 }
-
-                this.lstMessage.TopIndex = this.lstMessage.Items.Count - (int)(this.lstMessage.Height / this.lstMessage.ItemHeight);
-
+                lstMessage.Items.Insert(0, row);
+                lstMessage.SelectedIndex = 0;
             }));
         }
 
@@ -54,4 +56,37 @@ namespace demo_win_httpsocket
         //    return mimeType;
         //}
     }
+
+    public class FunRootObject
+    {
+        public string MsgId { get; set; }
+        public string FromUserName { get; set; }
+        public string ToUserName { get; set; }
+        public string MsgType { get; set; }
+        public string Content { get; set; }
+        public string Status { get; set; }
+        public string ImgStatus { get; set; }
+        public string CreateTime { get; set; }
+        public string VoiceLength { get; set; }
+        public string PlayLength { get; set; }
+        public string FileName { get; set; }
+        public string FileSize { get; set; }
+        public string MediaId { get; set; }
+        public string Url { get; set; }
+        public string AppMsgType { get; set; }
+        public string StatusNotifyCode { get; set; }
+        public string StatusNotifyUserName { get; set; }
+        public string RecommendInfo { get; set; }
+        public string ForwardFlag { get; set; }
+        public string AppInfo { get; set; }
+        public string HasProductId { get; set; }
+        public string Ticket { get; set; }
+        public string ImgHeight { get; set; }
+        public string ImgWidth { get; set; }
+        public string SubMsgType { get; set; }
+        public string NewMsgId { get; set; }
+        public string OriContent { get; set; }
+        public string EncryFileName { get; set; }
+    }
+
 }

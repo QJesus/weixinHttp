@@ -1,8 +1,5 @@
 ﻿using HttpSocket;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace demo_win_httpsocket
 {
@@ -21,8 +18,10 @@ namespace demo_win_httpsocket
         void _3_LOGIN()
         {
             //第三步，等待扫描
-            var loginTimer = new System.Windows.Forms.Timer();
-            loginTimer.Interval = SAOMIAO_SLEEPTIME;
+            var loginTimer = new System.Windows.Forms.Timer
+            {
+                Interval = SAOMIAO_SLEEPTIME
+            };
             loginTimer.Stop();
 
             int count = 0;
@@ -55,7 +54,6 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
         void _3_Response(LxwResponse o, System.Windows.Forms.Timer loginTimer)
         {
             var result = o.Value;
-
             if (result.IndexOf("window.redirect_uri=") != -1)
             {
                 loginTimer.Stop();
@@ -64,7 +62,9 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
                 WEB.Add(NUMBER, "");
                 if (redirect_uri.IndexOf("wx2.qq.com") != -1)
+                {
                     WEB.Add(NUMBER, "2");
+                }
                 //隐藏
                 this.picErWeiMa.Visible = false;
                 //执行第四步

@@ -1,12 +1,7 @@
 ﻿using HttpSocket;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace demo_win_httpsocket
 {
@@ -41,7 +36,8 @@ Range: bytes=0-
             _13_Response(response);
         }
 
-        void _13_Response(LxwResponse o){
+        void _13_Response(LxwResponse o)
+        {
 
             var folders = CreateWeiXinFilesFolder();
 

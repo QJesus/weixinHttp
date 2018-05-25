@@ -1,8 +1,4 @@
 ﻿using HttpSocket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace demo_win_httpsocket
@@ -16,7 +12,7 @@ namespace demo_win_httpsocket
 
             bool bRun = true;
             ThreadPool.QueueUserWorkItem(new WaitCallback(delegate
-            {                
+            {
                 while (bRun)
                 {
                     try
@@ -38,7 +34,7 @@ Cookie: ts_uid=7490200750; o_cookie=7103505; pgv_pvid=4255253068; pt_clientip=4c
                     catch { }
                     Thread.Sleep(2000);
                 }
-            }));            
+            }));
         }
 
         bool _7_Response(LxwResponse o)
@@ -46,23 +42,22 @@ Cookie: ts_uid=7490200750; o_cookie=7103505; pgv_pvid=4255253068; pt_clientip=4c
             string value = o.Value;
             if (value.Contains("1101"))
             {
-                _ShowMessage("登录失败，请关闭重新尝试:"+WEB[SYNCKEY]);
+                _ShowMessage("登录失败，请关闭重新尝试:" + WEB[SYNCKEY]);
                 return false;
             }
-            else
-            {
-                if (bFirst)
-                {
-                    _ShowMessage("登录成功!");
-                    bFirst = false;
-                }
-                //1=>window.synccheck={retcode:"0",selector:"2"}
-                if (value.IndexOf("selector:\"0\"") == -1 &&
-                    value.IndexOf("retcode:\"0\"") != -1)
-                        _8_WEBWXSYNC();
 
-                return true;
+            if (bFirst)
+            {
+                _ShowMessage("登录成功!");
+                bFirst = false;
             }
+            //1=>window.synccheck={retcode:"0",selector:"2"}
+            if (value.IndexOf("selector:\"0\"") == -1 && value.IndexOf("retcode:\"0\"") != -1)
+            {
+                _8_WEBWXSYNC();
+            }
+
+            return true;
         }
     }
 }

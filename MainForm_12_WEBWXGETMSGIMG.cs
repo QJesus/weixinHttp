@@ -2,11 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace demo_win_httpsocket
 {
@@ -17,7 +13,7 @@ namespace demo_win_httpsocket
         /// </summary>
         /// <param name="MsgID"></param>
         /// <param name="slave"></param>
-        void _12_WEBWXGETMSGIMG(string MsgID,bool slave = false)
+        void _12_WEBWXGETMSGIMG(string MsgID, bool slave = false)
         {
             //&type=slave
             _ShowMessage(System.Reflection.MethodInfo.GetCurrentMethod().Name);
@@ -42,7 +38,8 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             _12_Response(response);
         }
 
-        void _12_Response(LxwResponse o){
+        void _12_Response(LxwResponse o)
+        {
 
             var folders = CreateWeiXinFilesFolder();
 
