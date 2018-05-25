@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.picErWeiMa = new System.Windows.Forms.PictureBox();
             this.txtBoxMessage = new System.Windows.Forms.TextBox();
             this.btnGetUserList = new System.Windows.Forms.Button();
@@ -36,7 +35,6 @@
             this.btnSend = new System.Windows.Forms.Button();
             this.lstBoxUser = new System.Windows.Forms.ListBox();
             this.lstMessage = new System.Windows.Forms.ListBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picErWeiMa)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,7 +42,7 @@
             // 
             this.picErWeiMa.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.picErWeiMa.Location = new System.Drawing.Point(848, 202);
-            this.picErWeiMa.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.picErWeiMa.Margin = new System.Windows.Forms.Padding(6);
             this.picErWeiMa.Name = "picErWeiMa";
             this.picErWeiMa.Size = new System.Drawing.Size(600, 625);
             this.picErWeiMa.TabIndex = 0;
@@ -53,7 +51,7 @@
             // txtBoxMessage
             // 
             this.txtBoxMessage.Location = new System.Drawing.Point(682, 6);
-            this.txtBoxMessage.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txtBoxMessage.Margin = new System.Windows.Forms.Padding(6);
             this.txtBoxMessage.Multiline = true;
             this.txtBoxMessage.Name = "txtBoxMessage";
             this.txtBoxMessage.Size = new System.Drawing.Size(1554, 489);
@@ -63,7 +61,7 @@
             // btnGetUserList
             // 
             this.btnGetUserList.Location = new System.Drawing.Point(682, 513);
-            this.btnGetUserList.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnGetUserList.Margin = new System.Windows.Forms.Padding(6);
             this.btnGetUserList.Name = "btnGetUserList";
             this.btnGetUserList.Size = new System.Drawing.Size(248, 48);
             this.btnGetUserList.TabIndex = 9;
@@ -75,7 +73,7 @@
             // btnSendFile
             // 
             this.btnSendFile.Location = new System.Drawing.Point(1850, 513);
-            this.btnSendFile.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnSendFile.Margin = new System.Windows.Forms.Padding(6);
             this.btnSendFile.Name = "btnSendFile";
             this.btnSendFile.Size = new System.Drawing.Size(150, 48);
             this.btnSendFile.TabIndex = 10;
@@ -87,7 +85,7 @@
             // btnSend
             // 
             this.btnSend.Location = new System.Drawing.Point(2090, 513);
-            this.btnSend.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnSend.Margin = new System.Windows.Forms.Padding(6);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(150, 48);
             this.btnSend.TabIndex = 11;
@@ -101,7 +99,7 @@
             this.lstBoxUser.FormattingEnabled = true;
             this.lstBoxUser.ItemHeight = 25;
             this.lstBoxUser.Location = new System.Drawing.Point(6, 6);
-            this.lstBoxUser.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.lstBoxUser.Margin = new System.Windows.Forms.Padding(6);
             this.lstBoxUser.Name = "lstBoxUser";
             this.lstBoxUser.ScrollAlwaysVisible = true;
             this.lstBoxUser.Size = new System.Drawing.Size(658, 554);
@@ -114,18 +112,12 @@
             this.lstMessage.HorizontalScrollbar = true;
             this.lstMessage.ItemHeight = 25;
             this.lstMessage.Location = new System.Drawing.Point(6, 573);
-            this.lstMessage.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.lstMessage.Margin = new System.Windows.Forms.Padding(6);
             this.lstMessage.Name = "lstMessage";
             this.lstMessage.ScrollAlwaysVisible = true;
             this.lstMessage.Size = new System.Drawing.Size(2230, 479);
             this.lstMessage.TabIndex = 7;
             this.lstMessage.Visible = false;
-            // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainForm
             // 
@@ -140,11 +132,10 @@
             this.Controls.Add(this.lstBoxUser);
             this.Controls.Add(this.lstMessage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.MainForm_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.picErWeiMa)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -160,7 +151,6 @@
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.ListBox lstBoxUser;
         private System.Windows.Forms.ListBox lstMessage;
-        private System.Windows.Forms.Timer timer1;
     }
 }
 

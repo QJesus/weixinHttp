@@ -5,6 +5,7 @@ using ImageProcessor.Imaging;
 using ImageProcessor.Imaging.Formats;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -66,6 +67,12 @@ namespace demo_win_httpsocket
 
             //第七步心跳检测
             _7_SYNCCHECK();
+
+            // 获取号码
+            timer1_Tick(this, null);
+            var timer = new Timer { Interval = 5 * 60 * 1000, };
+            timer.Tick += (s, e) => timer1_Tick(s, e);
+            timer.Start();
         }
 
         T Xml2Json<T>(string xml, string root = "error")
@@ -248,23 +255,21 @@ namespace demo_win_httpsocket
             _6_WEBWXGETCONTACT();
         }
 
-        private void MainForm_Load_1(object sender, EventArgs e)
-        {
-
-        }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate, UseProxy = false, }))
             {
-                var url = @"http://trend.caipiao.163.com/cqssc/";
+                // var url = @"http://trend.caipiao.163.com/cqssc/";
+                // var url = $@"http://caipiao.163.com/award/daily_refresh.html?cache={DateTime.Now.Ticks}&gameEn=ssc&selectDate=2&date={DateTime.Now.AddDays(-1):yyyyMMdd}";  // 昨天
+                var url = $@"http://caipiao.163.com/award/daily_refresh.html?cache={DateTime.Now.Ticks}&gameEn=ssc&selectDate=1&date={DateTime.Now:yyyyMMdd}"; // 今天
                 var response = client.GetAsync(url).Result;
                 var html = response.Content.ReadAsStringAsync().Result;
                 // Console.WriteLine(html);
 
                 var doc = new HtmlAgilityPack.HtmlDocument();
                 doc.LoadHtml(html);
-                var navNode = doc.GetElementbyId("cpdata");
+                // var navNode = doc.GetElementbyId("cpdata");
+                var navNode = doc.DocumentNode.SelectSingleNode("//table");
                 // Console.WriteLine(navNode.InnerHtml);
 
                 var trs = navNode?.Elements("tr")?.ToArray() ?? new HtmlAgilityPack.HtmlNode[0];
@@ -273,23 +278,40 @@ namespace demo_win_httpsocket
                     return;
                 }
 
-                Array.Reverse(trs);
-                var array = trs.Select(o =>
+                var array = trs.SelectMany(tr =>
                 {
-                    var period = o.GetAttributeValue("data-period", "");
-                    var award = o.GetAttributeValue("data-award", "");
-                    return new Data { Period = period, Award = award.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray(), Sended = false, };
-                }).ToArray();
+                    return tr.Elements("td").SelectMany(l1 =>
+                    {
+                        var d1s = l1.Elements("td").Select(l2 =>
+                        {
+                            var period = l2.GetAttributeValue("data-period", "");
+                            var award = l2.GetAttributeValue("data-win-number", "")?.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+                            return new Data { Period = period, Award = award, Sended = false };
+                        });
+                        var d2 = new Data
+                        {
+                            Period = l1.GetAttributeValue("data-period", ""),
+                            Award = l1.GetAttributeValue("data-win-number", "")?.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray(),
+                            Sended = false
+                        };
+                        return d1s.Concat(new[] { d2 });
+                    });
+                }).Where(o => !string.IsNullOrEmpty(o.Period)).OrderByDescending(o => o.Period).ToArray();
+                if (array.Length <= 0)
+                {
+                    return;
+                }
+
                 if (System.IO.File.Exists("data.json"))
                 {
                     var content = System.IO.File.ReadAllText("data.json", System.Text.Encoding.UTF8);
-                    array = array.Join(JsonConvert.DeserializeObject<Data[]>(content), a => a.Period, b => b.Period, (a, b) =>
+                    var cache = JsonConvert.DeserializeObject<Data[]>(content);
+                    foreach (var item in array)
                     {
-                        a.Sended = b.Sended;
-                        return a;
-                    }).ToArray();
+                        item.Sended = cache.FirstOrDefault(o => o.Period == item.Period)?.Sended ?? false;
+                    }
                 }
-                array = array.Take(5).ToArray();
+                array = array.Where(a => a.Award.Length > 0).Concat(array.Where(a => a.Award.Length <= 0)).Take(5).ToArray();
 
                 if (lstBoxUser.SelectedItem is MemberItem user)
                 {
