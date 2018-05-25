@@ -1,12 +1,16 @@
 ﻿using FluorineFx.Json;
 using HttpSocket;
+using ImageProcessor;
+using ImageProcessor.Imaging;
+using ImageProcessor.Imaging.Formats;
 using Newtonsoft.Json;
 using System;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -263,13 +267,18 @@ namespace demo_win_httpsocket
                 var navNode = doc.GetElementbyId("cpdata");
                 // Console.WriteLine(navNode.InnerHtml);
 
-                var trs = navNode.Elements("tr").ToArray();
+                var trs = navNode?.Elements("tr")?.ToArray() ?? new HtmlAgilityPack.HtmlNode[0];
+                if (trs.Length <= 0)
+                {
+                    return;
+                }
+
                 Array.Reverse(trs);
                 var array = trs.Select(o =>
                 {
                     var period = o.GetAttributeValue("data-period", "");
                     var award = o.GetAttributeValue("data-award", "");
-                    return new Data { Period = period, Award = award, Sended = false, };
+                    return new Data { Period = period, Award = award.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray(), Sended = false, };
                 }).ToArray();
                 if (System.IO.File.Exists("data.json"))
                 {
@@ -280,18 +289,48 @@ namespace demo_win_httpsocket
                         return a;
                     }).ToArray();
                 }
+                array = array.Take(5).ToArray();
 
                 if (lstBoxUser.SelectedItem is MemberItem user)
                 {
-                    var ds = array.Where(o => !o.Sended).Select(o => $"{o.Period}期 {o.Award}");
-                    if (ds.Any())
+                    if (array.Any(o => !o.Sended))
                     {
-                        var msg = string.Join(Environment.NewLine, ds);
-                        _10_WEBWXSENDMSG(user.UserName, UserName, msg);
-                        foreach (var item in array)
+                        var file = Image.FromFile(@"asserts\template.jpg");
+                        var image = new ImageFactory().Load(file).Resize(new ResizeLayer(new Size { Width = file.Width, Height = file.Height, }, ResizeMode.Pad));
+                        for (var i = 0; i < array.Length; i++)
                         {
+                            var item = array[i];
+                            image = image.Watermark(new TextLayer
+                            {
+                                Position = new Point { X = 36, Y = 160 * (i + 1) + 58, },
+                                FontColor = Color.Black,
+                                Text = $"{item.Period} 期",
+                                DropShadow = false,
+                                FontSize = 50,
+                                Vertical = false,
+                                Opacity = 70,
+                                Style = FontStyle.Bold,
+                            }).Watermark(new TextLayer
+                            {
+                                Position = new Point { X = 480 - 36, Y = 160 * (i + 1) + 58, },
+                                FontColor = Color.Black,
+                                Text = $"{string.Join("   ", item.Award)}",
+                                DropShadow = false,
+                                FontSize = 50,
+                                Vertical = false,
+                                Opacity = 70,
+                                Style = FontStyle.Bold,
+                            });
+
                             item.Sended = true;
                         }
+                        using (var ms = new MemoryStream())
+                        using (image)
+                        {
+                            image.Format(new PngFormat()).Image.Save("x.png");
+                        }
+
+                        _11_SENDFILE(user.UserName, "x.png");
                     }
                 }
                 System.IO.File.WriteAllText("data.json", JsonConvert.SerializeObject(array), System.Text.Encoding.UTF8);
@@ -302,7 +341,7 @@ namespace demo_win_httpsocket
     public class Data
     {
         public string Period { get; set; }
-        public string Award { get; set; }
+        public int[] Award { get; set; }
         public bool Sended { get; set; }
     }
 }
