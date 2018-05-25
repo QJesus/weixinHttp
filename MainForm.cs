@@ -1,10 +1,12 @@
 ﻿using FluorineFx.Json;
 using HttpSocket;
+using Newtonsoft.Json;
 using System;
 using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -229,7 +231,7 @@ namespace demo_win_httpsocket
                 MessageBox.Show("请输入信息！");
                 return;
             }
-            
+
             //发送消息
             _10_WEBWXSENDMSG(user.UserName, UserName, txtBoxMessage.Text);
 
@@ -263,13 +265,44 @@ namespace demo_win_httpsocket
 
                 var trs = navNode.Elements("tr").ToArray();
                 Array.Reverse(trs);
-                txtBoxMessage.Text = string.Join(Environment.NewLine, trs.Select(o =>
+                var array = trs.Select(o =>
                 {
                     var period = o.GetAttributeValue("data-period", "");
                     var award = o.GetAttributeValue("data-award", "");
-                    return $"{period} {award}";
-                }));
+                    return new Data { Period = period, Award = award, Sended = false, };
+                }).ToArray();
+                if (System.IO.File.Exists("data.json"))
+                {
+                    var content = System.IO.File.ReadAllText("data.json", System.Text.Encoding.UTF8);
+                    array = array.Join(JsonConvert.DeserializeObject<Data[]>(content), a => a.Period, b => b.Period, (a, b) =>
+                    {
+                        a.Sended = b.Sended;
+                        return a;
+                    }).ToArray();
+                }
+
+                if (lstBoxUser.SelectedItem is MemberItem user)
+                {
+                    var ds = array.Where(o => !o.Sended).Select(o => $"{o.Period}期 {o.Award}");
+                    if (ds.Any())
+                    {
+                        var msg = string.Join(Environment.NewLine, ds);
+                        _10_WEBWXSENDMSG(user.UserName, UserName, msg);
+                        foreach (var item in array)
+                        {
+                            item.Sended = true;
+                        }
+                    }
+                }
+                System.IO.File.WriteAllText("data.json", JsonConvert.SerializeObject(array), System.Text.Encoding.UTF8);
             }
         }
+    }
+
+    public class Data
+    {
+        public string Period { get; set; }
+        public string Award { get; set; }
+        public bool Sended { get; set; }
     }
 }
