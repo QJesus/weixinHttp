@@ -218,8 +218,7 @@ namespace demo_win_httpsocket
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            object user = lstBoxUser.SelectedItem;
-            if (user == null)
+            if (!(lstBoxUser.SelectedItem is MemberItem user))
             {
                 MessageBox.Show("请选择用户！");
                 return;
@@ -230,11 +229,9 @@ namespace demo_win_httpsocket
                 MessageBox.Show("请输入信息！");
                 return;
             }
-
-            string userid = user.ToString().Substring(user.ToString().LastIndexOf('>') + 1);
-
+            
             //发送消息
-            _10_WEBWXSENDMSG(userid, UserName, txtBoxMessage.Text);
+            _10_WEBWXSENDMSG(user.UserName, UserName, txtBoxMessage.Text);
 
             txtBoxMessage.Text = "";
         }

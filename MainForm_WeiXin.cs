@@ -34,10 +34,10 @@ namespace demo_win_httpsocket
         }
 
         string SubString(
-            string objValue, 
-            string indexStr = "", 
-            string lastStr = "", 
-            string iDefault = "", 
+            string objValue,
+            string indexStr = "",
+            string lastStr = "",
+            string iDefault = "",
             bool throwE = false)
         {
             try
@@ -68,13 +68,7 @@ namespace demo_win_httpsocket
             }
         }
 
-        string GetDIName(string skey)
-        {
-            if (USER_DI.ContainsKey(skey))
-                return USER_DI[skey];
-
-            return skey;
-        }
+        MemberItem GetDIName(string skey) => USER_DI.ContainsKey(skey) ? USER_DI[skey] : new MemberItem { UserName = skey, };
 
         String generateDeviceId()
         {

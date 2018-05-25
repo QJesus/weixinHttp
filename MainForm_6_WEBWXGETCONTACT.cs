@@ -29,13 +29,13 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             var ro = JsonConvert.DeserializeObject<WEBWXGETCONTACTRootObject>(o.Value);
             var members = ro.MemberList.Where(x => !string.IsNullOrEmpty(x.RemarkName)).OrderBy(x => x.RemarkName)
                 .Concat(ro.MemberList.Where(x => string.IsNullOrEmpty(x.RemarkName)).OrderBy(x => x.RemarkName)).ToArray();
+            lstBoxUser.Items.Clear();
             for (var i = 0; i < members.Length; i++)
             {
                 var item = members[i];
-                USER_DI[item.UserName] = $"{i + 1:D2}. {item.RemarkName}({item.NickName})";
+                USER_DI[item.UserName] = item;
+                lstBoxUser.Items.Add(item);
             }
-            lstBoxUser.Items.Clear();
-            lstBoxUser.Items.AddRange(USER_DI.Select(k => $"{k.Value}>{k.Key}").ToArray());
             lstBoxUser.SelectedIndex = 25;
         }
     }
@@ -44,7 +44,7 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
     {
         public Baseresponse BaseResponse { get; set; }
         public int MemberCount { get; set; }
-        public Memberlist[] MemberList { get; set; }
+        public MemberItem[] MemberList { get; set; }
         public int Seq { get; set; }
     }
 
@@ -54,7 +54,7 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
         public string ErrMsg { get; set; }
     }
 
-    public class Memberlist
+    public class MemberItem
     {
         public int Uin { get; set; }
         public string UserName { get; set; }
@@ -88,7 +88,7 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
         public string EncryChatRoomId { get; set; }
         public int IsOwner { get; set; }
 
-        public override string ToString() => $"{RemarkName}, {NickName}, {UserName}";
+        public override string ToString() => string.IsNullOrEmpty(RemarkName) ? NickName : $"{RemarkName}({NickName})";
     }
 
 }

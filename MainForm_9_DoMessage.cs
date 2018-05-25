@@ -113,7 +113,7 @@ namespace demo_win_httpsocket
             }
 
             //微信团队不要发
-            if (FormUserName.Contains("微信团队"))
+            if (FormUserName.RemarkName.Contains("微信团队"))
             {
                 //Console.WriteLine("5=>" + _FormUserName + ">" + _ToUserName);
                 return;
