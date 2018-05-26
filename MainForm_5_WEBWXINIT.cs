@@ -1,7 +1,8 @@
 ﻿using FluorineFx.Json;
 using HttpSocket;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace demo_win_httpsocket
 {
@@ -31,34 +32,128 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
         void _5_Response(LxwResponse o)
         {
-            var value = o.Value;
-            if (!value.Contains("\"Ret\": 0"))
+            var intObj = JsonConvert.DeserializeObject<WEBWXINITRootObject>(o.Value);
+            if (intObj.BaseResponse.Ret != 0)
             {
                 throw new Exception("没有返回正确的数据，webwxinit错误!");
             }
 
-            var retJSON = JavaScriptConvert.DeserializeObject(value) as JavaScriptObject;
-            var User = retJSON["User"] as JavaScriptObject;
-            //USER_INFO
-            UserName = User["UserName"] + "";
-            NickName = User["NickName"] + "";
+            // USER_INFO
+            UserName = intObj.User.UserName;
+            NickName = intObj.User.NickName;
+            Text = $"{NickName} >>> 重庆时时彩微信客户端 V1.0";
 
-            this.Text = NickName + $">>>微信模拟客户端 V1.0";
-
-            JavaScriptObject obj = retJSON["SyncKey"] as JavaScriptObject;
-            JavaScriptArray list = obj["List"] as JavaScriptArray;
-
-            List<string> temp = new List<string>();
-            foreach (JavaScriptObject kv in list)
-            {
-                temp.Add(kv["Key"] + "_" + kv["Val"]);
-            }
-
-            WEB.Add(SYNCKEY, string.Join("|", temp.ToArray()));
-            if (obj != null && obj.ContainsKey("Count"))
-            {
-                WEB.Add(SYNCKEY_LONG, JavaScriptConvert.SerializeObject(retJSON["SyncKey"]));
-            }
+            var tmp = string.Join("|", intObj.SyncKey.List.Select(kv => $"{kv.Key}_{kv.Val}"));
+            WEB.Add(SYNCKEY, tmp);
+            var json = JavaScriptConvert.SerializeObject(intObj.SyncKey);
+            WEB.Add(SYNCKEY_LONG, json);
         }
     }
+
+
+    public class WEBWXINITRootObject
+    {
+        public Baseresponse BaseResponse { get; set; }
+        public int Count { get; set; }
+        public Contactlist[] ContactList { get; set; }
+        public Synckey SyncKey { get; set; }
+        public User User { get; set; }
+        public string ChatSet { get; set; }
+        public string SKey { get; set; }
+        public int ClientVersion { get; set; }
+        public int SystemTime { get; set; }
+        public int GrayScale { get; set; }
+        public int InviteStartCount { get; set; }
+        public int MPSubscribeMsgCount { get; set; }
+        public Mpsubscribemsglist[] MPSubscribeMsgList { get; set; }
+        public int ClickReportInterval { get; set; }
+    }
+
+    public class Synckey
+    {
+        public int Count { get; set; }
+        public List[] List { get; set; }
+    }
+
+    public class List
+    {
+        public int Key { get; set; }
+        public int Val { get; set; }
+    }
+
+    public class User
+    {
+        public int Uin { get; set; }
+        public string UserName { get; set; }
+        public string NickName { get; set; }
+        public string HeadImgUrl { get; set; }
+        public string RemarkName { get; set; }
+        public string PYInitial { get; set; }
+        public string PYQuanPin { get; set; }
+        public string RemarkPYInitial { get; set; }
+        public string RemarkPYQuanPin { get; set; }
+        public int HideInputBarFlag { get; set; }
+        public int StarFriend { get; set; }
+        public int Sex { get; set; }
+        public string Signature { get; set; }
+        public int AppAccountFlag { get; set; }
+        public int VerifyFlag { get; set; }
+        public int ContactFlag { get; set; }
+        public int WebWxPluginSwitch { get; set; }
+        public int HeadImgFlag { get; set; }
+        public int SnsFlag { get; set; }
+    }
+
+    public class Contactlist
+    {
+        public int Uin { get; set; }
+        public string UserName { get; set; }
+        public string NickName { get; set; }
+        public string HeadImgUrl { get; set; }
+        public int ContactFlag { get; set; }
+        public int MemberCount { get; set; }
+        public object[] MemberList { get; set; }
+        public string RemarkName { get; set; }
+        public int HideInputBarFlag { get; set; }
+        public int Sex { get; set; }
+        public string Signature { get; set; }
+        public int VerifyFlag { get; set; }
+        public int OwnerUin { get; set; }
+        public string PYInitial { get; set; }
+        public string PYQuanPin { get; set; }
+        public string RemarkPYInitial { get; set; }
+        public string RemarkPYQuanPin { get; set; }
+        public int StarFriend { get; set; }
+        public int AppAccountFlag { get; set; }
+        public int Statues { get; set; }
+        public int AttrStatus { get; set; }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public string Alias { get; set; }
+        public int SnsFlag { get; set; }
+        public int UniFriend { get; set; }
+        public string DisplayName { get; set; }
+        public int ChatRoomId { get; set; }
+        public string KeyWord { get; set; }
+        public string EncryChatRoomId { get; set; }
+        public int IsOwner { get; set; }
+    }
+
+    public class Mpsubscribemsglist
+    {
+        public string UserName { get; set; }
+        public int MPArticleCount { get; set; }
+        public Mparticlelist[] MPArticleList { get; set; }
+        public int Time { get; set; }
+        public string NickName { get; set; }
+    }
+
+    public class Mparticlelist
+    {
+        public string Title { get; set; }
+        public string Digest { get; set; }
+        public string Cover { get; set; }
+        public string Url { get; set; }
+    }
+
 }

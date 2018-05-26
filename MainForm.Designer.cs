@@ -37,13 +37,15 @@
             this.lstBoxUser = new System.Windows.Forms.ListBox();
             this.lstMessage = new System.Windows.Forms.ListBox();
             this.lblSSCMsg = new System.Windows.Forms.Label();
+            this.lstBoxAward = new System.Windows.Forms.ListBox();
+            this.btnManualFresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picErWeiMa)).BeginInit();
             this.SuspendLayout();
             // 
             // picErWeiMa
             // 
             this.picErWeiMa.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.picErWeiMa.Location = new System.Drawing.Point(426, 169);
+            this.picErWeiMa.Location = new System.Drawing.Point(414, 167);
             this.picErWeiMa.Margin = new System.Windows.Forms.Padding(6);
             this.picErWeiMa.Name = "picErWeiMa";
             this.picErWeiMa.Size = new System.Drawing.Size(600, 625);
@@ -52,11 +54,11 @@
             // 
             // txtBoxMessage
             // 
-            this.txtBoxMessage.Location = new System.Drawing.Point(682, 6);
+            this.txtBoxMessage.Location = new System.Drawing.Point(840, 6);
             this.txtBoxMessage.Margin = new System.Windows.Forms.Padding(6);
             this.txtBoxMessage.Multiline = true;
             this.txtBoxMessage.Name = "txtBoxMessage";
-            this.txtBoxMessage.Size = new System.Drawing.Size(769, 502);
+            this.txtBoxMessage.Size = new System.Drawing.Size(611, 502);
             this.txtBoxMessage.TabIndex = 12;
             this.txtBoxMessage.Visible = false;
             this.txtBoxMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtBoxMessage_KeyUp);
@@ -75,7 +77,7 @@
             // 
             // btnSendFile
             // 
-            this.btnSendFile.Location = new System.Drawing.Point(1061, 516);
+            this.btnSendFile.Location = new System.Drawing.Point(1301, 576);
             this.btnSendFile.Margin = new System.Windows.Forms.Padding(6);
             this.btnSendFile.Name = "btnSendFile";
             this.btnSendFile.Size = new System.Drawing.Size(150, 48);
@@ -105,7 +107,7 @@
             this.lstBoxUser.Margin = new System.Windows.Forms.Padding(6);
             this.lstBoxUser.Name = "lstBoxUser";
             this.lstBoxUser.ScrollAlwaysVisible = true;
-            this.lstBoxUser.Size = new System.Drawing.Size(658, 504);
+            this.lstBoxUser.Size = new System.Drawing.Size(450, 504);
             this.lstBoxUser.TabIndex = 8;
             this.lstBoxUser.Visible = false;
             // 
@@ -132,11 +134,37 @@
             this.lblSSCMsg.Text = "lblSSCMsg";
             this.lblSSCMsg.Visible = false;
             // 
+            // lstBoxAward
+            // 
+            this.lstBoxAward.FormattingEnabled = true;
+            this.lstBoxAward.ItemHeight = 25;
+            this.lstBoxAward.Location = new System.Drawing.Point(468, 6);
+            this.lstBoxAward.Margin = new System.Windows.Forms.Padding(6);
+            this.lstBoxAward.Name = "lstBoxAward";
+            this.lstBoxAward.ScrollAlwaysVisible = true;
+            this.lstBoxAward.Size = new System.Drawing.Size(360, 504);
+            this.lstBoxAward.TabIndex = 14;
+            this.lstBoxAward.Visible = false;
+            // 
+            // btnManualFresh
+            // 
+            this.btnManualFresh.Location = new System.Drawing.Point(1052, 516);
+            this.btnManualFresh.Margin = new System.Windows.Forms.Padding(6);
+            this.btnManualFresh.Name = "btnManualFresh";
+            this.btnManualFresh.Size = new System.Drawing.Size(220, 48);
+            this.btnManualFresh.TabIndex = 15;
+            this.btnManualFresh.Text = "手动刷新开奖号码";
+            this.btnManualFresh.UseVisualStyleBackColor = true;
+            this.btnManualFresh.Visible = false;
+            this.btnManualFresh.Click += new System.EventHandler(this.btnManualFresh_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1456, 1057);
+            this.Controls.Add(this.btnManualFresh);
+            this.Controls.Add(this.lstBoxAward);
             this.Controls.Add(this.lblSSCMsg);
             this.Controls.Add(this.picErWeiMa);
             this.Controls.Add(this.txtBoxMessage);
@@ -167,6 +195,8 @@
         private System.Windows.Forms.ListBox lstBoxUser;
         private System.Windows.Forms.ListBox lstMessage;
         private System.Windows.Forms.Label lblSSCMsg;
+        private System.Windows.Forms.ListBox lstBoxAward;
+        private System.Windows.Forms.Button btnManualFresh;
     }
 }
 

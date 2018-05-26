@@ -70,13 +70,25 @@ namespace demo_win_httpsocket
             btnSendFile.Hide();
 
             // 获取号码
-            lblSSCMsg.Text = $"本次获取号码时间为 {DateTime.Now:HH:mm:ss} 下次获取号码的时间为 {DateTime.Now.AddMinutes(5):HH:mm:ss}";
+            var minutes = (int)(Math.Ceiling(DateTime.Now.Minute / 5.0)) * 5;
+            var hour = DateTime.Now.Hour;
+            if (minutes == 60)
+            {
+                minutes = 0;
+                hour++;
+            }
+
+            var next = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hour, minutes, 0);
+            lblSSCMsg.Text = $"本次获取号码时间为 {DateTime.Now:HH:mm:ss} 下次获取号码的时间为 {next:HH:mm:ss}";
             timer1_Tick(this, null);
-            var timer = new Timer { Interval = 5 * 60 * 1000, };
+
+            var interval = next > DateTime.Now ? (int)Math.Abs((next - DateTime.Now).TotalMilliseconds) : 1;
+            var timer = new Timer { Interval = interval, };
             timer.Tick += (s, e) =>
             {
                 lblSSCMsg.Text = $"本次获取号码时间为 {DateTime.Now:HH:mm:ss} 下次获取号码的时间为 {DateTime.Now.AddMinutes(5):HH:mm:ss}";
                 timer1_Tick(s, e);
+                timer.Interval = 5 * 60 * 1000;
             };
             timer.Start();
         }
@@ -266,7 +278,7 @@ namespace demo_win_httpsocket
         {
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate, UseProxy = false, }))
             {
-                // var url = @"http://trend.caipiao.163.com/cqssc/";
+                // 1. 获取今天的开奖号码
                 // var url = $@"http://caipiao.163.com/award/daily_refresh.html?cache={DateTime.Now.Ticks}&gameEn=ssc&selectDate=2&date={DateTime.Now.AddDays(-1):yyyyMMdd}";  // 昨天
                 var url = $@"http://caipiao.163.com/award/daily_refresh.html?cache={DateTime.Now.Ticks}&gameEn=ssc&selectDate=1&date={DateTime.Now:yyyyMMdd}"; // 今天
                 var response = client.GetAsync(url).Result;
@@ -275,7 +287,6 @@ namespace demo_win_httpsocket
 
                 var doc = new HtmlAgilityPack.HtmlDocument();
                 doc.LoadHtml(html);
-                // var navNode = doc.GetElementbyId("cpdata");
                 var navNode = doc.DocumentNode.SelectSingleNode("//table");
                 // Console.WriteLine(navNode.InnerHtml);
 
@@ -285,6 +296,7 @@ namespace demo_win_httpsocket
                     return;
                 }
 
+                // 2. 解析 html 获取开奖期数和开奖号码
                 var array = trs.SelectMany(tr =>
                 {
                     return tr.Elements("td").SelectMany(l1 =>
@@ -309,26 +321,34 @@ namespace demo_win_httpsocket
                     return;
                 }
 
-                if (System.IO.File.Exists("data.json"))
+                // 3. 读取缓存文件, 判断哪些号码已经被发送
+                if (File.Exists("data.json"))
                 {
-                    var content = System.IO.File.ReadAllText("data.json", System.Text.Encoding.UTF8);
+                    var content = File.ReadAllText("data.json", System.Text.Encoding.UTF8);
                     var cache = JsonConvert.DeserializeObject<Data[]>(content);
                     foreach (var item in array)
                     {
                         item.Sended = cache.FirstOrDefault(o => o.Period == item.Period)?.Sended ?? false;
                     }
                 }
-                array = array.Where(a => a.Award.Length > 0).Concat(array.Where(a => a.Award.Length <= 0)).Take(5).ToArray();
+                array = array.Where(a => a.Award.Length > 0).Concat(array.Where(a => a.Award.Length <= 0)).ToArray();
+
+                // 4. 显示最近 20 期的开奖号码
+                lstBoxAward.Items.Clear();
+                lstBoxAward.Items.AddRange(array.Take(20).Select(o => $"{o.Period} 期  {string.Join("   ", o.Award)}").ToArray());
+                lstBoxAward.SelectedIndex = 0;
 
                 if (lstBoxUser.SelectedItem is MemberItem user)
                 {
-                    if (array.Any(o => !o.Sended))
+                    // 5. 如果有选中好友或群, 那么就生成一张包含 5 条开奖信息的图片, 发送出去
+                    var temp = array.Take(5).ToArray();
+                    if (temp.Any(o => !o.Sended))
                     {
                         var file = Image.FromFile(@"asserts\template.jpg");
                         var image = new ImageFactory().Load(file).Resize(new ResizeLayer(new Size { Width = file.Width, Height = file.Height, }, ResizeMode.Pad));
-                        for (var i = 0; i < array.Length; i++)
+                        for (var i = 0; i < temp.Length; i++)
                         {
-                            var item = array[i];
+                            var item = temp[i];
                             image = image.Watermark(new TextLayer
                             {
                                 Position = new Point { X = 36, Y = 160 * (i + 1) + 58, },
@@ -359,9 +379,12 @@ namespace demo_win_httpsocket
                             image.Format(new PngFormat()).Image.Save("x.png");
                         }
 
+                        // 6. 发送图片
                         _11_SENDFILE(user.UserName, "x.png");
                     }
                 }
+
+                // 7. 刷新缓存
                 System.IO.File.WriteAllText("data.json", JsonConvert.SerializeObject(array), System.Text.Encoding.UTF8);
             }
         }
@@ -383,6 +406,8 @@ namespace demo_win_httpsocket
                 }
             }
         }
+
+        private void btnManualFresh_Click(object sender, EventArgs e) => timer1_Tick(sender, e);
     }
 
     public class Data
