@@ -1,42 +1,23 @@
-#HttpSocket
-应广大网友要求，我在上一个版本的基础上，全新整理了一下代码，并且加入了接收图片，语音，文件，发送语音，文件功能接口。
-原来通过的httpwebrequest,httpclient等方式请求，现在全部变成socket发送请求。
+# 微信模拟客户端
 
-上一个版本的地址和介绍：
-https://git.oschina.net/lxwcode/weixinHttpApi
+> 定时发送图片到微信群或好友
 
-目前已经完成了微信网页版主要的发部分协议。
+## 1. 软件主程序以及配置文件
 
-可以登录，聊天，对话，图文信息接收，群信息交流等。
+![folder](images/1.png)
 
-可以用它做微信机器人，微信文章转换工具，自动回答工具等。
+## 2. 双击 WeChatClient.exe, 用手术微信扫描二维码后登录
 
-我目前开发的是微信文章自动转发
+![exe](images/2.png)
 
-QQ:7103505 771065251
+## 3. 登录之后可以看到好友和时时彩等内容, 时时彩会检测并自动发送
 
-这个代码是前端HTTP请求部分。后面处理代码在这里。 https://git.oschina.net/lxwcode/weixinEditor
+![send](images/3.png)
 
-两个放到一块运行就完整了。
+## 4. 如果有特定的好友或群, 可以修改默认选中项
 
+![config](images/4.png)
 
-==============================================================================================
-下面是新版本介绍。
+## 5. 感谢
 
-20160112 lxw beijing
-微信网页版Http模拟API
-
-实现功能
-1、获取二维码
-2、扫描登录
-3、发送文字信息 图片信息 文件
-4、接收文字信息 图片信息 文件
-5、获取好友列表信息
-6、新消息检查
-7、接收群里面消息 发送群消息
-
-
-20160111 lxw beijing
-主要作用socket模拟http请求
-用c# httpwebrequest httpclient webclient 总是感觉操作不是很爽，总有什么卡住
-这个类可以直接发送request 头 内容
+该软件的原始开源项目 [HttpSocket](https://gitee.com/lxwcode/weixinHttpApi2.0)
