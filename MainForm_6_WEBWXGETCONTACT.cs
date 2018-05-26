@@ -37,59 +37,62 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
                 USER_DI[item.UserName] = item;
                 lstBoxUser.Items.Add(item);
             }
-            var dft = ConfigurationManager.AppSettings["DefaultIndex"] ?? "0";
-            lstBoxUser.SelectedIndex = int.Parse(dft);
-            lstBoxUser.TopIndex = lstBoxUser.SelectedIndex - 9 <= 0 ? 0 : lstBoxUser.SelectedIndex - 9;
+
+            if (int.TryParse(ConfigurationManager.AppSettings["DefaultIndex"], out int index) && index >= 0)
+            {
+                lstBoxUser.SelectedIndex = index;
+                lstBoxUser.TopIndex = lstBoxUser.SelectedIndex - 9 <= 0 ? 0 : lstBoxUser.SelectedIndex - 9;
+            }
         }
     }
 
     public class WEBWXGETCONTACTRootObject
     {
         public Baseresponse BaseResponse { get; set; }
-        public int MemberCount { get; set; }
+        public long? MemberCount { get; set; }
         public MemberItem[] MemberList { get; set; }
-        public int Seq { get; set; }
+        public long? Seq { get; set; }
     }
 
     public class Baseresponse
     {
-        public int Ret { get; set; }
+        public long? Ret { get; set; }
         public string ErrMsg { get; set; }
     }
 
     public class MemberItem
     {
-        public int Uin { get; set; }
+        public long? Uin { get; set; }
         public string UserName { get; set; }
         public string NickName { get; set; }
         public string HeadImgUrl { get; set; }
-        public int ContactFlag { get; set; }
-        public int MemberCount { get; set; }
+        public long? ContactFlag { get; set; }
+        public long? MemberCount { get; set; }
         public object[] MemberList { get; set; }
         public string RemarkName { get; set; }
-        public int HideInputBarFlag { get; set; }
-        public int Sex { get; set; }
+        public long? HideInputBarFlag { get; set; }
+        public long? Sex { get; set; }
         public string Signature { get; set; }
-        public int VerifyFlag { get; set; }
-        public int OwnerUin { get; set; }
+        public long? VerifyFlag { get; set; }
+        public long? OwnerUin { get; set; }
         public string PYInitial { get; set; }
         public string PYQuanPin { get; set; }
         public string RemarkPYInitial { get; set; }
         public string RemarkPYQuanPin { get; set; }
-        public int StarFriend { get; set; }
-        public int AppAccountFlag { get; set; }
-        public int Statues { get; set; }
-        public long AttrStatus { get; set; }
+        public long? StarFriend { get; set; }
+        public long? AppAccountFlag { get; set; }
+        public long? Statues { get; set; }
+        public long? AttrStatus { get; set; }
         public string Province { get; set; }
         public string City { get; set; }
         public string Alias { get; set; }
-        public int SnsFlag { get; set; }
-        public int UniFriend { get; set; }
+        public long? SnsFlag { get; set; }
+        public long? UniFriend { get; set; }
         public string DisplayName { get; set; }
-        public int ChatRoomId { get; set; }
+        public long? ChatRoomId { get; set; }
         public string KeyWord { get; set; }
         public string EncryChatRoomId { get; set; }
-        public int IsOwner { get; set; }
+        public long? IsOwner { get; set; }
 
         public override string ToString() => string.IsNullOrEmpty(RemarkName) ? NickName : $"{RemarkName}({NickName})";
     }

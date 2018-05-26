@@ -47,7 +47,7 @@ Cookie: webwxuvid=bebe27f97a88e8ce573a38b4c48984e8f578650b8ba48b2bacce4ec572e41a
         {
             //不做任何处理
             var v = o.Value;
-
+            lstMessage.Items.Insert(0, o.Value);
         }
     }
 }

@@ -54,36 +54,36 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
     public class WEBWXINITRootObject
     {
         public Baseresponse BaseResponse { get; set; }
-        public int Count { get; set; }
+        public long? Count { get; set; }
         public Contactlist[] ContactList { get; set; }
         public Synckey SyncKey { get; set; }
         public User User { get; set; }
         public string ChatSet { get; set; }
         public string SKey { get; set; }
-        public int ClientVersion { get; set; }
-        public int SystemTime { get; set; }
-        public int GrayScale { get; set; }
-        public int InviteStartCount { get; set; }
-        public int MPSubscribeMsgCount { get; set; }
+        public long? ClientVersion { get; set; }
+        public long? SystemTime { get; set; }
+        public long? GrayScale { get; set; }
+        public long? InviteStartCount { get; set; }
+        public long? MPSubscribeMsgCount { get; set; }
         public Mpsubscribemsglist[] MPSubscribeMsgList { get; set; }
-        public int ClickReportInterval { get; set; }
+        public long? ClickReportInterval { get; set; }
     }
 
     public class Synckey
     {
-        public int Count { get; set; }
+        public long? Count { get; set; }
         public List[] List { get; set; }
     }
 
     public class List
     {
-        public int Key { get; set; }
-        public int Val { get; set; }
+        public long? Key { get; set; }
+        public long? Val { get; set; }
     }
 
     public class User
     {
-        public int Uin { get; set; }
+        public long? Uin { get; set; }
         public string UserName { get; set; }
         public string NickName { get; set; }
         public string HeadImgUrl { get; set; }
@@ -92,59 +92,59 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
         public string PYQuanPin { get; set; }
         public string RemarkPYInitial { get; set; }
         public string RemarkPYQuanPin { get; set; }
-        public int HideInputBarFlag { get; set; }
-        public int StarFriend { get; set; }
-        public int Sex { get; set; }
+        public long? HideInputBarFlag { get; set; }
+        public long? StarFriend { get; set; }
+        public long? Sex { get; set; }
         public string Signature { get; set; }
-        public int AppAccountFlag { get; set; }
-        public int VerifyFlag { get; set; }
-        public int ContactFlag { get; set; }
-        public int WebWxPluginSwitch { get; set; }
-        public int HeadImgFlag { get; set; }
-        public int SnsFlag { get; set; }
+        public long? AppAccountFlag { get; set; }
+        public long? VerifyFlag { get; set; }
+        public long? ContactFlag { get; set; }
+        public long? WebWxPluginSwitch { get; set; }
+        public long? HeadImgFlag { get; set; }
+        public long? SnsFlag { get; set; }
     }
 
     public class Contactlist
     {
-        public int Uin { get; set; }
+        public long? Uin { get; set; }
         public string UserName { get; set; }
         public string NickName { get; set; }
         public string HeadImgUrl { get; set; }
-        public int ContactFlag { get; set; }
-        public int MemberCount { get; set; }
+        public long? ContactFlag { get; set; }
+        public long? MemberCount { get; set; }
         public object[] MemberList { get; set; }
         public string RemarkName { get; set; }
-        public int HideInputBarFlag { get; set; }
-        public int Sex { get; set; }
+        public long? HideInputBarFlag { get; set; }
+        public long? Sex { get; set; }
         public string Signature { get; set; }
-        public int VerifyFlag { get; set; }
-        public int OwnerUin { get; set; }
+        public long? VerifyFlag { get; set; }
+        public long? OwnerUin { get; set; }
         public string PYInitial { get; set; }
         public string PYQuanPin { get; set; }
         public string RemarkPYInitial { get; set; }
         public string RemarkPYQuanPin { get; set; }
-        public int StarFriend { get; set; }
-        public int AppAccountFlag { get; set; }
-        public int Statues { get; set; }
-        public int AttrStatus { get; set; }
+        public long? StarFriend { get; set; }
+        public long? AppAccountFlag { get; set; }
+        public long? Statues { get; set; }
+        public long? AttrStatus { get; set; }
         public string Province { get; set; }
         public string City { get; set; }
         public string Alias { get; set; }
-        public int SnsFlag { get; set; }
-        public int UniFriend { get; set; }
+        public long? SnsFlag { get; set; }
+        public long? UniFriend { get; set; }
         public string DisplayName { get; set; }
-        public int ChatRoomId { get; set; }
+        public long? ChatRoomId { get; set; }
         public string KeyWord { get; set; }
         public string EncryChatRoomId { get; set; }
-        public int IsOwner { get; set; }
+        public long? IsOwner { get; set; }
     }
 
     public class Mpsubscribemsglist
     {
         public string UserName { get; set; }
-        public int MPArticleCount { get; set; }
+        public long? MPArticleCount { get; set; }
         public Mparticlelist[] MPArticleList { get; set; }
-        public int Time { get; set; }
+        public long? Time { get; set; }
         public string NickName { get; set; }
     }
 
