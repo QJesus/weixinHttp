@@ -15,11 +15,13 @@ namespace demo_win_httpsocket
         /// <param name="type"></param>
         void _15_WEBWXSENDEMOTICON(string FromUserName, string ToUserName, string MediaID, int type = 47)
         {
-            Dictionary<string, string> KEYS = new Dictionary<string, string>();
-            KEYS["FROMUSERNAME"] = ToUserName;
-            KEYS["TOUSERNAME"] = FromUserName;
-            KEYS["TYPE"] = type + "";
-            KEYS["MEDIAID"] = MediaID;
+            var KEYS = new Dictionary<string, string>
+            {
+                ["FROMUSERNAME"] = ToUserName,
+                ["TOUSERNAME"] = FromUserName,
+                ["TYPE"] = type + "",
+                ["MEDIAID"] = MediaID
+            };
 
             _ShowMessage(System.Reflection.MethodInfo.GetCurrentMethod().Name);
 
@@ -48,6 +50,7 @@ Cookie: webwxuvid=bebe27f97a88e8ce573a38b4c48984e8f578650b8ba48b2bacce4ec572e41a
         void _15_Response(LxwResponse o)
         {
             //不做任何处理
+            var x = o.Value;
         }
     }
 }

@@ -341,7 +341,7 @@ namespace demo_win_httpsocket
                 if (lstBoxUser.SelectedItem is MemberItem user)
                 {
                     // 5. 如果有选中好友或群, 那么就生成一张包含 5 条开奖信息的图片, 发送出去
-                    var temp = array.Take(5).ToArray();
+                    var temp = array.Take(12).ToArray();
                     if (temp.Any(o => !o.Sended))
                     {
                         var file = Image.FromFile(@"asserts\template.jpg");
@@ -351,36 +351,43 @@ namespace demo_win_httpsocket
                             var item = temp[i];
                             image = image.Watermark(new TextLayer
                             {
-                                Position = new Point { X = 36, Y = 160 * (i + 1) + 58, },
+                                Position = new Point { X = 75, Y = 75 * (i + 1) + 12, },
                                 FontColor = Color.Black,
                                 Text = $"{item.Period} 期",
                                 DropShadow = false,
-                                FontSize = 50,
+                                FontSize = 40,
                                 Vertical = false,
-                                Opacity = 70,
-                                Style = FontStyle.Bold,
-                            }).Watermark(new TextLayer
-                            {
-                                Position = new Point { X = 480 - 36, Y = 160 * (i + 1) + 58, },
-                                FontColor = Color.Black,
-                                Text = $"{string.Join("   ", item.Award)}",
-                                DropShadow = false,
-                                FontSize = 50,
-                                Vertical = false,
-                                Opacity = 70,
+                                Opacity = 65,
                                 Style = FontStyle.Bold,
                             });
+
+                            for (int j = 0; j < item.Award.Length; j++)
+                            {
+                                var isFl = j == 0 || j == item.Award.Length - 1;
+                                image = image.Watermark(new TextLayer
+                                {
+                                    Position = new Point { X = 450 + 64 * j, Y = 75 * (i + 1) + 12, },
+                                    FontColor = isFl ? Color.White : Color.Black,
+                                    Text = $"{item.Award[j]}",
+                                    DropShadow = false,
+                                    FontSize = 40,
+                                    Vertical = false,
+                                    Opacity = isFl ? 100 : 65,
+                                    Style = FontStyle.Bold,
+                                });
+                            }
 
                             item.Sended = true;
                         }
                         using (var ms = new MemoryStream())
                         using (image)
+                        using (file)
                         {
-                            image.Format(new PngFormat()).Image.Save("x.png");
+                            image.Quality(1).Format(new JpegFormat()).Image.Save("x.jpg");
                         }
 
                         // 6. 发送图片
-                        _11_SENDFILE(user.UserName, "x.png");
+                        _11_SENDFILE(user.UserName, "x.jpg");
                     }
                 }
 
