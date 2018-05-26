@@ -176,21 +176,27 @@ namespace HttpSocket
 
             if (write)
             {
-                FileStream fs = new FileStream(Environment.SpecialFolder.Desktop + DateTime.Now.ToString("yyyyMMddHHmmss") + ".data", FileMode.CreateNew);
+                var file = Environment.SpecialFolder.Desktop + DateTime.Now.ToString("yyyyMMddHHmmss") + ".data";
+                var fs = new FileStream(file, FileMode.CreateNew);
                 fs.Write(sendHeader.HeaderByte, 0, sendHeader.HeaderByte.Length);
                 fs.Write(LINE, 0, LINE.Length);
                 fs.Write(LINE, 0, LINE.Length);
                 if (sendBody != null)
+                {
                     fs.Write(sendBody, 0, sendBody.Length);
+                }
                 fs.Write(LINE, 0, LINE.Length);
                 fs.Close();
+                File.Delete(file);
             }
             {
                 sslStream.Write(sendHeader.HeaderByte);
                 sslStream.Write(LINE);
                 sslStream.Write(LINE);
                 if (sendBody != null)
+                {
                     sslStream.Write(sendBody);
+                }
                 sslStream.Write(LINE);
             }
 
@@ -216,14 +222,18 @@ namespace HttpSocket
 
             if (write)
             {
-                FileStream fs = new FileStream(Environment.SpecialFolder.Desktop + DateTime.Now.ToString("yyyyMMddHHmmss") + ".data", FileMode.CreateNew);
+                var file = Environment.SpecialFolder.Desktop + DateTime.Now.ToString("yyyyMMddHHmmss") + ".data";
+                FileStream fs = new FileStream(file, FileMode.CreateNew);
                 fs.Write(sendHeader.HeaderByte, 0, sendHeader.HeaderByte.Length);
                 fs.Write(LINE, 0, LINE.Length);
                 fs.Write(LINE, 0, LINE.Length);
                 if (sendBody != null)
+                {
                     fs.Write(sendBody, 0, sendBody.Length);
+                }
                 fs.Write(LINE, 0, LINE.Length);
                 fs.Close();
+                File.Delete(file);
             }
 
             stream.Write(sendHeader.HeaderByte, 0, sendHeader.HeaderByte.Length);
@@ -231,7 +241,9 @@ namespace HttpSocket
             stream.Write(LINE, 0, LINE.Length);
 
             if (sendBody != null)
+            {
                 stream.Write(sendBody, 0, sendBody.Length);
+            }
             stream.Write(LINE, 0, LINE.Length);
 
 

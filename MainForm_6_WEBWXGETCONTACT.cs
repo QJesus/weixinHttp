@@ -1,5 +1,6 @@
 ﻿using HttpSocket;
 using Newtonsoft.Json;
+using System.Configuration;
 using System.Linq;
 
 namespace demo_win_httpsocket
@@ -36,7 +37,9 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
                 USER_DI[item.UserName] = item;
                 lstBoxUser.Items.Add(item);
             }
-            lstBoxUser.SelectedIndex = 25;
+            var dft = ConfigurationManager.AppSettings["DefaultIndex"] ?? "0";
+            lstBoxUser.SelectedIndex = int.Parse(dft);
+            lstBoxUser.TopIndex = lstBoxUser.SelectedIndex - 9 <= 0 ? 0 : lstBoxUser.SelectedIndex - 9;
         }
     }
 

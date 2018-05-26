@@ -5,7 +5,6 @@ using ImageProcessor.Imaging;
 using ImageProcessor.Imaging.Formats;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -68,10 +67,17 @@ namespace demo_win_httpsocket
             //第七步心跳检测
             _7_SYNCCHECK();
 
+            btnSendFile.Hide();
+
             // 获取号码
+            lblSSCMsg.Text = $"本次获取号码时间为 {DateTime.Now:HH:mm:ss} 下次获取号码的时间为 {DateTime.Now.AddMinutes(5):HH:mm:ss}";
             timer1_Tick(this, null);
             var timer = new Timer { Interval = 5 * 60 * 1000, };
-            timer.Tick += (s, e) => timer1_Tick(s, e);
+            timer.Tick += (s, e) =>
+            {
+                lblSSCMsg.Text = $"本次获取号码时间为 {DateTime.Now:HH:mm:ss} 下次获取号码的时间为 {DateTime.Now.AddMinutes(5):HH:mm:ss}";
+                timer1_Tick(s, e);
+            };
             timer.Start();
         }
 
@@ -233,18 +239,19 @@ namespace demo_win_httpsocket
         {
             if (!(lstBoxUser.SelectedItem is MemberItem user))
             {
-                MessageBox.Show("请选择用户！");
+                MessageBox.Show("请选择用户！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (txtBoxMessage.Text == "")
+            var text = txtBoxMessage.Text?.Trim();
+            if (string.IsNullOrEmpty(text))
             {
-                MessageBox.Show("请输入信息！");
+                MessageBox.Show("请输入信息！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             //发送消息
-            _10_WEBWXSENDMSG(user.UserName, UserName, txtBoxMessage.Text);
+            _10_WEBWXSENDMSG(user.UserName, UserName, text);
 
             txtBoxMessage.Text = "";
         }
@@ -356,6 +363,24 @@ namespace demo_win_httpsocket
                     }
                 }
                 System.IO.File.WriteAllText("data.json", JsonConvert.SerializeObject(array), System.Text.Encoding.UTF8);
+            }
+        }
+
+        private void txtBoxMessage_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (e.Alt)
+                {
+                    // 换行, 光标移动到最后
+                    txtBoxMessage.Text = txtBoxMessage.Text + Environment.NewLine;
+                    txtBoxMessage.SelectionLength = 0;
+                    txtBoxMessage.SelectionStart = int.MaxValue;
+                }
+                else
+                {
+                    btnSend_Click(sender, e);
+                }
             }
         }
     }
