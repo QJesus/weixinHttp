@@ -47,6 +47,9 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             WEB.Add(SYNCKEY, tmp);
             var json = JavaScriptConvert.SerializeObject(intObj.SyncKey);
             WEB.Add(SYNCKEY_LONG, json);
+
+            // 排除 文件传输助手 和 微信团队
+            RecentUsers = intObj.ContactList.Where(u => new[] { "filehelper", "weixin" }.All(x => x != u.UserName)).ToList();
         }
     }
 
@@ -55,7 +58,7 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
     {
         public Baseresponse BaseResponse { get; set; }
         public long? Count { get; set; }
-        public Contactlist[] ContactList { get; set; }
+        public MemberItem[] ContactList { get; set; }
         public Synckey SyncKey { get; set; }
         public User User { get; set; }
         public string ChatSet { get; set; }
@@ -102,41 +105,6 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
         public long? WebWxPluginSwitch { get; set; }
         public long? HeadImgFlag { get; set; }
         public long? SnsFlag { get; set; }
-    }
-
-    public class Contactlist
-    {
-        public long? Uin { get; set; }
-        public string UserName { get; set; }
-        public string NickName { get; set; }
-        public string HeadImgUrl { get; set; }
-        public long? ContactFlag { get; set; }
-        public long? MemberCount { get; set; }
-        public object[] MemberList { get; set; }
-        public string RemarkName { get; set; }
-        public long? HideInputBarFlag { get; set; }
-        public long? Sex { get; set; }
-        public string Signature { get; set; }
-        public long? VerifyFlag { get; set; }
-        public long? OwnerUin { get; set; }
-        public string PYInitial { get; set; }
-        public string PYQuanPin { get; set; }
-        public string RemarkPYInitial { get; set; }
-        public string RemarkPYQuanPin { get; set; }
-        public long? StarFriend { get; set; }
-        public long? AppAccountFlag { get; set; }
-        public long? Statues { get; set; }
-        public long? AttrStatus { get; set; }
-        public string Province { get; set; }
-        public string City { get; set; }
-        public string Alias { get; set; }
-        public long? SnsFlag { get; set; }
-        public long? UniFriend { get; set; }
-        public string DisplayName { get; set; }
-        public long? ChatRoomId { get; set; }
-        public string KeyWord { get; set; }
-        public string EncryChatRoomId { get; set; }
-        public long? IsOwner { get; set; }
     }
 
     public class Mpsubscribemsglist

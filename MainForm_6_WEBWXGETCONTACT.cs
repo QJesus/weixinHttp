@@ -30,7 +30,15 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             var ro = JsonConvert.DeserializeObject<WEBWXGETCONTACTRootObject>(o.Value);
             var members = ro.MemberList.Where(x => !string.IsNullOrEmpty(x.RemarkName)).OrderBy(x => x.RemarkName)
                 .Concat(ro.MemberList.Where(x => string.IsNullOrEmpty(x.RemarkName)).OrderBy(x => x.RemarkName)).ToArray();
+
             lstBoxUser.Items.Clear();
+            for (int i = 0; i < RecentUsers.Count; i++)
+            {
+                var item = RecentUsers[i];
+                USER_DI[item.UserName] = item;
+                lstBoxUser.Items.Add(item);
+            }
+
             for (var i = 0; i < members.Length; i++)
             {
                 var item = members[i];
@@ -38,11 +46,8 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
                 lstBoxUser.Items.Add(item);
             }
 
-            if (int.TryParse(ConfigurationManager.AppSettings["DefaultIndex"], out int index) && index >= 0)
-            {
-                lstBoxUser.SelectedIndex = index;
-                lstBoxUser.TopIndex = lstBoxUser.SelectedIndex - 9 <= 0 ? 0 : lstBoxUser.SelectedIndex - 9;
-            }
+            //lstBoxUser.SelectedIndex = 0;
+            //lstBoxUser.TopIndex = lstBoxUser.SelectedIndex - 9 <= 0 ? 0 : lstBoxUser.SelectedIndex - 9;
         }
     }
 
