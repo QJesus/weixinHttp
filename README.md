@@ -14,10 +14,6 @@
 
 ![send](images/3.png)
 
-## 4. 如果有特定的好友或群, 可以修改默认选中项
-
-![config](images/4.png)
-
-## 5. 感谢
+## 4. 感谢
 
 该软件的原始开源项目 [HttpSocket](https://gitee.com/lxwcode/weixinHttpApi2.0)
