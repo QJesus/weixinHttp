@@ -41,7 +41,7 @@
             // picErWeiMa
             // 
             this.picErWeiMa.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.picErWeiMa.Location = new System.Drawing.Point(476, 191);
+            this.picErWeiMa.Location = new System.Drawing.Point(417, 6);
             this.picErWeiMa.Margin = new System.Windows.Forms.Padding(6);
             this.picErWeiMa.Name = "picErWeiMa";
             this.picErWeiMa.Size = new System.Drawing.Size(600, 625);
@@ -50,18 +50,18 @@
             // 
             // txtBoxMessage
             // 
-            this.txtBoxMessage.Location = new System.Drawing.Point(682, 6);
+            this.txtBoxMessage.Location = new System.Drawing.Point(617, 6);
             this.txtBoxMessage.Margin = new System.Windows.Forms.Padding(6);
             this.txtBoxMessage.Multiline = true;
             this.txtBoxMessage.Name = "txtBoxMessage";
-            this.txtBoxMessage.Size = new System.Drawing.Size(1554, 489);
+            this.txtBoxMessage.Size = new System.Drawing.Size(856, 565);
             this.txtBoxMessage.TabIndex = 12;
             this.txtBoxMessage.Visible = false;
             this.txtBoxMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtBoxMessage_KeyUp);
             // 
             // btnSendFile
             // 
-            this.btnSendFile.Location = new System.Drawing.Point(1850, 513);
+            this.btnSendFile.Location = new System.Drawing.Point(1122, 583);
             this.btnSendFile.Margin = new System.Windows.Forms.Padding(6);
             this.btnSendFile.Name = "btnSendFile";
             this.btnSendFile.Size = new System.Drawing.Size(150, 48);
@@ -73,7 +73,7 @@
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(2090, 513);
+            this.btnSend.Location = new System.Drawing.Point(1323, 583);
             this.btnSend.Margin = new System.Windows.Forms.Padding(6);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(150, 48);
@@ -91,7 +91,7 @@
             this.lstBoxUser.Margin = new System.Windows.Forms.Padding(6);
             this.lstBoxUser.Name = "lstBoxUser";
             this.lstBoxUser.ScrollAlwaysVisible = true;
-            this.lstBoxUser.Size = new System.Drawing.Size(658, 554);
+            this.lstBoxUser.Size = new System.Drawing.Size(599, 629);
             this.lstBoxUser.TabIndex = 8;
             this.lstBoxUser.Visible = false;
             // 
@@ -100,27 +100,26 @@
             this.lstMessage.FormattingEnabled = true;
             this.lstMessage.HorizontalScrollbar = true;
             this.lstMessage.ItemHeight = 25;
-            this.lstMessage.Location = new System.Drawing.Point(6, 573);
+            this.lstMessage.Location = new System.Drawing.Point(6, 647);
             this.lstMessage.Margin = new System.Windows.Forms.Padding(6);
             this.lstMessage.Name = "lstMessage";
             this.lstMessage.ScrollAlwaysVisible = true;
-            this.lstMessage.Size = new System.Drawing.Size(2230, 479);
+            this.lstMessage.Size = new System.Drawing.Size(1467, 479);
             this.lstMessage.TabIndex = 7;
-            this.lstMessage.Visible = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(2248, 1063);
+            this.ClientSize = new System.Drawing.Size(1479, 1131);
             this.Controls.Add(this.picErWeiMa);
             this.Controls.Add(this.txtBoxMessage);
             this.Controls.Add(this.btnSendFile);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.lstBoxUser);
             this.Controls.Add(this.lstMessage);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "MainForm";
