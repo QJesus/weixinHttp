@@ -220,18 +220,19 @@ namespace demo_win_httpsocket
         {
             if (!(lstBoxUser.SelectedItem is MemberItem user))
             {
-                MessageBox.Show("请选择用户！");
+                MessageBox.Show("请选择用户！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (txtBoxMessage.Text == "")
+            var text = txtBoxMessage.Text?.Trim();
+            if (string.IsNullOrEmpty(text))
             {
-                MessageBox.Show("请输入信息！");
+                MessageBox.Show("请输入信息！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            
+
             //发送消息
-            _10_WEBWXSENDMSG(user.UserName, UserName, txtBoxMessage.Text);
+            _10_WEBWXSENDMSG(user.UserName, UserName, text);
 
             txtBoxMessage.Text = "";
         }
@@ -242,33 +243,21 @@ namespace demo_win_httpsocket
             _6_WEBWXGETCONTACT();
         }
 
-        private void MainForm_Load_1(object sender, EventArgs e)
+        private void txtBoxMessage_KeyUp(object sender, KeyEventArgs e)
         {
-
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate, UseProxy = false, }))
+            if (e.KeyCode == Keys.Enter)
             {
-                var url = @"http://trend.caipiao.163.com/cqssc/";
-                var response = client.GetAsync(url).Result;
-                var html = response.Content.ReadAsStringAsync().Result;
-                // Console.WriteLine(html);
-
-                var doc = new HtmlAgilityPack.HtmlDocument();
-                doc.LoadHtml(html);
-                var navNode = doc.GetElementbyId("cpdata");
-                // Console.WriteLine(navNode.InnerHtml);
-
-                var trs = navNode.Elements("tr").ToArray();
-                Array.Reverse(trs);
-                txtBoxMessage.Text = string.Join(Environment.NewLine, trs.Select(o =>
+                if (e.Alt)
                 {
-                    var period = o.GetAttributeValue("data-period", "");
-                    var award = o.GetAttributeValue("data-award", "");
-                    return $"{period} {award}";
-                }));
+                    // 换行, 光标移动到最后
+                    txtBoxMessage.Text = txtBoxMessage.Text + Environment.NewLine;
+                    txtBoxMessage.SelectionLength = 0;
+                    txtBoxMessage.SelectionStart = int.MaxValue;
+                }
+                else
+                {
+                    btnSend_Click(sender, e);
+                }
             }
         }
     }

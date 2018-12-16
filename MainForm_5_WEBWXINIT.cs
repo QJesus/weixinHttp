@@ -1,7 +1,8 @@
 ﻿using FluorineFx.Json;
 using HttpSocket;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace demo_win_httpsocket
 {
@@ -31,34 +32,93 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
         void _5_Response(LxwResponse o)
         {
-            var value = o.Value;
-            if (!value.Contains("\"Ret\": 0"))
+            var intObj = JsonConvert.DeserializeObject<WEBWXINITRootObject>(o.Value);
+            if (intObj.BaseResponse.Ret != 0)
             {
                 throw new Exception("没有返回正确的数据，webwxinit错误!");
             }
 
-            var retJSON = JavaScriptConvert.DeserializeObject(value) as JavaScriptObject;
-            var User = retJSON["User"] as JavaScriptObject;
-            //USER_INFO
-            UserName = User["UserName"] + "";
-            NickName = User["NickName"] + "";
-
+            // USER_INFO
+            UserName = intObj.User.UserName;
+            NickName = intObj.User.NickName;
             this.Text = NickName + $">>>微信模拟客户端 V1.0";
 
-            JavaScriptObject obj = retJSON["SyncKey"] as JavaScriptObject;
-            JavaScriptArray list = obj["List"] as JavaScriptArray;
+            var tmp = string.Join("|", intObj.SyncKey.List.Select(kv => $"{kv.Key}_{kv.Val}"));
+            WEB.Add(SYNCKEY, tmp);
+            var json = JavaScriptConvert.SerializeObject(intObj.SyncKey);
+            WEB.Add(SYNCKEY_LONG, json);
 
-            List<string> temp = new List<string>();
-            foreach (JavaScriptObject kv in list)
-            {
-                temp.Add(kv["Key"] + "_" + kv["Val"]);
-            }
-
-            WEB.Add(SYNCKEY, string.Join("|", temp.ToArray()));
-            if (obj != null && obj.ContainsKey("Count"))
-            {
-                WEB.Add(SYNCKEY_LONG, JavaScriptConvert.SerializeObject(retJSON["SyncKey"]));
-            }
+            RecentUsers = intObj.ContactList.ToList();
         }
+    }
+
+    public class WEBWXINITRootObject
+    {
+        public Baseresponse BaseResponse { get; set; }
+        public long? Count { get; set; }
+        public MemberItem[] ContactList { get; set; }
+        public Synckey SyncKey { get; set; }
+        public User User { get; set; }
+        public string ChatSet { get; set; }
+        public string SKey { get; set; }
+        public long? ClientVersion { get; set; }
+        public long? SystemTime { get; set; }
+        public long? GrayScale { get; set; }
+        public long? InviteStartCount { get; set; }
+        public long? MPSubscribeMsgCount { get; set; }
+        public Mpsubscribemsglist[] MPSubscribeMsgList { get; set; }
+        public long? ClickReportInterval { get; set; }
+    }
+
+    public class Synckey
+    {
+        public long? Count { get; set; }
+        public List[] List { get; set; }
+    }
+
+    public class List
+    {
+        public long? Key { get; set; }
+        public long? Val { get; set; }
+    }
+
+    public class User
+    {
+        public long? Uin { get; set; }
+        public string UserName { get; set; }
+        public string NickName { get; set; }
+        public string HeadImgUrl { get; set; }
+        public string RemarkName { get; set; }
+        public string PYInitial { get; set; }
+        public string PYQuanPin { get; set; }
+        public string RemarkPYInitial { get; set; }
+        public string RemarkPYQuanPin { get; set; }
+        public long? HideInputBarFlag { get; set; }
+        public long? StarFriend { get; set; }
+        public long? Sex { get; set; }
+        public string Signature { get; set; }
+        public long? AppAccountFlag { get; set; }
+        public long? VerifyFlag { get; set; }
+        public long? ContactFlag { get; set; }
+        public long? WebWxPluginSwitch { get; set; }
+        public long? HeadImgFlag { get; set; }
+        public long? SnsFlag { get; set; }
+    }
+
+    public class Mpsubscribemsglist
+    {
+        public string UserName { get; set; }
+        public long? MPArticleCount { get; set; }
+        public Mparticlelist[] MPArticleList { get; set; }
+        public long? Time { get; set; }
+        public string NickName { get; set; }
+    }
+
+    public class Mparticlelist
+    {
+        public string Title { get; set; }
+        public string Digest { get; set; }
+        public string Cover { get; set; }
+        public string Url { get; set; }
     }
 }

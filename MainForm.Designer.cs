@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.picErWeiMa = new System.Windows.Forms.PictureBox();
             this.txtBoxMessage = new System.Windows.Forms.TextBox();
             this.btnGetUserList = new System.Windows.Forms.Button();
@@ -36,33 +35,36 @@
             this.btnSend = new System.Windows.Forms.Button();
             this.lstBoxUser = new System.Windows.Forms.ListBox();
             this.lstMessage = new System.Windows.Forms.ListBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picErWeiMa)).BeginInit();
             this.SuspendLayout();
             // 
             // picErWeiMa
             // 
             this.picErWeiMa.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.picErWeiMa.Location = new System.Drawing.Point(424, 105);
+            this.picErWeiMa.Location = new System.Drawing.Point(476, 191);
+            this.picErWeiMa.Margin = new System.Windows.Forms.Padding(6);
             this.picErWeiMa.Name = "picErWeiMa";
-            this.picErWeiMa.Size = new System.Drawing.Size(300, 325);
+            this.picErWeiMa.Size = new System.Drawing.Size(600, 625);
             this.picErWeiMa.TabIndex = 0;
             this.picErWeiMa.TabStop = false;
             // 
             // txtBoxMessage
             // 
-            this.txtBoxMessage.Location = new System.Drawing.Point(341, 3);
+            this.txtBoxMessage.Location = new System.Drawing.Point(682, 6);
+            this.txtBoxMessage.Margin = new System.Windows.Forms.Padding(6);
             this.txtBoxMessage.Multiline = true;
             this.txtBoxMessage.Name = "txtBoxMessage";
-            this.txtBoxMessage.Size = new System.Drawing.Size(779, 256);
+            this.txtBoxMessage.Size = new System.Drawing.Size(1554, 489);
             this.txtBoxMessage.TabIndex = 12;
             this.txtBoxMessage.Visible = false;
+            this.txtBoxMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtBoxMessage_KeyUp);
             // 
             // btnGetUserList
             // 
-            this.btnGetUserList.Location = new System.Drawing.Point(341, 267);
+            this.btnGetUserList.Location = new System.Drawing.Point(682, 513);
+            this.btnGetUserList.Margin = new System.Windows.Forms.Padding(6);
             this.btnGetUserList.Name = "btnGetUserList";
-            this.btnGetUserList.Size = new System.Drawing.Size(124, 25);
+            this.btnGetUserList.Size = new System.Drawing.Size(248, 48);
             this.btnGetUserList.TabIndex = 9;
             this.btnGetUserList.Text = "获取最新用户列表";
             this.btnGetUserList.UseVisualStyleBackColor = true;
@@ -71,9 +73,10 @@
             // 
             // btnSendFile
             // 
-            this.btnSendFile.Location = new System.Drawing.Point(925, 267);
+            this.btnSendFile.Location = new System.Drawing.Point(1850, 513);
+            this.btnSendFile.Margin = new System.Windows.Forms.Padding(6);
             this.btnSendFile.Name = "btnSendFile";
-            this.btnSendFile.Size = new System.Drawing.Size(75, 25);
+            this.btnSendFile.Size = new System.Drawing.Size(150, 48);
             this.btnSendFile.TabIndex = 10;
             this.btnSendFile.Text = "发送文件";
             this.btnSendFile.UseVisualStyleBackColor = true;
@@ -82,9 +85,10 @@
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(1045, 267);
+            this.btnSend.Location = new System.Drawing.Point(2090, 513);
+            this.btnSend.Margin = new System.Windows.Forms.Padding(6);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 25);
+            this.btnSend.Size = new System.Drawing.Size(150, 48);
             this.btnSend.TabIndex = 11;
             this.btnSend.Text = "发送信息";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -94,10 +98,12 @@
             // lstBoxUser
             // 
             this.lstBoxUser.FormattingEnabled = true;
-            this.lstBoxUser.Location = new System.Drawing.Point(3, 3);
+            this.lstBoxUser.ItemHeight = 25;
+            this.lstBoxUser.Location = new System.Drawing.Point(6, 6);
+            this.lstBoxUser.Margin = new System.Windows.Forms.Padding(6);
             this.lstBoxUser.Name = "lstBoxUser";
             this.lstBoxUser.ScrollAlwaysVisible = true;
-            this.lstBoxUser.Size = new System.Drawing.Size(331, 290);
+            this.lstBoxUser.Size = new System.Drawing.Size(658, 554);
             this.lstBoxUser.TabIndex = 8;
             this.lstBoxUser.Visible = false;
             // 
@@ -105,23 +111,20 @@
             // 
             this.lstMessage.FormattingEnabled = true;
             this.lstMessage.HorizontalScrollbar = true;
-            this.lstMessage.Location = new System.Drawing.Point(3, 298);
+            this.lstMessage.ItemHeight = 25;
+            this.lstMessage.Location = new System.Drawing.Point(6, 573);
+            this.lstMessage.Margin = new System.Windows.Forms.Padding(6);
             this.lstMessage.Name = "lstMessage";
             this.lstMessage.ScrollAlwaysVisible = true;
-            this.lstMessage.Size = new System.Drawing.Size(1117, 251);
+            this.lstMessage.Size = new System.Drawing.Size(2230, 479);
             this.lstMessage.TabIndex = 7;
             this.lstMessage.Visible = false;
             // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1124, 553);
+            this.ClientSize = new System.Drawing.Size(2248, 1063);
             this.Controls.Add(this.picErWeiMa);
             this.Controls.Add(this.txtBoxMessage);
             this.Controls.Add(this.btnGetUserList);
@@ -130,10 +133,10 @@
             this.Controls.Add(this.lstBoxUser);
             this.Controls.Add(this.lstMessage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.MainForm_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.picErWeiMa)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -149,7 +152,6 @@
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.ListBox lstBoxUser;
         private System.Windows.Forms.ListBox lstMessage;
-        private System.Windows.Forms.Timer timer1;
     }
 }
 
