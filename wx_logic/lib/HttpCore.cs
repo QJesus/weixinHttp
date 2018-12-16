@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Text;
 
 namespace HttpSocket
@@ -12,7 +10,9 @@ namespace HttpSocket
         public static Encoding FormatEncoding(string encoding = null)
         {
             if (string.IsNullOrEmpty(encoding))
+            {
                 return null;
+            }
 
             try
             {

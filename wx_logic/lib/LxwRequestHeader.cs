@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace HttpSocket
@@ -12,18 +10,11 @@ namespace HttpSocket
         {
             Encoding = encoding;
         }
+
         public Uri Uri { get; set; }
-        public byte[] HeaderByte { get {
-            if (!string.IsNullOrEmpty(Header))
-                return Encoding.GetBytes(Header);
-            return null;
-        } }
-
+        public byte[] HeaderByte => !string.IsNullOrEmpty(Header) ? Encoding.GetBytes(Header) : null;
         public string Header { get; set; }
-
         public bool SSL { get; set; }
-
-        public Encoding Encoding { get;private set; }
+        public Encoding Encoding { get; private set; }
     }
-
 }

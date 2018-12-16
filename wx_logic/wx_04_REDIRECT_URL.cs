@@ -1,5 +1,5 @@
-using FluorineFx.Json;
 using HttpSocket;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Xml;
 
@@ -48,14 +48,27 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             var doc = new XmlDocument();
             doc.LoadXml(xml);
 
-            var obj = new JavaScriptObject();
+            var obj = new JObject();
             foreach (XmlNode node in doc.SelectSingleNode(root).ChildNodes)
             {
                 //获取内容
                 obj[node.Name] = node.InnerText;
             }
-
-            return JavaScriptConvert.DeserializeObject<T>(JavaScriptConvert.SerializeObject(obj));
+            return obj.ToObject<T>();
         }
+    }
+
+    /// <summary>
+    /// 返回信息
+    /// </summary>
+    public class WeiXinTicket
+    {
+        public int ret { get; set; }
+        public string message { get; set; }
+        public string skey { get; set; }
+        public string wxsid { get; set; }
+        public string wxuin { get; set; }
+        public string pass_ticket { get; set; }
+        public string isgrayscale { get; set; }
     }
 }

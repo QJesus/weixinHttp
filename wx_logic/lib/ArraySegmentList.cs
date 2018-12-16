@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace HttpSocket
 {
@@ -24,11 +22,7 @@ namespace HttpSocket
             for (int i = 0; i < m_SegmentList.Count; i++)
             {
                 ArraySegment<T> arraySegment = m_SegmentList[i];
-                Array.Copy(arraySegment.Array,
-                    0,
-                    array,
-                    index,
-                    arraySegment.Count);
+                Array.Copy(arraySegment.Array, 0, array, index, arraySegment.Count);
                 index += arraySegment.Count;
             }
             return array;

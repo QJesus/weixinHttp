@@ -51,7 +51,10 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             var ext = MimeMapping.GetExtByMime(type);
             map.Save(Path.Combine(folders, DateTime.Now.ToString("yyyyMMddHHmmssfff") + generateDeviceId() + ext), MimeMapping.GetImageFormat(ext));
 
-            if (map != null) map.Dispose();
+            if (map != null)
+            {
+                map.Dispose();
+            }
         }
     }
 }

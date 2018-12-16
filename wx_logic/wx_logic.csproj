@@ -66,14 +66,13 @@
     <Compile Include="lib\ArraySegmentList.cs" />
     <Compile Include="lib\HttpCore.cs" />
     <Compile Include="lib\LxwCookie.cs" />
-    <Compile Include="lib\lxwHttp.cs" />
+    <Compile Include="lib\LxwHttp.cs" />
     <Compile Include="lib\LxwHttpSocket.cs" />
     <Compile Include="lib\LxwRequestHeader.cs" />
     <Compile Include="lib\LxwResponse.cs" />
     <Compile Include="lib\LxwResponseHeader.cs" />
     <Compile Include="lib\LxwUploadBody.cs" />
     <Compile Include="lib\MimeMapping.cs" />
-    <Compile Include="lib\WeiXinTicket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="wx_10_WEBWXSENDMSG.cs" />
     <Compile Include="wx_11_SENDFILE.cs" />

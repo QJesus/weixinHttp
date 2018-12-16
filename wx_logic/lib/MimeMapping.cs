@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HttpSocket
 {
@@ -12,15 +9,13 @@ namespace HttpSocket
     {
         public class KeyValue
         {
-            public string Key { get; set;}
+            public string Key { get; set; }
             public string Value { get; set; }
         }
+
         private static List<KeyValue> _mimeMappingTable = new List<KeyValue>();
 
-        private static void AddMimeMapping(string extension, string MimeType)
-        {
-            _mimeMappingTable.Add(new KeyValue() { Key = extension, Value = MimeType });
-        }
+        private static void AddMimeMapping(string extension, string MimeType) => _mimeMappingTable.Add(new KeyValue() { Key = extension, Value = MimeType });
 
         public static string GetMimeMappingByFile(string FileName)
         {
@@ -36,55 +31,26 @@ namespace HttpSocket
         public static string GetMimeMapping(string ext)
         {
             ext = "." + ext.TrimStart(new char[] { '.' });
-            var text = (from o in _mimeMappingTable where o.Key == ext select o.Value).FirstOrDefault();
-            if (text == null)
-            {
-                text = "application/octet-stream";
-            }
-            return text;
+            return (from o in _mimeMappingTable where o.Key == ext select o.Value).FirstOrDefault() ?? "application/octet-stream";
         }
 
-        public static string GetExtByMime(string type)
-        {
-            var text = (from o in _mimeMappingTable where o.Value == type select o.Key).FirstOrDefault();
-            if (text == null)
-            {
-                return ".null";
-            }
-            return text;
-        }
+        public static string GetExtByMime(string type) => (from o in _mimeMappingTable where o.Value == type select o.Key).FirstOrDefault() ?? ".null";
 
         public static ImageFormat GetImageFormat(string extension)
         {
             switch (extension.ToLower())
             {
-                case @".bmp":
-                    return ImageFormat.Bmp;
-
-                case @".gif":
-                    return ImageFormat.Gif;
-
-                case @".ico":
-                    return ImageFormat.Icon;
-
+                case @".bmp": return ImageFormat.Bmp;
+                case @".gif": return ImageFormat.Gif;
+                case @".ico": return ImageFormat.Icon;
                 case @".jpg":
-                case @".jpeg":
-                    return ImageFormat.Jpeg;
-
-                case @".png":
-                    return ImageFormat.Png;
-
+                case @".jpeg": return ImageFormat.Jpeg;
+                case @".png": return ImageFormat.Png;
                 case @".tif":
-                case @".tiff":
-                    return ImageFormat.Tiff;
-
-                case @".wmf":
-                    return ImageFormat.Wmf;
-
-                default:
-                    throw new NotImplementedException();
+                case @".tiff": return ImageFormat.Tiff;
+                case @".wmf": return ImageFormat.Wmf;
+                default: throw new NotImplementedException();
             }
-
         }
 
         static MimeMapping()

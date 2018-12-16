@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace HttpSocket
+﻿namespace HttpSocket
 {
     /// <summary>
     /// 存储Cookies
@@ -15,11 +10,7 @@ namespace HttpSocket
         public string Domain { get; set; }
         public string Path { get; set; }
         public string Expires { get; internal set; }
-
-        public override string ToString()
-        {
-            return Key + "=" + Value;
-        }
+        public override string ToString() => $"{Key}={Value}";
     }
 
 }

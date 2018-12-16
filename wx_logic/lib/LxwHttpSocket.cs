@@ -58,7 +58,9 @@ namespace HttpSocket
             get
             {
                 if (DI_KEYS.ContainsKey(key))
+                {
                     return DI_KEYS[key];
+                }
 
                 foreach (var cookies in LST_COOKIE.Values)
                 {
@@ -94,12 +96,11 @@ namespace HttpSocket
             try
             {
                 if (!client.Connected)
+                {
                     throw new Exception("client.Connected is false");
+                }
 
-                if (sendHeader.SSL)
-                    return SendSSLRequest(client, sendBody, sendHeader, write);
-
-                return SendNoSSLRequest(client, sendBody, sendHeader, write);
+                return sendHeader.SSL ? SendSSLRequest(client, sendBody, sendHeader, write) : SendNoSSLRequest(client, sendBody, sendHeader, write);
             }
             finally
             {
@@ -126,12 +127,11 @@ namespace HttpSocket
             try
             {
                 if (!client.Connected)
+                {
                     throw new Exception("client.Connected is false");
+                }
 
-                if (sendHeader.SSL)
-                    return SendSSLRequest(client, body.Body, sendHeader, true);
-
-                return SendNoSSLRequest(client, body.Body, sendHeader, true);
+                return sendHeader.SSL ? SendSSLRequest(client, body.Body, sendHeader, true) : SendNoSSLRequest(client, body.Body, sendHeader, true);
             }
             finally
             {
@@ -148,13 +148,8 @@ namespace HttpSocket
         /// <returns></returns>
         LxwResponse SendSSLRequest(TcpClient client, byte[] sendBody, LxwRequestHeader sendHeader, bool write = false)
         {
-            SslStream sslStream = new SslStream(client.GetStream(), true
-                        , new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors)
-                           =>
-                        {
-                            return sslPolicyErrors == SslPolicyErrors.None;
-                        }
-                            ), null);
+            SslStream sslStream = new SslStream(client.GetStream(), true,
+                new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => sslPolicyErrors == SslPolicyErrors.None), null);
 
             sslStream.ReadTimeout = ReadTimeOut * 1000;
             sslStream.WriteTimeout = WriteTimeOut * 1000;
@@ -179,7 +174,10 @@ namespace HttpSocket
                 fs.Write(LINE, 0, LINE.Length);
                 fs.Write(LINE, 0, LINE.Length);
                 if (sendBody != null)
+                {
                     fs.Write(sendBody, 0, sendBody.Length);
+                }
+
                 fs.Write(LINE, 0, LINE.Length);
                 fs.Close();
             }
@@ -188,7 +186,10 @@ namespace HttpSocket
                 sslStream.Write(LINE);
                 sslStream.Write(LINE);
                 if (sendBody != null)
+                {
                     sslStream.Write(sendBody);
+                }
+
                 sslStream.Write(LINE);
             }
 
@@ -219,7 +220,10 @@ namespace HttpSocket
                 fs.Write(LINE, 0, LINE.Length);
                 fs.Write(LINE, 0, LINE.Length);
                 if (sendBody != null)
+                {
                     fs.Write(sendBody, 0, sendBody.Length);
+                }
+
                 fs.Write(LINE, 0, LINE.Length);
                 fs.Close();
             }
@@ -229,7 +233,10 @@ namespace HttpSocket
             stream.Write(LINE, 0, LINE.Length);
 
             if (sendBody != null)
+            {
                 stream.Write(sendBody, 0, sendBody.Length);
+            }
+
             stream.Write(LINE, 0, LINE.Length);
 
 
@@ -256,7 +263,11 @@ namespace HttpSocket
             foreach (var o in cookie.Split(';'))
             {
                 var arr = o.Split('=');
-                if (arr.Length != 2) continue;
+                if (arr.Length != 2)
+                {
+                    continue;
+                }
+
                 if (arr[0].ToLower().Contains("domain"))
                 {
                     cook.Domain = arr[1].Trim();
@@ -286,7 +297,9 @@ namespace HttpSocket
             }
 
             if (!string.IsNullOrEmpty(cook.Key))
+            {
                 LST_COOKIE[cook.Key] = cook;
+            }
         }
 
         private LxwResponse ReadResponse(Stream sm)
@@ -518,7 +531,9 @@ namespace HttpSocket
         LxwRequestHeader FormatHeader(string request, byte[] body = null, Dictionary<string, string> KEYS = null, string boundary = null)
         {
             if (request == null)
+            {
                 throw new ArgumentNullException("byte[] FormatHeader(string request), request is null");
+            }
 
             request = FormatKeys(request, KEYS);
 
@@ -530,20 +545,30 @@ namespace HttpSocket
             {
                 for (; start < bodys.Length; start++)
                 {
-                    if (bodys[start] != "") break;
+                    if (bodys[start] != "")
+                    {
+                        break;
+                    }
                 }
                 for (; end > start; end--)
                 {
-                    if (bodys[end] != "") break;
+                    if (bodys[end] != "")
+                    {
+                        break;
+                    }
                 }
 
                 for (; start <= end; start++)
                 {
                     if (bodys[start].StartsWith("Content-Length", StringComparison.OrdinalIgnoreCase))
+                    {
                         continue;
+                    }
 
                     if (bodys[start].StartsWith("Cookie:", StringComparison.OrdinalIgnoreCase))
+                    {
                         continue;
+                    }
 
                     //Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryuM55vqcAjmXSlVHa
                     if (bodys[start].ToLower().Contains("multipart/form-data"))
@@ -577,11 +602,15 @@ namespace HttpSocket
                 }
 
                 if (body != null)
+                {
                     list.Add("Content-Length: " + body.Length);
+                }
 
                 //if (string.IsNullOrEmpty(boundary))
                 if (LST_COOKIE.Count > 0)
+                {
                     list.Add("Cookie: " + CreateCookies());
+                }
 
 
 
@@ -615,7 +644,11 @@ namespace HttpSocket
 
         byte[] FormatBody(string body = null, Dictionary<string, string> KEYS = null)
         {
-            if (body == null) return null;
+            if (body == null)
+            {
+                return null;
+            }
+
             body = FormatKeys(body, KEYS);
 
             var bodys = Regex.Split(body, "\r\n");
@@ -625,11 +658,17 @@ namespace HttpSocket
             {
                 for (; start < bodys.Length; start++)
                 {
-                    if (bodys[start] != "") break;
+                    if (bodys[start] != "")
+                    {
+                        break;
+                    }
                 }
                 for (; end > start; end--)
                 {
-                    if (bodys[end] != "") break;
+                    if (bodys[end] != "")
+                    {
+                        break;
+                    }
                 }
 
                 for (; start <= end; start++)
@@ -652,11 +691,15 @@ namespace HttpSocket
             if (KEYS != null)
             {
                 foreach (string key in KEYS.Keys)
+                {
                     body = body.Replace("{" + key.ToUpper() + "}", KEYS[key]);
+                }
             }
 
             foreach (string key in DI_KEYS.Keys)
+            {
                 body = body.Replace("{" + key.ToUpper() + "}", DI_KEYS[key]);
+            }
 
             foreach (var cookies in LST_COOKIE.Values)
             {

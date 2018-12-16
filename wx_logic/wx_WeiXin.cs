@@ -57,7 +57,11 @@ namespace wx_logic
             }
             catch (Exception error)
             {
-                if (throwE) throw error;
+                if (throwE)
+                {
+                    throw error;
+                }
+
                 return iDefault;
             }
         }

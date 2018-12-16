@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -30,7 +28,10 @@ namespace HttpSocket
                     {
                         var temp = ContentType.Split(';')[1].Trim();
                         if (temp.ToLower().Contains("Charset="))
+                        {
                             Charset = temp.Split('=')[0];
+                        }
+
                         ContentType = ContentType.Split(';')[0].Trim();
                     }
                     continue;
@@ -39,8 +40,8 @@ namespace HttpSocket
                 //Set-Cookie: wxsid=; Domain=wx.qq.com; Path=/; Expires=Thu, 01-Jan-1970 00:00:30 GMT
                 if (key.StartsWith("Set-Cookie:", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (CookieMethod != null)
-                        CookieMethod(key.Substring("Set-Cookie:".Length).Trim());
+                    CookieMethod?.Invoke(key.Substring("Set-Cookie:".Length).Trim());
+
                     continue;
                 }
 
@@ -56,17 +57,14 @@ namespace HttpSocket
 
                 if (key.StartsWith("Content-Length:", StringComparison.OrdinalIgnoreCase))
                 {
-                    ContentLength = int.Parse(
-                        key.Substring("Content-Length:".Length).Trim()
-                        );
+                    ContentLength = int.Parse(key.Substring("Content-Length:".Length).Trim());
                     continue;
                 }
 
 
                 if (key.StartsWith("TRANSFER-ENCODING:", StringComparison.OrdinalIgnoreCase))
                 {
-                    TransferEncoding =
-                        key.Substring("TRANSFER-ENCODING:".Length).ToLower().Contains("chunked");
+                    TransferEncoding = key.Substring("TRANSFER-ENCODING:".Length).ToLower().Contains("chunked");
 
                     continue;
                 }
@@ -82,11 +80,10 @@ namespace HttpSocket
                         {
                             AttachmentFilername = HttpUtility.UrlDecode(AttachmentFilername, Encoding.UTF8);
                         }
-                        catch { }                        
+                        catch { }
                     }
                     continue;
                 }
-
             }
         }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
@@ -23,7 +22,6 @@ namespace WeiXinZhuaFaWang.lib
 
         //暂未将回应HTTP协议头转换为HttpHeader类型
         public string Header { get; private set; }
-
         public byte[] Body { get; private set; }
     }
 
@@ -81,8 +79,8 @@ namespace WeiXinZhuaFaWang.lib
             {
                 if (client.Connected)
                 {
-                    SslStream sslStream = new SslStream(client.GetStream(), true
-                        , new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => sslPolicyErrors == SslPolicyErrors.None), null)
+                    SslStream sslStream = new SslStream(client.GetStream(), true,
+                        new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => sslPolicyErrors == SslPolicyErrors.None), null)
                     {
                         ReadTimeout = TimeOut * 1000,
                         WriteTimeout = TimeOut * 1000
@@ -130,7 +128,7 @@ namespace WeiXinZhuaFaWang.lib
         {
             HttpResponse response = null;
             CancellationTokenSource cancelSource = new CancellationTokenSource();
-            Task<string> myTask = Task.Factory.StartNew<string>(new Func<object, string>(ReadHeaderProcess), new TaskArguments(cancelSource, sm), cancelSource.Token);
+            Task<string> myTask = Task.Factory.StartNew(new Func<object, string>(ReadHeaderProcess), new TaskArguments(cancelSource, sm), cancelSource.Token);
             if (myTask.Wait(3 * 1000)) //尝试3秒时间读取协议头
             {
                 string header = myTask.Result;
@@ -266,16 +264,24 @@ namespace WeiXinZhuaFaWang.lib
 
                 header = header.Replace("{filename}", strFileName);
                 if (strFileName.EndsWith("mp3", StringComparison.OrdinalIgnoreCase))
+                {
                     header = header.Replace("{filetype}", "audio/mp3");
+                }
 
                 if (strFileName.EndsWith("gif", StringComparison.OrdinalIgnoreCase))
+                {
                     header = header.Replace("{filetype}", "image/gif");
+                }
 
                 if (strFileName.EndsWith("png", StringComparison.OrdinalIgnoreCase))
+                {
                     header = header.Replace("{filetype}", "image/png");
+                }
 
                 if (strFileName.EndsWith("jpg", StringComparison.OrdinalIgnoreCase))
+                {
                     header = header.Replace("{filetype}", "image/jpg");
+                }
             }
 
             SendHeaderInfo send = new SendHeaderInfo();
@@ -305,7 +311,9 @@ namespace WeiXinZhuaFaWang.lib
                     {
                         var byt = temp;
                         foreach (var b in byt)
+                        {
                             body.Add(b);
+                        }
 
                         continue;
                     }
@@ -313,10 +321,16 @@ namespace WeiXinZhuaFaWang.lib
 
                 {
                     var line = "";
-                    if (body.Count > 0) line = "\r\n";
+                    if (body.Count > 0)
+                    {
+                        line = "\r\n";
+                    }
+
                     var byt = Encoding.UTF8.GetBytes(line + headers[i]);
                     foreach (var b in byt)
+                    {
                         body.Add(b);
+                    }
 
                     sbody.Add(headers[i]);
                     continue;
