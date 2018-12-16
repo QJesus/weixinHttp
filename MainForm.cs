@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -154,21 +155,22 @@ namespace demo_win_httpsocket
         //}
         private void btnSendFile_Click(object sender, EventArgs e)
         {
-            object user = lstBoxUser.SelectedItem;
-            if (user == null)
+            if (lstBoxUser.SelectedItems.Count <= 0)
             {
-                MessageBox.Show("请选择用户！");
+                MessageBox.Show("请选择用户！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            string userid = user.ToString().Substring(user.ToString().LastIndexOf('>') + 1);
-
-
-
             var openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                _11_SENDFILE(userid, openFileDialog.FileName);
+                Random r = new Random();
+                foreach (var user in lstBoxUser.SelectedItems.Cast<MemberItem>())
+                {
+                    string userid = user.ToString().Substring(user.ToString().LastIndexOf('>') + 1);
+                    _11_SENDFILE(userid, openFileDialog.FileName);
+                    Thread.Sleep(r.Next(512, 512 * 3));
+                }
             }
 
             //var openFileDialog = new OpenFileDialog();
@@ -218,7 +220,7 @@ namespace demo_win_httpsocket
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            if (!(lstBoxUser.SelectedItem is MemberItem user))
+            if (lstBoxUser.SelectedItems.Count <= 0)
             {
                 MessageBox.Show("请选择用户！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -231,9 +233,14 @@ namespace demo_win_httpsocket
                 return;
             }
 
-            txtBoxMessage.Text = "";
-            //发送消息
-            _10_WEBWXSENDMSG(user.UserName, UserName, text);
+            txtBoxMessage.Clear();
+            Random r = new Random();
+            foreach (var user in lstBoxUser.SelectedItems.Cast<MemberItem>())
+            {
+                //发送消息
+                _10_WEBWXSENDMSG(user.UserName, UserName, text);
+                Thread.Sleep(r.Next(512, 512 * 3));
+            }
         }
 
         private void btnGetUserList_Click(object sender, EventArgs e)
