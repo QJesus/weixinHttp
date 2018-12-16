@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace HttpSocket
@@ -12,7 +11,7 @@ namespace HttpSocket
         {
             Encoding = encoding;
             //uM55vqcAjmXSlVHa
-            Boundary = "----WebKitFormBoundaryLXW"+DateTime.Now.ToString("MMddHHmmssfff");
+            Boundary = "----WebKitFormBoundaryLXW" + DateTime.Now.ToString("MMddHHmmssfff");
 
             CreateBody(filename, KEYS);
         }
@@ -24,23 +23,24 @@ namespace HttpSocket
         /// <param name="KEYS"></param>
         private void CreateBody(string filename, Dictionary<string, string> KEYS)
         {
-            KEYS.Keys.Foreach(o => {
+            foreach (var o in KEYS.Keys)
+            {
                 AddDisposition(o, KEYS[o]);
-            });
+            }
 
             var name = Path.GetFileName(filename);
             //插入body
-            AddString("--"+Boundary);
+            AddString("--" + Boundary);
             AddString(LINE);
             AddString("Content-Disposition: form-data; name=\"filename\"; filename=\"" + name + "\"");
             AddString(LINE);
             AddString("Content-Type: " + MimeMapping.GetMimeMapping(Path.GetExtension(filename)));
             AddString(LINE);
             AddString(LINE);
-            var temp = File.ReadAllBytes(filename);
-            temp.Foreach(o => {
+            foreach (var o in File.ReadAllBytes(filename))
+            {
                 body.Add(o);
-            });
+            }
             AddString(LINE);
             AddString("--" + Boundary + "--");
             //如果这里差一个，就发送不出去
@@ -49,9 +49,9 @@ namespace HttpSocket
 
         void AddDisposition(string key, string value)
         {
-            AddString("--"+Boundary);
+            AddString("--" + Boundary);
             AddString(LINE);
-            AddString("Content-Disposition: form-data; name=\""+key+"\"");
+            AddString("Content-Disposition: form-data; name=\"" + key + "\"");
             AddString(LINE);
             AddString(LINE);
             AddString(value);
@@ -62,20 +62,14 @@ namespace HttpSocket
 
         void AddString(string data)
         {
-            var byts = Encoding.GetBytes(data);
-            byts.Foreach(o => {
+            foreach (var o in Encoding.GetBytes(data))
+            {
                 body.Add(o);
-            });
+            }
         }
 
         List<byte> body = new List<byte>();
-        public byte[] Body
-        {
-            get
-            {
-                return body.ToArray();
-            }
-        }
+        public byte[] Body => body.ToArray();
 
         public Encoding Encoding { get; set; }
 

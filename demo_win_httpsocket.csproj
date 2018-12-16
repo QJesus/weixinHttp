@@ -68,7 +68,6 @@
   <ItemGroup>
     <Compile Include="lib\ArraySegmentList.cs" />
     <Compile Include="lib\DelegateFun.cs" />
-    <Compile Include="lib\ExMethod.cs" />
     <Compile Include="lib\HttpCore.cs" />
     <Compile Include="lib\LxwCookie.cs" />
     <Compile Include="lib\lxwHttp.cs" />

@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
@@ -255,39 +253,37 @@ namespace HttpSocket
         {
             //Set-Cookie: wxsid=; Domain=wx.qq.com; Path=/; Expires=Thu, 01-Jan-1970 00:00:30 GMT
             LxwCookie cook = new LxwCookie();
-            cookie.Split(';').Foreach((o) =>
+            foreach (var o in cookie.Split(';'))
             {
                 var arr = o.Split('=');
-                if (arr.Length != 2) return;
+                if (arr.Length != 2) continue;
                 if (arr[0].ToLower().Contains("domain"))
                 {
                     cook.Domain = arr[1].Trim();
-                    return;
+                    continue;
                 }
 
 
                 if (arr[0].ToLower().Contains("path"))
                 {
                     cook.Path = arr[1].Trim();
-                    return;
+                    continue;
                 }
 
 
                 if (arr[0].ToLower().Contains("expires"))
                 {
                     cook.Expires = arr[1].Trim();
-                    return;
+                    continue;
                 }
 
+                if (arr[0].Trim() != "")
                 {
-                    if (arr[0].Trim() != "")
-                    {
-                        cook.Key = arr[0].Trim();
-                        cook.Value = arr[1].Trim();
-                        return;
-                    }
+                    cook.Key = arr[0].Trim();
+                    cook.Value = arr[1].Trim();
+                    continue;
                 }
-            });
+            }
 
             if (!string.IsNullOrEmpty(cook.Key))
                 LST_COOKIE[cook.Key] = cook;
@@ -607,12 +603,13 @@ namespace HttpSocket
         string CreateCookies()
         {
             List<string> lst = new List<string>();
-            LST_COOKIE.Foreach(o =>
+            foreach (var o in LST_COOKIE)
             {
                 if (o.Key != "")
+                {
                     lst.Add(o.Value.ToString());
-            });
-
+                }
+            }
             return string.Join(";", lst.ToArray());
         }
 
