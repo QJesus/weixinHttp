@@ -91,6 +91,7 @@
             this.lstBoxUser.Margin = new System.Windows.Forms.Padding(6);
             this.lstBoxUser.Name = "lstBoxUser";
             this.lstBoxUser.ScrollAlwaysVisible = true;
+            this.lstBoxUser.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.lstBoxUser.Size = new System.Drawing.Size(599, 629);
             this.lstBoxUser.TabIndex = 8;
             this.lstBoxUser.Visible = false;
