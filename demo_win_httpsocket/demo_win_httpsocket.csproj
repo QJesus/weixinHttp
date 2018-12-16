@@ -40,9 +40,6 @@
     <ApplicationIcon>WeChat.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluorineFx">
-      <HintPath>..\..\WeiXinZhuaFaWang2\WeiXinZhuFaWang2\bin\Debug\FluorineFx.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -66,83 +63,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="lib\ArraySegmentList.cs" />
-    <Compile Include="lib\DelegateFun.cs" />
-    <Compile Include="lib\HttpCore.cs" />
-    <Compile Include="lib\LxwCookie.cs" />
-    <Compile Include="lib\lxwHttp.cs" />
-    <Compile Include="lib\LxwRequestHeader.cs" />
-    <Compile Include="lib\LxwResponse.cs" />
-    <Compile Include="lib\LxwResponseHeader.cs" />
-    <Compile Include="lib\LxwUploadBody.cs" />
-    <Compile Include="lib\MimeMapping.cs" />
-    <Compile Include="lib\WeiXinTicket.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="lib\LxwHttpSocket.cs" />
-    <Compile Include="MainForm_16_WEBWXSENDAPPMSG.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_15_WEBWXSENDEMOTICON.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_10_WEBWXSENDMSG.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_12_WEBWXGETMSGIMG.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_14_WEBWXGETMEDIA.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_13_WEBWXGETVOICE.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_11_SENDFILE.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_17_WEBWXUPLOADMEDIA.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_6_WEBWXGETCONTACT.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_5_WEBWXINIT.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_4_REDIRECT_URL.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_3_LOGIN.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_2_QRCODE.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_7_SYNCCHECK.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_8_WEBWXSYNC.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_9_DoMessage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_FUN.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_WeiXin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_CONST.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm_1_JSLOGIN.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -174,8 +99,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\WeChat.ico" />
-    <Content Include="lib\FluorineFx.dll" />
     <Content Include="WeChat.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\wx_logic\wx_logic.csproj">
+      <Project>{4905F1DA-D36A-4CE7-B04D-1D2299A6747F}</Project>
+      <Name>wx_logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
