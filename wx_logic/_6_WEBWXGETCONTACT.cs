@@ -6,9 +6,9 @@ namespace wx_logic
 {
     public partial class WXLogic
     {
-        MemberItem[] _6_WEBWXGETCONTACT()
+        void _6_WEBWXGETCONTACT()
         {
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
             var response = WEB.SendRequest(@"GET https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact?lang=zh_CN&pass_ticket={PASS_TICKET}&r={TIME}&seq=0&skey={SKEY} HTTP/1.1
 Host: wx.qq.com
 Connection: keep-alive
@@ -21,10 +21,10 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
 
 ");
-            return _6_Response(response);
+            _6_Response(response);
         }
 
-        MemberItem[] _6_Response(LxwResponse o)
+        void _6_Response(LxwResponse o)
         {
             var ro = JsonConvert.DeserializeObject<WEBWXGETCONTACTRootObject>(o.Value);
             foreach (var item in ro.MemberList.OrderBy(m => m.VerifyFlag).OrderByDescending(m => m.ContactFlag))
@@ -39,7 +39,6 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
                     find.User = item;
                 }
             }
-            return USER_DI.Select(u => u.User).ToArray();
         }
     }
 
@@ -90,9 +89,6 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
         public string KeyWord { get; set; }
         public string EncryChatRoomId { get; set; }
         public long? IsOwner { get; set; }
-
         public override string ToString() => string.IsNullOrEmpty(RemarkName) ? NickName : $"{RemarkName}({NickName})";
     }
-
 }
-

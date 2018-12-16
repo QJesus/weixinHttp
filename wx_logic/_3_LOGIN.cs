@@ -1,5 +1,4 @@
 using HttpSocket;
-using System;
 
 namespace wx_logic
 {
@@ -15,20 +14,11 @@ namespace wx_logic
         /// </summary>
         int LOGIN_TRY_TIMES = 50;
 
-        void _3_LOGIN(Action<string> loginAction)
+        bool _3_LOGIN()
         {
-            //第三步，等待扫描
-            var tmr = new System.Timers.Timer { Interval = SAOMIAO_SLEEPTIME, };
-            int count = 0;
-            tmr.Elapsed += (s, e) =>
+            for (int i = 0; i < LOGIN_TRY_TIMES; i++)
             {
-                if (count++ > LOGIN_TRY_TIMES)
-                {
-                    tmr.Stop();
-                    loginAction?.Invoke($"错误的次数超过了:{LOGIN_TRY_TIMES}次");
-                }
-
-                _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name);
+                _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
                 var response = WEB.SendRequest(@"GET https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid={UUID}&tip=0&r=-784071163&_={TIME} HTTP/1.1
 Host: login.weixin.qq.com
 Connection: keep-alive
@@ -42,11 +32,11 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
                 if (_3_Response(response))
                 {
-                    tmr.Stop();
-                    loginAction?.Invoke(null);
+                    return true;
                 }
-            };
-            tmr.Start();
+                System.Threading.Thread.Sleep(SAOMIAO_SLEEPTIME);
+            }
+            return false;
         }
 
         bool _3_Response(LxwResponse o)

@@ -23,7 +23,7 @@ namespace wx_logic
                 ["MEDIAID"] = MediaID
             };
 
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendRequest(@"POST https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxsendemoticon?fun=sys&lang=zh_CN&pass_ticket={PASS_TICKET} HTTP/1.1
 Host: wx.qq.com

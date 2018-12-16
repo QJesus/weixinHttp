@@ -10,7 +10,7 @@ namespace wx_logic
     {
         void _5_WEBWXINIT()
         {
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendRequest(@"POST https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=-784058664&lang=zh_CN&pass_ticket={PASS_TICKET} HTTP/1.1
 Host: wx.qq.com

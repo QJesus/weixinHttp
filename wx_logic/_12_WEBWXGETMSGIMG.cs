@@ -16,7 +16,7 @@ namespace wx_logic
         void _12_WEBWXGETMSGIMG(string MsgID, bool slave = false)
         {
             //&type=slave
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             Dictionary<string, string> KEYS = new Dictionary<string, string>();
             KEYS["MSGID"] = MsgID;

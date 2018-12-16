@@ -4,48 +4,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace wx_logic
 {
     public partial class WXLogic
     {
-        void _ShowMessage(string msg, MessageObject obj = null)
+        private void _ShowMessage(string msg, MessageObject obj)
         {
-            //DelegateFun.ExeControlFun(lstMessage, new DelegateFun.delegateExeControlFun(delegate
-            //{
-            //    // 全部清除
-            //    if (lstMessage.Items.Count > 3000)
-            //    {
-            //        lstMessage.Items.Clear();
-            //    }
-
-            //    string row = null;
-            //    if (obj == null)
-            //    {
-            //        row = $"noJson\t{msg}";
-            //    }
-            //    else
-            //    {
-            //        row = $"{GetUserFromDI(obj.FromUserName)}>{GetUserFromDI(obj.ToUserName)}\t{msg}";
-            //        if (obj.MsgType != 51)  // 51 没有内容，可能是心跳包
-            //        {
-            //            Task.Factory.StartNew((json) =>
-            //            {
-            //                var log = JsonConvert.DeserializeObject<MessageObject>(json as string);
-            //                log.FromUserName = GetUserFromDI(log.FromUserName)?.ToString() ?? log.FromUserName;
-            //                log.ToUserName = GetUserFromDI(log.ToUserName)?.ToString() ?? log.ToUserName;
-            //                System.IO.File.AppendAllText("message.json", JsonConvert.SerializeObject(log, new JsonSerializerSettings
-            //                {
-            //                    DefaultValueHandling = DefaultValueHandling.Ignore,
-            //                    Formatting = Newtonsoft.Json.Formatting.Indented,
-            //                    ContractResolver = new EmptyToNullStringResolver(),
-            //                }), System.Text.Encoding.UTF8);
-            //            }, JsonConvert.SerializeObject(obj));
-            //        }
-            //    }
-            //    lstMessage.Items.Insert(0, $"{DateTime.Now:MM-dd HH:mm:ss}\t{row}");
-            //    lstMessage.SelectedIndex = 0;
-            //}));
+            string row = null;
+            if (obj == null)
+            {
+                row = $"noJson\t{msg}";
+            }
+            else
+            {
+                row = $"{GetUserFromDI(obj.FromUserName)}>{GetUserFromDI(obj.ToUserName)}\t{msg}";
+                if (obj.MsgType != 51)  // 51 没有内容，可能是心跳包
+                {
+                    Task.Factory.StartNew((json) =>
+                    {
+                        var log = JsonConvert.DeserializeObject<MessageObject>(json as string);
+                        log.FromUserName = GetUserFromDI(log.FromUserName)?.ToString() ?? log.FromUserName;
+                        log.ToUserName = GetUserFromDI(log.ToUserName)?.ToString() ?? log.ToUserName;
+                        System.IO.File.AppendAllText("message.json", JsonConvert.SerializeObject(log, new JsonSerializerSettings
+                        {
+                            DefaultValueHandling = DefaultValueHandling.Ignore,
+                            Formatting = Formatting.Indented,
+                            ContractResolver = new EmptyToNullStringResolver(),
+                        }), System.Text.Encoding.UTF8);
+                    }, JsonConvert.SerializeObject(obj));
+                }
+            }
         }
 
         ///// <summary>

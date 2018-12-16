@@ -14,7 +14,7 @@ namespace wx_logic
         void _14_WEBWXGETMEDIA(string MsgID, MessageObject json)
         {
             //&type=slave
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             Dictionary<string, string> KEYS = new Dictionary<string, string>
             {
@@ -50,7 +50,7 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             var ext = MimeMapping.GetExtByMime(type);
 
             //Ð´ÈëÎÄ¼þ
-            using (FileStream fs = new FileStream(Path.Combine(folders, DateTime.Now.ToString("yyyyMMddHHmmssfff") + generateDeviceId() + o.ResponseHeader.AttachmentFilername), FileMode.OpenOrCreate))
+            using (var fs = new FileStream(Path.Combine(folders, DateTime.Now.ToString("yyyyMMddHHmmssfff") + generateDeviceId() + o.ResponseHeader.AttachmentFilername), FileMode.OpenOrCreate))
             {
                 fs.Write(o.Body, 0, o.Body.Length);
             }

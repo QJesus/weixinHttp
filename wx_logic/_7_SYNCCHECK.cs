@@ -8,7 +8,7 @@ namespace wx_logic
         bool bFirst = true;
         void _7_SYNCCHECK()
         {
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             bool bRun = true;
             ThreadPool.QueueUserWorkItem(new WaitCallback(delegate
@@ -42,13 +42,13 @@ Cookie: ts_uid=7490200750; o_cookie=7103505; pgv_pvid=4255253068; pt_clientip=4c
             string value = o.Value;
             if (value.Contains("1101"))
             {
-                _ShowMessage("µÇÂ¼Ê§°Ü£¬Çë¹Ø±ÕÖØÐÂ³¢ÊÔ:" + WEB[SYNCKEY]);
+                _ShowMessage("µÇÂ¼Ê§°Ü£¬Çë¹Ø±ÕÖØÐÂ³¢ÊÔ:" + WEB[SYNCKEY], null);
                 return false;
             }
 
             if (bFirst)
             {
-                _ShowMessage("µÇÂ¼³É¹¦!");
+                _ShowMessage("µÇÂ¼³É¹¦!", null);
                 bFirst = false;
             }
             //1=>window.synccheck={retcode:"0",selector:"2"}

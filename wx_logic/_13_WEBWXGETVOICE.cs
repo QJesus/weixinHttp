@@ -14,7 +14,7 @@ namespace wx_logic
         void _13_WEBWXGETVOICE(string MsgID)
         {
             //&type=slave
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             Dictionary<string, string> KEYS = new Dictionary<string, string>();
             KEYS["MSGID"] = MsgID;
