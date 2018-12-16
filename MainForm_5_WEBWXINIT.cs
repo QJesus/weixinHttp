@@ -32,21 +32,21 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
         void _5_Response(LxwResponse o)
         {
-            var intObj = JsonConvert.DeserializeObject<WEBWXINITRootObject>(o.Value);
-            if (intObj.BaseResponse.Ret != 0)
+            var login = JsonConvert.DeserializeObject<WEBWXINITRootObject>(o.Value);
+            if (login.BaseResponse.Ret != 0)
             {
                 throw new Exception("没有返回正确的数据，webwxinit错误!");
             }
 
             // USER_INFO
-            UserName = intObj.User.UserName;
-            NickName = intObj.User.NickName;
-            Text = NickName + $">>>微信模拟客户端 V1.0";
+            UserName = login.User.UserName;
+            NickName = login.User.NickName;
+            Text = NickName + $">>>微信客户端 V2.0";
 
-            WEB.Add(SYNCKEY, string.Join("|", intObj.SyncKey.List.Select(kv => $"{kv.Key}_{kv.Val}")));
-            WEB.Add(SYNCKEY_LONG, JavaScriptConvert.SerializeObject(intObj.SyncKey));
+            WEB.Add(SYNCKEY, string.Join("|", login.SyncKey.List.Select(kv => $"{kv.Key}_{kv.Val}")));
+            WEB.Add(SYNCKEY_LONG, JavaScriptConvert.SerializeObject(login.SyncKey));
 
-            foreach (var item in intObj.ContactList.Where(c => string.IsNullOrEmpty(c.KeyWord)).OrderByDescending(c => c.ContactFlag))
+            foreach (var item in login.ContactList.Where(c => string.IsNullOrEmpty(c.KeyWord)).OrderByDescending(c => c.ContactFlag))
             {
                 USER_DI.Add((item.UserName, item));
             }

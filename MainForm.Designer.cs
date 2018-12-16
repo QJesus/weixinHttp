@@ -124,6 +124,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(2248, 1063);
             this.Controls.Add(this.picErWeiMa);
             this.Controls.Add(this.txtBoxMessage);
@@ -132,11 +133,11 @@
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.lstBoxUser);
             this.Controls.Add(this.lstMessage);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "微信客户端";
             ((System.ComponentModel.ISupportInitialize)(this.picErWeiMa)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
