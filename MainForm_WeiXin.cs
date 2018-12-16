@@ -68,7 +68,7 @@ namespace demo_win_httpsocket
             }
         }
 
-        MemberItem GetDIName(string skey) => USER_DI.ContainsKey(skey) ? USER_DI[skey] : new MemberItem { UserName = skey, };
+        MemberItem GetDIName(string skey) => USER_DI.FirstOrDefault(f => f.UserName == skey).User ?? new MemberItem { UserName = skey, };
 
         String generateDeviceId()
         {

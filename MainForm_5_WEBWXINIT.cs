@@ -41,14 +41,15 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             // USER_INFO
             UserName = intObj.User.UserName;
             NickName = intObj.User.NickName;
-            this.Text = NickName + $">>>微信模拟客户端 V1.0";
+            Text = NickName + $">>>微信模拟客户端 V1.0";
 
-            var tmp = string.Join("|", intObj.SyncKey.List.Select(kv => $"{kv.Key}_{kv.Val}"));
-            WEB.Add(SYNCKEY, tmp);
-            var json = JavaScriptConvert.SerializeObject(intObj.SyncKey);
-            WEB.Add(SYNCKEY_LONG, json);
+            WEB.Add(SYNCKEY, string.Join("|", intObj.SyncKey.List.Select(kv => $"{kv.Key}_{kv.Val}")));
+            WEB.Add(SYNCKEY_LONG, JavaScriptConvert.SerializeObject(intObj.SyncKey));
 
-            RecentUsers = intObj.ContactList.ToList();
+            foreach (var item in intObj.ContactList.Where(c => string.IsNullOrEmpty(c.KeyWord)).OrderByDescending(c => c.ContactFlag))
+            {
+                USER_DI.Add((item.UserName, item));
+            }
         }
     }
 

@@ -27,8 +27,7 @@ namespace demo_win_httpsocket
         public string UserName = "";
         public string NickName = "";
 
-        Dictionary<string, MemberItem> USER_DI = new Dictionary<string, MemberItem>();
-        List<MemberItem> RecentUsers = new List<MemberItem>();
+        List<(string UserName, MemberItem User)> USER_DI = new List<(string, MemberItem)>();
 
 
         //NUMBER
