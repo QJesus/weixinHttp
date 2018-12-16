@@ -39,10 +39,6 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
                     find.User = item;
                 }
             }
-            foreach (var item in USER_DI.Select(u => u.User))
-            {
-                lstBoxUser.Items.Add(item);
-            }
         }
     }
 

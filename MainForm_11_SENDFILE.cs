@@ -5,7 +5,7 @@ namespace demo_win_httpsocket
 {
     partial class MainForm
     {
-        void _11_SENDFILE(string userid, string filename)
+        void _11_SENDFILE(string userId, string filename)
         {
             _ShowMessage(System.Reflection.MethodInfo.GetCurrentMethod().Name);
 
@@ -19,7 +19,7 @@ namespace demo_win_httpsocket
             if (type.StartsWith("image/"))
             {
                 //发送图片
-                _15_WEBWXSENDEMOTICON(userid, UserName, MediaId, 47);
+                _15_WEBWXSENDEMOTICON(userId, UserName, MediaId, 47);
             }
             else
             {
@@ -29,7 +29,7 @@ namespace demo_win_httpsocket
                 Message = Message.Replace("{filelength}", "" + File.ReadAllBytes(filename).Length);
                 Message = Message.Replace("{filetype}", Path.GetExtension(filename).TrimStart(new char[] { '.' }));
 
-                _16_WEBWXSENDAPPMSG(userid, UserName, Message, 6);
+                _16_WEBWXSENDAPPMSG(userId, UserName, Message, 6);
             }
         }
     }

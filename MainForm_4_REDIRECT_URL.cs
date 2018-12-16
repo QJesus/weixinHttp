@@ -1,5 +1,7 @@
-﻿using HttpSocket;
+﻿using FluorineFx.Json;
+using HttpSocket;
 using System;
+using System.Xml;
 
 namespace demo_win_httpsocket
 {
@@ -39,6 +41,21 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             WEB.Add(WXSID, weixin.wxsid);
             WEB.Add(WXUIN, weixin.wxuin);
             WEB.Add(PASS_TICKET, weixin.pass_ticket);
+        }
+
+        T Xml2Json<T>(string xml, string root = "error")
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml(xml);
+
+            var obj = new JavaScriptObject();
+            foreach (XmlNode node in doc.SelectSingleNode(root).ChildNodes)
+            {
+                //获取内容
+                obj[node.Name] = node.InnerText;
+            }
+
+            return JavaScriptConvert.DeserializeObject<T>(JavaScriptConvert.SerializeObject(obj));
         }
     }
 }

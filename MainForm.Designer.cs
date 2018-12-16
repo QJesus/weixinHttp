@@ -30,7 +30,6 @@
         {
             this.picErWeiMa = new System.Windows.Forms.PictureBox();
             this.txtBoxMessage = new System.Windows.Forms.TextBox();
-            this.btnGetUserList = new System.Windows.Forms.Button();
             this.btnSendFile = new System.Windows.Forms.Button();
             this.btnSend = new System.Windows.Forms.Button();
             this.lstBoxUser = new System.Windows.Forms.ListBox();
@@ -58,18 +57,6 @@
             this.txtBoxMessage.TabIndex = 12;
             this.txtBoxMessage.Visible = false;
             this.txtBoxMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtBoxMessage_KeyUp);
-            // 
-            // btnGetUserList
-            // 
-            this.btnGetUserList.Location = new System.Drawing.Point(682, 513);
-            this.btnGetUserList.Margin = new System.Windows.Forms.Padding(6);
-            this.btnGetUserList.Name = "btnGetUserList";
-            this.btnGetUserList.Size = new System.Drawing.Size(248, 48);
-            this.btnGetUserList.TabIndex = 9;
-            this.btnGetUserList.Text = "获取最新用户列表";
-            this.btnGetUserList.UseVisualStyleBackColor = true;
-            this.btnGetUserList.Visible = false;
-            this.btnGetUserList.Click += new System.EventHandler(this.btnGetUserList_Click);
             // 
             // btnSendFile
             // 
@@ -128,7 +115,6 @@
             this.ClientSize = new System.Drawing.Size(2248, 1063);
             this.Controls.Add(this.picErWeiMa);
             this.Controls.Add(this.txtBoxMessage);
-            this.Controls.Add(this.btnGetUserList);
             this.Controls.Add(this.btnSendFile);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.lstBoxUser);
@@ -148,7 +134,6 @@
 
         private System.Windows.Forms.PictureBox picErWeiMa;
         private System.Windows.Forms.TextBox txtBoxMessage;
-        private System.Windows.Forms.Button btnGetUserList;
         private System.Windows.Forms.Button btnSendFile;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.ListBox lstBoxUser;

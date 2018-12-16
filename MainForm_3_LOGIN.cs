@@ -18,14 +18,11 @@ namespace demo_win_httpsocket
         void _3_LOGIN()
         {
             //第三步，等待扫描
-            var loginTimer = new System.Windows.Forms.Timer
-            {
-                Interval = SAOMIAO_SLEEPTIME
-            };
+            var loginTimer = new System.Timers.Timer { Interval = SAOMIAO_SLEEPTIME };
             loginTimer.Stop();
 
             int count = 0;
-            loginTimer.Tick += new EventHandler(delegate
+            loginTimer.Elapsed += (s, e) =>
             {
                 if (count++ > LOGIN_TRY_TIMES)
                 {
@@ -47,11 +44,11 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
                 _3_Response(response, loginTimer);
 
-            });
+            };
             loginTimer.Start();
         }
 
-        void _3_Response(LxwResponse o, System.Windows.Forms.Timer loginTimer)
+        void _3_Response(LxwResponse o, System.Timers.Timer loginTimer)
         {
             var result = o.Value;
             if (result.IndexOf("window.redirect_uri=") != -1)
@@ -65,8 +62,6 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
                 {
                     WEB.Add(NUMBER, "2");
                 }
-                //隐藏
-                this.picErWeiMa.Visible = false;
                 //执行第四步
                 OpenMain();
             }
