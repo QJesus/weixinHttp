@@ -1,5 +1,6 @@
 ﻿using FluorineFx.Json;
 using System;
+using Newtonsoft.Json;
 
 namespace demo_win_httpsocket
 {
@@ -9,54 +10,41 @@ namespace demo_win_httpsocket
         /// 处理消息
         /// </summary>
         /// <param name="msg"></param>
-        /// <param name="json"></param>
+        /// <param name="message"></param>
         /// <param name="MsgId"></param>
-        void _9_DoMessage(string msg, JavaScriptObject json, string MsgId)
+        void _9_DoMessage(string msg, MessageObject message, string MsgId)
         {
-            var _FormUserName = json["FromUserName"] + "";
-            var _ToUserName = json["ToUserName"] + "";
+            var fromUserName = GetUserFromDI(message.FromUserName);
+            var toUserName = GetUserFromDI(message.ToUserName);
 
-            var FormUserName = GetDIName(_FormUserName);
-            var ToUserName = GetDIName(_ToUserName);
+            _ShowMessage($"[{message.MsgType}]{msg}", message);
 
-
-            var MsgType = json["MsgType"] + "";
-            _ShowMessage("[" + MsgType + "]" + msg, json);
-
-            //图片
-            if (MsgType == "3")
+            switch (message.MsgType)
             {
-                _12_WEBWXGETMSGIMG(json["MsgId"] + "");
-                return;
-            }
-
-            //文件
-            if (MsgType == "49")
-            {
-                _14_WEBWXGETMEDIA(json["MsgId"] + "", json);
-                return;
-            }
-
-            //语音
-            if (MsgType == "34")
-            {
-                _13_WEBWXGETVOICE(json["MsgId"] + "");
-                return;
+                // 图片
+                case 3: _12_WEBWXGETMSGIMG(message.MsgId); return;
+                // 语音
+                case 34: _13_WEBWXGETVOICE(message.MsgId); return;
+                // 文件
+                case 49: _14_WEBWXGETMEDIA(message.MsgId, message); return;
             }
 
 
             //处理消息反馈
-            if (msg.StartsWith("<msg><op id='1'>")) return;
+            if (msg.StartsWith("<msg><op id='1'>"))
+            {
+                return;
+            }
 
             //webwxvoipnotifymsg
             //处理广告图片
             if (msg.StartsWith("<msg><img length="))
             {
-                //if (USER_AD.ContainsKey(_FormUserName))
+                //if (USER_AD.ContainsKey(json.FromUserName))
                 //{
                 //    var MsgID = obj["MsgId"] + "";
-                //    SendMsg(_FormUserName, _ToUserName, "正在处理广告，请稍后...", false);
-                //    UploadWxImage(MsgID, _FormUserName, FormUserName, USER_AD[_FormUserName]);
+                //    SendMsg(json.FromUserName, json.ToUserName, "正在处理广告，请稍后...", false);
+                //    UploadWxImage(MsgID, json.FromUserName, FormUserName, USER_AD[json.FromUserName]);
                 //    Console.WriteLine("3=>" + MsgID);
                 //}
                 return;
@@ -88,8 +76,8 @@ namespace demo_win_httpsocket
                 }
 
 
-                //SendMsg(_FormUserName, _ToUserName, "正在转换文章，请稍后...", false);
-                //DownLoadPage(msg, _FormUserName, FormUserName, title, des, img, _ToUserName);
+                //SendMsg(json.FromUserName, json.ToUserName, "正在转换文章，请稍后...", false);
+                //DownLoadPage(msg, json.FromUserName, FormUserName, title, des, img, json.ToUserName);
 
                 return;
             }
@@ -100,24 +88,74 @@ namespace demo_win_httpsocket
                 return;
             }
 
-            if (_FormUserName == UserName)
+            if (message.FromUserName == UserName)
             {
-                Console.WriteLine("5=>" + _FormUserName + ">" + _ToUserName);
+                Console.WriteLine("5=>" + message.FromUserName + ">" + message.ToUserName);
                 return;
             }
 
-            if (_FormUserName.StartsWith("@@") || _ToUserName.StartsWith("@@"))
+            if (message.FromUserName.StartsWith("@@") || message.ToUserName.StartsWith("@@"))
             {
-                Console.WriteLine("6=>" + _FormUserName + ">" + _ToUserName);
-                return;
-            }
-
-            //微信团队不要发
-            if (FormUserName.RemarkName.Contains("微信团队"))
-            {
-                //Console.WriteLine("5=>" + _FormUserName + ">" + _ToUserName);
+                Console.WriteLine("6=>" + message.FromUserName + ">" + message.ToUserName);
                 return;
             }
         }
+    }
+
+
+    public class MessageObject
+    {
+        public string MsgId { get; set; }
+        public string FromUserName { get; set; }
+        public string ToUserName { get; set; }
+        public int MsgType { get; set; }
+        public string Content { get; set; }
+        public int Status { get; set; }
+        public int ImgStatus { get; set; }
+        public int CreateTime { get; set; }
+        public int VoiceLength { get; set; }
+        public int PlayLength { get; set; }
+        public string FileName { get; set; }
+        public string FileSize { get; set; }
+        public string MediaId { get; set; }
+        public string Url { get; set; }
+        public int AppMsgType { get; set; }
+        public int StatusNotifyCode { get; set; }
+        public string StatusNotifyUserName { get; set; }
+        public Recommendinfo RecommendInfo { get; set; }
+        public int ForwardFlag { get; set; }
+        public Appinfo AppInfo { get; set; }
+        public int HasProductId { get; set; }
+        public string Ticket { get; set; }
+        public int ImgHeight { get; set; }
+        public int ImgWidth { get; set; }
+        public int SubMsgType { get; set; }
+        public long NewMsgId { get; set; }
+        public string OriContent { get; set; }
+        public string EncryFileName { get; set; }
+    }
+
+    public class Recommendinfo
+    {
+        public string UserName { get; set; }
+        public string NickName { get; set; }
+        public int QQNum { get; set; }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public string Content { get; set; }
+        public string Signature { get; set; }
+        public string Alias { get; set; }
+        public int Scene { get; set; }
+        public int VerifyFlag { get; set; }
+        public int AttrStatus { get; set; }
+        public int Sex { get; set; }
+        public string Ticket { get; set; }
+        public int OpCode { get; set; }
+    }
+
+    public class Appinfo
+    {
+        public string AppID { get; set; }
+        public int Type { get; set; }
     }
 }

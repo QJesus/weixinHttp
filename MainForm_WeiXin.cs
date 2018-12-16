@@ -68,9 +68,9 @@ namespace demo_win_httpsocket
             }
         }
 
-        MemberItem GetDIName(string skey) => USER_DI.FirstOrDefault(f => f.UserName == skey).User ?? new MemberItem { UserName = skey, };
+        MemberItem GetUserFromDI(string skey) => USER_DI.FirstOrDefault(f => f.UserName == skey).User ?? new MemberItem { UserName = skey, };
 
-        String generateDeviceId()
+        string generateDeviceId()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("e");

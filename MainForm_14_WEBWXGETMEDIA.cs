@@ -12,15 +12,17 @@ namespace demo_win_httpsocket
         /// 获取其他文件
         /// </summary>
         /// <param name="MsgID"></param>
-        void _14_WEBWXGETMEDIA(string MsgID, JavaScriptObject json)
+        void _14_WEBWXGETMEDIA(string MsgID, MessageObject json)
         {
             //&type=slave
             _ShowMessage(System.Reflection.MethodInfo.GetCurrentMethod().Name);
 
-            Dictionary<string, string> KEYS = new Dictionary<string, string>();
-            KEYS["MEDIAID"] = json["MediaId"] + "";
-            KEYS["FILENAME"] = System.Web.HttpUtility.UrlEncode(json["FileName"] + "", WEB.Encoding);
-            KEYS["FROMUSER"] = json["FromUserName"] + "";
+            Dictionary<string, string> KEYS = new Dictionary<string, string>
+            {
+                ["MEDIAID"] = json.MediaId,
+                ["FILENAME"] = System.Web.HttpUtility.UrlEncode(json.FileName, WEB.Encoding),
+                ["FROMUSER"] = json.FromUserName
+            };
 
             var response = WEB.SendRequest(@"GET https://file{NUMBER}.wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetmedia?sender={FROMUSER}&mediaid={MEDIAID}&filename={FILENAME}&fromuser={WXUIN}&pass_ticket={PASS_TICKET}&webwx_data_ticket={WEBWX_DATA_TICKET} HTTP/1.1
 Host: file.wx.qq.com

@@ -231,10 +231,9 @@ namespace demo_win_httpsocket
                 return;
             }
 
+            txtBoxMessage.Text = "";
             //发送消息
             _10_WEBWXSENDMSG(user.UserName, UserName, text);
-
-            txtBoxMessage.Text = "";
         }
 
         private void btnGetUserList_Click(object sender, EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using FluorineFx.Json;
 using HttpSocket;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,27 +38,129 @@ Cookie: webwxuvid=bebe27f97a88e8ce573a38b4c48984e8f578650b8ba48b2bacce4ec572e41a
         {
             var value = o.Value;
             if (value.IndexOf("\"SyncKey\": ") == -1)
-                throw new Exception("SyncKey 没有捕获到");
-
-            var retJSON = JavaScriptConvert.DeserializeObject(value) as JavaScriptObject;
-
-            JavaScriptObject obj = retJSON["SyncKey"] as JavaScriptObject;
-            if (obj != null && obj.ContainsKey("Count"))
             {
-                WEB.Add(SYNCKEY_LONG, JavaScriptConvert.SerializeObject(retJSON["SyncKey"]));
+                throw new Exception("SyncKey 没有捕获到");
             }
 
-            JavaScriptArray arr = retJSON["AddMsgList"] as JavaScriptArray;
-            foreach (JavaScriptObject json in arr)
+            var root = JsonConvert.DeserializeObject<SyncRoot>(value);
+            if (root.SyncKey != null && root.SyncKey.Count != null)
             {
-                var content = json["Content"].ToString()
-                    .Replace("&gt;", ">")
-                    .Replace("&lt;", "<")
-                    .Replace("<br/>", "");
-
+                WEB.Add(SYNCKEY_LONG, JsonConvert.SerializeObject(root.SyncKey));
+            }
+            foreach (var item in root.AddMsgList)
+            {
+                var content = item.Content.Replace("&gt;", ">").Replace("&lt;", "<").Replace("<br/>", "");
                 //处理消息
-                _9_DoMessage(content, json, json["MsgId"] + "");
+                _9_DoMessage(content, item, item.MsgId);
             }
         }
+    }
+
+
+    public class SyncRoot
+    {
+        public Baseresponse BaseResponse { get; set; }
+        public int AddMsgCount { get; set; }
+        public MessageObject[] AddMsgList { get; set; }
+        public int ModContactCount { get; set; }
+        public Modcontactlist[] ModContactList { get; set; }
+        public int DelContactCount { get; set; }
+        public object[] DelContactList { get; set; }
+        public int ModChatRoomMemberCount { get; set; }
+        public object[] ModChatRoomMemberList { get; set; }
+        public Profile Profile { get; set; }
+        public int ContinueFlag { get; set; }
+        public Synckey SyncKey { get; set; }
+        public string SKey { get; set; }
+        public Synccheckkey SyncCheckKey { get; set; }
+    }
+
+    public class Profile
+    {
+        public int BitFlag { get; set; }
+        public Username UserName { get; set; }
+        public Nickname NickName { get; set; }
+        public int BindUin { get; set; }
+        public Bindemail BindEmail { get; set; }
+        public Bindmobile BindMobile { get; set; }
+        public int Status { get; set; }
+        public int Sex { get; set; }
+        public int PersonalCard { get; set; }
+        public string Alias { get; set; }
+        public int HeadImgUpdateFlag { get; set; }
+        public string HeadImgUrl { get; set; }
+        public string Signature { get; set; }
+    }
+
+    public class Username
+    {
+        public string Buff { get; set; }
+    }
+
+    public class Nickname
+    {
+        public string Buff { get; set; }
+    }
+
+    public class Bindemail
+    {
+        public string Buff { get; set; }
+    }
+
+    public class Bindmobile
+    {
+        public string Buff { get; set; }
+    }
+
+    public class Synccheckkey
+    {
+        public int Count { get; set; }
+        public List1[] List { get; set; }
+    }
+
+    public class List1
+    {
+        public int Key { get; set; }
+        public int Val { get; set; }
+    }
+
+    public class Modcontactlist
+    {
+        public string UserName { get; set; }
+        public string NickName { get; set; }
+        public int Sex { get; set; }
+        public int HeadImgUpdateFlag { get; set; }
+        public int ContactType { get; set; }
+        public string Alias { get; set; }
+        public string ChatRoomOwner { get; set; }
+        public string HeadImgUrl { get; set; }
+        public int ContactFlag { get; set; }
+        public int MemberCount { get; set; }
+        public Memberlist[] MemberList { get; set; }
+        public int HideInputBarFlag { get; set; }
+        public string Signature { get; set; }
+        public int VerifyFlag { get; set; }
+        public string RemarkName { get; set; }
+        public int Statues { get; set; }
+        public int AttrStatus { get; set; }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public int SnsFlag { get; set; }
+        public string KeyWord { get; set; }
+    }
+
+    public class Memberlist
+    {
+        public int Uin { get; set; }
+        public string UserName { get; set; }
+        public string NickName { get; set; }
+        public long AttrStatus { get; set; }
+        public string PYInitial { get; set; }
+        public string PYQuanPin { get; set; }
+        public string RemarkPYInitial { get; set; }
+        public string RemarkPYQuanPin { get; set; }
+        public int MemberStatus { get; set; }
+        public string DisplayName { get; set; }
+        public string KeyWord { get; set; }
     }
 }

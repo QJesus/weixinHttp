@@ -15,7 +15,7 @@ namespace demo_win_httpsocket
                 ["TYPE"] = type + ""
             };
 
-            _ShowMessage(message, new FluorineFx.Json.JavaScriptObject { ["FromUserName"] = ToUserName, ["ToUserName"] = FromUserName, });
+            _ShowMessage(message, new MessageObject { FromUserName = ToUserName, ToUserName = FromUserName, Content = message, MsgType = 1, });
 
             var response = WEB.SendRequest(@"POST https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?lang=zh_CN&pass_ticket={PASS_TICKET} HTTP/1.1
 Host: wx.qq.com

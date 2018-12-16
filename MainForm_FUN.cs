@@ -2,13 +2,18 @@
 using HttpSocket;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace demo_win_httpsocket
 {
     partial class MainForm
     {
-        void _ShowMessage(string msg, JavaScriptObject obj = null)
+        void _ShowMessage(string msg, MessageObject obj = null)
         {
             DelegateFun.ExeControlFun(lstMessage, new DelegateFun.delegateExeControlFun(delegate
             {
@@ -21,20 +26,28 @@ namespace demo_win_httpsocket
                 string row = null;
                 if (obj == null)
                 {
-                    row = $"{DateTime.Now:MM-dd HH:mm:ss}\tnoJson\t{msg}";
+                    row = $"noJson\t{msg}";
                 }
                 else
                 {
-                    var jo = new JObject();
-                    foreach (var item in obj)
+                    row = $"{GetUserFromDI(obj.FromUserName)}>{GetUserFromDI(obj.ToUserName)}\t{msg}";
+                    if (obj.MsgType != 51)  // 51 没有内容，可能是心跳包
                     {
-                        jo[item.Key] = item.Value.ToString();
+                        Task.Factory.StartNew((json) =>
+                        {
+                            var log = JsonConvert.DeserializeObject<MessageObject>(json as string);
+                            log.FromUserName = GetUserFromDI(log.FromUserName)?.ToString() ?? log.FromUserName;
+                            log.ToUserName = GetUserFromDI(log.ToUserName)?.ToString() ?? log.ToUserName;
+                            System.IO.File.AppendAllText("message.json", JsonConvert.SerializeObject(log, new JsonSerializerSettings
+                            {
+                                DefaultValueHandling = DefaultValueHandling.Ignore,
+                                Formatting = Newtonsoft.Json.Formatting.Indented,
+                                ContractResolver = new EmptyToNullStringResolver(),
+                            }), System.Text.Encoding.UTF8);
+                        }, JsonConvert.SerializeObject(obj));
                     }
-                    var json = JsonConvert.SerializeObject(jo);
-                    var data = JsonConvert.DeserializeObject<FunRootObject>(json);
-                    row = $"{DateTime.Now:MM-dd HH:mm:ss}\t{GetDIName(data.FromUserName)}>{GetDIName(data.ToUserName)}\t{msg}";
                 }
-                lstMessage.Items.Insert(0, row);
+                lstMessage.Items.Insert(0, $"{DateTime.Now:MM-dd HH:mm:ss}\t{row}");
                 lstMessage.SelectedIndex = 0;
             }));
         }
@@ -57,36 +70,40 @@ namespace demo_win_httpsocket
         //}
     }
 
-    public class FunRootObject
+    public class EmptyToNullStringResolver : DefaultContractResolver
     {
-        public string MsgId { get; set; }
-        public string FromUserName { get; set; }
-        public string ToUserName { get; set; }
-        public string MsgType { get; set; }
-        public string Content { get; set; }
-        public string Status { get; set; }
-        public string ImgStatus { get; set; }
-        public string CreateTime { get; set; }
-        public string VoiceLength { get; set; }
-        public string PlayLength { get; set; }
-        public string FileName { get; set; }
-        public string FileSize { get; set; }
-        public string MediaId { get; set; }
-        public string Url { get; set; }
-        public string AppMsgType { get; set; }
-        public string StatusNotifyCode { get; set; }
-        public string StatusNotifyUserName { get; set; }
-        public string RecommendInfo { get; set; }
-        public string ForwardFlag { get; set; }
-        public string AppInfo { get; set; }
-        public string HasProductId { get; set; }
-        public string Ticket { get; set; }
-        public string ImgHeight { get; set; }
-        public string ImgWidth { get; set; }
-        public string SubMsgType { get; set; }
-        public string NewMsgId { get; set; }
-        public string OriContent { get; set; }
-        public string EncryFileName { get; set; }
+        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+        {
+            return type.GetProperties().Select(p =>
+            {
+                var jp = base.CreateProperty(p, memberSerialization);
+                jp.ValueProvider = new EmptyToNullStringValueProvider(p);
+                return jp;
+            }).ToList();
+        }
     }
 
+    public class EmptyToNullStringValueProvider : IValueProvider
+    {
+        PropertyInfo propertyInfo;
+        public EmptyToNullStringValueProvider(PropertyInfo memberInfo)
+        {
+            propertyInfo = memberInfo;
+        }
+
+        public object GetValue(object target)
+        {
+            object result = propertyInfo.GetValue(target);
+            if (propertyInfo.PropertyType == typeof(string) && (string)result == string.Empty)
+            {
+                result = null;
+            }
+            return result;
+        }
+
+        public void SetValue(object target, object value)
+        {
+            propertyInfo.SetValue(target, value);
+        }
+    }
 }
