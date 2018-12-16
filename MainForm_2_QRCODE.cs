@@ -1,11 +1,11 @@
 ﻿using HttpSocket;
-using System.Drawing;
+using System.IO;
 
 namespace demo_win_httpsocket
 {
     partial class MainForm
     {
-        void _2_QRCODE()
+        byte[] _2_QRCODE()
         {
             _ShowMessage(System.Reflection.MethodInfo.GetCurrentMethod().Name);
 
@@ -21,12 +21,16 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
 
 ");
-            _2_Response(response);
+           return _2_Response(response);
         }
 
-        void _2_Response(LxwResponse o)
+        byte[] _2_Response(LxwResponse o)
         {
-            this.picErWeiMa.BackgroundImage = Image.FromStream(o.BodyStream);
+            byte[] bytes = new byte[o.BodyStream.Length];
+            o.BodyStream.Read(bytes, 0, bytes.Length);
+            // 设置当前流的位置为流的开始
+            o.BodyStream.Seek(0, SeekOrigin.Begin);
+            return bytes;
         }
     }
 }

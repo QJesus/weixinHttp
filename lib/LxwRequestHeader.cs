@@ -10,7 +10,7 @@ namespace HttpSocket
     {
         public LxwRequestHeader(Encoding encoding)
         {
-            this.Encoding = encoding;
+            Encoding = encoding;
         }
         public Uri Uri { get; set; }
         public byte[] HeaderByte { get {

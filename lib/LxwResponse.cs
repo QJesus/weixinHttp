@@ -11,9 +11,9 @@ namespace HttpSocket
         internal LxwResponse(
             byte[] body, LxwResponseHeader responseHeader)
         {
-            this.Header = responseHeader.Header;
-            this.Body = body;
-            this.ResponseHeader = responseHeader;
+            Header = responseHeader.Header;
+            Body = body;
+            ResponseHeader = responseHeader;
         }
 
         //暂未将回应HTTP协议头转换为HttpHeader类型

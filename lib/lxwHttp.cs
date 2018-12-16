@@ -15,25 +15,16 @@ namespace WeiXinZhuaFaWang.lib
 {
     public class HttpResponse
     {
-        internal HttpResponse(string header,
-            byte[] body)
+        internal HttpResponse(string header, byte[] body)
         {
-            this.Header = header;
-            this.Body = body;
+            Header = header;
+            Body = body;
         }
 
         //暂未将回应HTTP协议头转换为HttpHeader类型
-        public string Header
-        {
-            get;
-            private set;
-        }
+        public string Header { get; private set; }
 
-        public byte[] Body
-        {
-            get;
-            private set;
-        }
+        public byte[] Body { get; private set; }
     }
 
     class lxwHttp
@@ -47,21 +38,14 @@ namespace WeiXinZhuaFaWang.lib
             {
                 if (client.Connected)
                 {
-                    SslStream sslStream = new SslStream(client.GetStream(), true
-                        , new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors)
-                           =>
-                        {
-                            return sslPolicyErrors == SslPolicyErrors.None;
-                        }
-                            ), null);
-
-                    sslStream.ReadTimeout = TimeOut * 1000;
-                    sslStream.WriteTimeout = TimeOut * 1000;
-
+                    SslStream sslStream = new SslStream(client.GetStream(), true,
+                        new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => sslPolicyErrors == SslPolicyErrors.None), null)
+                    {
+                        ReadTimeout = TimeOut * 1000,
+                        WriteTimeout = TimeOut * 1000
+                    };
                     X509Store store = new X509Store(StoreName.My);
-
                     sslStream.AuthenticateAsClient(send.Uri.Host, store.Certificates, System.Security.Authentication.SslProtocols.Default, false);
-
                     if (sslStream.IsAuthenticated)
                     {
                         FileStream fs2 = new FileStream(@"C:\Users\Administrator\Desktop\aa2144.data", FileMode.Create);
@@ -84,16 +68,13 @@ namespace WeiXinZhuaFaWang.lib
             return null;
         }
 
-        public HttpResponse SendHeader(string RequestHeader,string RequestBoby, string filePath, int TimeOut = 3)
+        public HttpResponse SendHeader(string RequestHeader, string RequestBoby, string filePath, int TimeOut = 3)
         {
             var send = GetSendHeaders(RequestHeader, filePath);
             var body = GetSendHeaders(RequestBoby, filePath);
 
             //body
             var newSend = send.Header + "\r\n" + "Content-Length: " + body.HeaderByte.Length + "\r\n\r\n";
-
-
-
             TcpClient client = new TcpClient(send.Uri.Host, send.Uri.Port);
 
             try
@@ -101,25 +82,19 @@ namespace WeiXinZhuaFaWang.lib
                 if (client.Connected)
                 {
                     SslStream sslStream = new SslStream(client.GetStream(), true
-                        , new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors)
-                           =>
-                        {
-                            return sslPolicyErrors == SslPolicyErrors.None;
-                        }
-                            ), null);
-
-                    sslStream.ReadTimeout = TimeOut * 1000;
-                    sslStream.WriteTimeout = TimeOut * 1000;
-
+                        , new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => sslPolicyErrors == SslPolicyErrors.None), null)
+                    {
+                        ReadTimeout = TimeOut * 1000,
+                        WriteTimeout = TimeOut * 1000
+                    };
                     X509Store store = new X509Store(StoreName.My);
-
                     sslStream.AuthenticateAsClient(send.Uri.Host, store.Certificates, System.Security.Authentication.SslProtocols.Default, false);
 
                     if (sslStream.IsAuthenticated)
                     {
                         FileStream fs2 = new FileStream(@"C:\Users\Administrator\Desktop\aa214422.data", FileMode.Create);
                         var t = Encoding.UTF8.GetBytes(newSend);
-                        fs2.Write(t,0,t.Length);
+                        fs2.Write(t, 0, t.Length);
                         fs2.Write(body.HeaderByte, 0, body.HeaderByte.Length);
                         fs2.Close();
 
@@ -144,8 +119,8 @@ namespace WeiXinZhuaFaWang.lib
         {
             public TaskArguments(CancellationTokenSource cancelSource, Stream sm)
             {
-                this.CancelSource = cancelSource;
-                this.Stream = sm;
+                CancelSource = cancelSource;
+                Stream = sm;
             }
             public CancellationTokenSource CancelSource { get; private set; }
             public Stream Stream { get; private set; }
@@ -155,10 +130,7 @@ namespace WeiXinZhuaFaWang.lib
         {
             HttpResponse response = null;
             CancellationTokenSource cancelSource = new CancellationTokenSource();
-            Task<string> myTask = Task.Factory.StartNew<string>(
-                new Func<object, string>(ReadHeaderProcess),
-                new TaskArguments(cancelSource, sm),
-                cancelSource.Token);
+            Task<string> myTask = Task.Factory.StartNew<string>(new Func<object, string>(ReadHeaderProcess), new TaskArguments(cancelSource, sm), cancelSource.Token);
             if (myTask.Wait(3 * 1000)) //尝试3秒时间读取协议头
             {
                 string header = myTask.Result;
@@ -262,9 +234,7 @@ namespace WeiXinZhuaFaWang.lib
             for (int i = 0; i < headers.Length; i++)
             {
                 var arr = headers[i].Split(' ');
-                if (arr[0] == "GET" ||
-                    arr[0] == "POST" ||
-                    arr[0] == "OPTIONS")
+                if (arr[0] == "GET" || arr[0] == "POST" || arr[0] == "OPTIONS")
                 {
                     send.Uri = new Uri(arr[1]);
                     //arr[1] = send.Uri.PathAndQuery;
@@ -284,7 +254,7 @@ namespace WeiXinZhuaFaWang.lib
             return send;
         }
 
-        private SendHeaderInfo GetSendHeaders(string header,string fileName = "")
+        private SendHeaderInfo GetSendHeaders(string header, string fileName = "")
         {
             var strFileName = "";
             byte[] temp = null;
@@ -295,7 +265,7 @@ namespace WeiXinZhuaFaWang.lib
                 header = header.Replace("[CD]", temp.Length + "");
 
                 header = header.Replace("{filename}", strFileName);
-                if(strFileName.EndsWith("mp3", StringComparison.OrdinalIgnoreCase))
+                if (strFileName.EndsWith("mp3", StringComparison.OrdinalIgnoreCase))
                     header = header.Replace("{filetype}", "audio/mp3");
 
                 if (strFileName.EndsWith("gif", StringComparison.OrdinalIgnoreCase))
@@ -316,9 +286,7 @@ namespace WeiXinZhuaFaWang.lib
             for (int i = 0; i < headers.Length; i++)
             {
                 var arr = headers[i].Split(' ');
-                if (arr[0] == "GET" ||
-                    arr[0] == "POST" ||
-                    arr[0] == "OPTIONS")
+                if (arr[0] == "GET" || arr[0] == "POST" || arr[0] == "OPTIONS")
                 {
                     send.Uri = new Uri(arr[1]);
                     //arr[1] = send.Uri.PathAndQuery;
@@ -327,7 +295,7 @@ namespace WeiXinZhuaFaWang.lib
                 }
 
                 if (headers[i].StartsWith("Content-Length", StringComparison.OrdinalIgnoreCase))
-                {                   
+                {
                     continue;
                 }
 

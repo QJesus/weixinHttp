@@ -10,9 +10,9 @@ namespace HttpSocket
     {
         public LxwUploadBody(Encoding encoding, string filename, Dictionary<string, string> KEYS = null)
         {
-            this.Encoding = encoding;
+            Encoding = encoding;
             //uM55vqcAjmXSlVHa
-            this.Boundary = "----WebKitFormBoundaryLXW"+DateTime.Now.ToString("MMddHHmmssfff");
+            Boundary = "----WebKitFormBoundaryLXW"+DateTime.Now.ToString("MMddHHmmssfff");
 
             CreateBody(filename, KEYS);
         }

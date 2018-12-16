@@ -2,6 +2,8 @@
 using HttpSocket;
 using System;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -24,7 +26,7 @@ namespace demo_win_httpsocket
             var tt2 = MimeMapping.GetExtByMime("application/x-cpio");
             //return;
 
-            this.Load += (s, e) =>
+            Load += (s, e) =>
             {
                 Run();
             };
@@ -123,7 +125,14 @@ namespace demo_win_httpsocket
             _1_JSLOGIN();
 
             //第二个 获取二维码
-            _2_QRCODE();
+            var qrcode = _2_QRCODE();
+            Invoke((Action)delegate ()
+            {
+                using (Stream stream = new MemoryStream(qrcode))
+                {
+                    picErWeiMa.BackgroundImage = Image.FromStream(stream);
+                }
+            });
 
             _3_LOGIN();
         }
@@ -133,7 +142,7 @@ namespace demo_win_httpsocket
         /// </summary>
         private void OpenMain()
         {
-            foreach (Control c in this.Controls)
+            foreach (Control c in Controls)
             {
                 Invoke((Action)delegate ()
                 {

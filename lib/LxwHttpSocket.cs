@@ -42,7 +42,7 @@ namespace HttpSocket
         public LxwHttpSocket(Encoding Encoding = null, int TimeOut = 3)
         {
             this.Encoding = Encoding ?? Encoding.UTF8;
-            this.WriteTimeOut = TimeOut;
+            WriteTimeOut = TimeOut;
             ReadTimeOut = 30;
         }
 
@@ -244,8 +244,8 @@ namespace HttpSocket
         {
             public TaskArguments(CancellationTokenSource cancelSource, Stream sm)
             {
-                this.CancelSource = cancelSource;
-                this.Stream = sm;
+                CancelSource = cancelSource;
+                Stream = sm;
             }
             public CancellationTokenSource CancelSource { get; private set; }
             public Stream Stream { get; private set; }
@@ -452,7 +452,7 @@ namespace HttpSocket
         {
             get
             {
-                return this.Encoding.GetBytes("\r\n");
+                return Encoding.GetBytes("\r\n");
             }
         }
 

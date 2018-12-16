@@ -33,12 +33,7 @@ namespace demo_win_httpsocket
             throw new Exception("SearchKey not find \"" + code + "\"");
         }
 
-        string SubString(
-            string objValue,
-            string indexStr = "",
-            string lastStr = "",
-            string iDefault = "",
-            bool throwE = false)
+        string SubString(string objValue, string indexStr = "", string lastStr = "", string iDefault = "", bool throwE = false)
         {
             try
             {
@@ -88,10 +83,11 @@ namespace demo_win_httpsocket
         string CreateWeiXinFilesFolder(string folder = "files")
         {
             //存储到本地
-            var filesFolder = Path.Combine(Application.StartupPath, folder);
+            var filesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folder);
             if (!Directory.Exists(filesFolder))
+            {
                 Directory.CreateDirectory(filesFolder);
-
+            }
             return filesFolder;
         }
     }
