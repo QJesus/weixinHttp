@@ -62,7 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include=".cs" />
+    <Compile Include="wx.cs" />
     <Compile Include="lib\ArraySegmentList.cs" />
     <Compile Include="lib\HttpCore.cs" />
     <Compile Include="lib\LxwCookie.cs" />
@@ -75,26 +75,26 @@
     <Compile Include="lib\MimeMapping.cs" />
     <Compile Include="lib\WeiXinTicket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="_10_WEBWXSENDMSG.cs" />
-    <Compile Include="_11_SENDFILE.cs" />
-    <Compile Include="_12_WEBWXGETMSGIMG.cs" />
-    <Compile Include="_13_WEBWXGETVOICE.cs" />
-    <Compile Include="_14_WEBWXGETMEDIA.cs" />
-    <Compile Include="_15_WEBWXSENDEMOTICON.cs" />
-    <Compile Include="_16_WEBWXSENDAPPMSG.cs" />
-    <Compile Include="_17_WEBWXUPLOADMEDIA.cs" />
-    <Compile Include="_1_JSLOGIN.cs" />
-    <Compile Include="_2_QRCODE.cs" />
-    <Compile Include="_3_LOGIN.cs" />
-    <Compile Include="_4_REDIRECT_URL.cs" />
-    <Compile Include="_5_WEBWXINIT.cs" />
-    <Compile Include="_6_WEBWXGETCONTACT.cs" />
-    <Compile Include="_7_SYNCCHECK.cs" />
-    <Compile Include="_8_WEBWXSYNC.cs" />
-    <Compile Include="_9_DoMessage.cs" />
-    <Compile Include="_CONST.cs" />
-    <Compile Include="_FUN.cs" />
-    <Compile Include="_WeiXin.cs" />
+    <Compile Include="wx_10_WEBWXSENDMSG.cs" />
+    <Compile Include="wx_11_SENDFILE.cs" />
+    <Compile Include="wx_12_WEBWXGETMSGIMG.cs" />
+    <Compile Include="wx_13_WEBWXGETVOICE.cs" />
+    <Compile Include="wx_14_WEBWXGETMEDIA.cs" />
+    <Compile Include="wx_15_WEBWXSENDEMOTICON.cs" />
+    <Compile Include="wx_16_WEBWXSENDAPPMSG.cs" />
+    <Compile Include="wx_17_WEBWXUPLOADMEDIA.cs" />
+    <Compile Include="wx_01_JSLOGIN.cs" />
+    <Compile Include="wx_02_QRCODE.cs" />
+    <Compile Include="wx_03_LOGIN.cs" />
+    <Compile Include="wx_04_REDIRECT_URL.cs" />
+    <Compile Include="wx_05_WEBWXINIT.cs" />
+    <Compile Include="wx_06_WEBWXGETCONTACT.cs" />
+    <Compile Include="wx_07_SYNCCHECK.cs" />
+    <Compile Include="wx_08_WEBWXSYNC.cs" />
+    <Compile Include="wx_09_DoMessage.cs" />
+    <Compile Include="wx_CONST.cs" />
+    <Compile Include="wx_FUN.cs" />
+    <Compile Include="wx_WeiXin.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\FluorineFx.dll" />
