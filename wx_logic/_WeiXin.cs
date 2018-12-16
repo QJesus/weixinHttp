@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
@@ -61,7 +62,11 @@ namespace wx_logic
             }
         }
 
-        MemberItem GetUserFromDI(string skey) => USER_DI.FirstOrDefault(f => f.UserName == skey).User ?? new MemberItem { UserName = skey, };
+        public MemberItem GetUserFromDI(string skey)
+        {
+            var find = USER_DI.FirstOrDefault(f => f.UserName == skey).User ?? new MemberItem { UserName = skey, };
+            return JsonConvert.DeserializeObject<MemberItem>(JsonConvert.SerializeObject(find));
+        }
 
         string generateDeviceId()
         {

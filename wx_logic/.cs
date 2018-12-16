@@ -1,6 +1,6 @@
 ﻿using HttpSocket;
-using System;
 using System.Linq;
+using System.Reactive.Subjects;
 
 namespace wx_logic
 {
@@ -8,7 +8,11 @@ namespace wx_logic
     {
         private readonly LxwHttpSocket WEB = new LxwHttpSocket();
 
-        public bool Run(Action<byte[]> qrcodeAction, Action<MemberItem[]> usersAction)
+        public Subject<byte[]> QRCodeStream = new Subject<byte[]>();
+        public Subject<MemberItem[]> UsersStream = new Subject<MemberItem[]>();
+        public Subject<(string msg, MessageObject obj)> MessageStream = new Subject<(string, MessageObject)>();
+
+        public void Run()
         {
             WEB.Add("DEVICEID", generateDeviceId());
             WEB.Add("APPID", "wx782c26e4c19acffb");
@@ -17,7 +21,7 @@ namespace wx_logic
 
             //第二个 获取二维码
             var qrcode = _2_QRCODE();
-            qrcodeAction?.Invoke(qrcode);
+            QRCodeStream.OnNext(qrcode);
 
             if (_3_LOGIN())
             {
@@ -26,13 +30,11 @@ namespace wx_logic
                 _5_WEBWXINIT();
 
                 _6_WEBWXGETCONTACT();
-                usersAction?.Invoke(USER_DI.Select(u => u.User).ToArray());
+                UsersStream.OnNext(USER_DI.Select(u => u.User).ToArray());
 
                 //第七步心跳检测
                 _7_SYNCCHECK();
-                return true;
             }
-            return false;
         }
 
         public void SendFile(MemberItem user, string file)

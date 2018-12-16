@@ -4,39 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace wx_logic
 {
     public partial class WXLogic
     {
-        private void _ShowMessage(string msg, MessageObject obj)
-        {
-            string row = null;
-            if (obj == null)
-            {
-                row = $"noJson\t{msg}";
-            }
-            else
-            {
-                row = $"{GetUserFromDI(obj.FromUserName)}>{GetUserFromDI(obj.ToUserName)}\t{msg}";
-                if (obj.MsgType != 51)  // 51 没有内容，可能是心跳包
-                {
-                    Task.Factory.StartNew((json) =>
-                    {
-                        var log = JsonConvert.DeserializeObject<MessageObject>(json as string);
-                        log.FromUserName = GetUserFromDI(log.FromUserName)?.ToString() ?? log.FromUserName;
-                        log.ToUserName = GetUserFromDI(log.ToUserName)?.ToString() ?? log.ToUserName;
-                        System.IO.File.AppendAllText("message.json", JsonConvert.SerializeObject(log, new JsonSerializerSettings
-                        {
-                            DefaultValueHandling = DefaultValueHandling.Ignore,
-                            Formatting = Formatting.Indented,
-                            ContractResolver = new EmptyToNullStringResolver(),
-                        }), System.Text.Encoding.UTF8);
-                    }, JsonConvert.SerializeObject(obj));
-                }
-            }
-        }
+        private void _ShowMessage(string msg, MessageObject obj) => MessageStream.OnNext((msg, obj));
 
         ///// <summary>
         ///// 得到文件类型
