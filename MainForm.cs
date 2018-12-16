@@ -1,15 +1,11 @@
-﻿using FluorineFx.Json;
-using HttpSocket;
+﻿using HttpSocket;
 using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Windows.Forms;
-using System.Xml;
 
 namespace demo_win_httpsocket
 {
@@ -28,7 +24,10 @@ namespace demo_win_httpsocket
 
             Load += (s, e) =>
             {
-                Run();
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    Run();
+                });
             };
         }
 
@@ -134,7 +133,18 @@ namespace demo_win_httpsocket
                 }
             });
 
-            _3_LOGIN();
+            if (_3_LOGIN())
+            {
+                foreach (Control c in Controls)
+                {
+                    Invoke((Action)delegate ()
+                    {
+                        c.Visible = c.GetType() != typeof(PictureBox);
+                    });
+                }
+                //执行第四步
+                OpenMain();
+            }
         }
 
         /// <summary>
@@ -142,14 +152,6 @@ namespace demo_win_httpsocket
         /// </summary>
         private void OpenMain()
         {
-            foreach (Control c in Controls)
-            {
-                Invoke((Action)delegate ()
-                {
-                    c.Visible = c.GetType() != typeof(PictureBox);
-                });
-            }
-
             _4_REDIRECT_URL();
 
             _5_WEBWXINIT();

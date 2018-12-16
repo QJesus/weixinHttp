@@ -1,5 +1,4 @@
 ﻿using HttpSocket;
-using System;
 
 namespace demo_win_httpsocket
 {
@@ -15,20 +14,10 @@ namespace demo_win_httpsocket
         /// </summary>
         int LOGIN_TRY_TIMES = 50;
 
-        void _3_LOGIN()
+        bool _3_LOGIN()
         {
-            //第三步，等待扫描
-            var loginTimer = new System.Timers.Timer { Interval = SAOMIAO_SLEEPTIME };
-            loginTimer.Stop();
-
-            int count = 0;
-            loginTimer.Elapsed += (s, e) =>
+            for (int i = 0; i < LOGIN_TRY_TIMES; i++)
             {
-                if (count++ > LOGIN_TRY_TIMES)
-                {
-                    loginTimer.Stop();
-                    throw new Exception("错误的次数超过了:" + LOGIN_TRY_TIMES + "次");
-                }
 
                 _ShowMessage(System.Reflection.MethodInfo.GetCurrentMethod().Name);
                 var response = WEB.SendRequest(@"GET https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid={UUID}&tip=0&r=-784071163&_={TIME} HTTP/1.1
@@ -42,18 +31,20 @@ Accept-Language: zh-CN,zh;q=0.8
 Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba4b09293c0e2cb57516; pt2gguin=o0007103505; pgv_pvi=1998095360; pgv_si=s9303685120
 ");
 
-                _3_Response(response, loginTimer);
-
-            };
-            loginTimer.Start();
+                if (_3_Response(response))
+                {
+                    return true;
+                }
+                System.Threading.Thread.Sleep(SAOMIAO_SLEEPTIME);
+            }
+            return false;
         }
 
-        void _3_Response(LxwResponse o, System.Timers.Timer loginTimer)
+        bool _3_Response(LxwResponse o)
         {
             var result = o.Value;
             if (result.IndexOf("window.redirect_uri=") != -1)
             {
-                loginTimer.Stop();
                 var redirect_uri = SearchKey(result, "redirect_uri", "\"(.*?)\"");
                 WEB.Add(REDIRECT_URL, redirect_uri);
 
@@ -62,9 +53,9 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
                 {
                     WEB.Add(NUMBER, "2");
                 }
-                //执行第四步
-                OpenMain();
+                return true;
             }
+            return false;
         }
     }
 }
