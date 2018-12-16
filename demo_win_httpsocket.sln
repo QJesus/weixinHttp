@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo_win_httpsocket", "demo_win_httpsocket.csproj", "{C5CB2F61-4FE5-4B4B-95C8-54E3E5B0B470}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo_win_httpsocket", "demo_win_httpsocket/demo_win_httpsocket.csproj", "{C5CB2F61-4FE5-4B4B-95C8-54E3E5B0B470}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
