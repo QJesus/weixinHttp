@@ -91,9 +91,6 @@
     <Compile Include="wx_07_SYNCCHECK.cs" />
     <Compile Include="wx_08_WEBWXSYNC.cs" />
     <Compile Include="wx_09_DoMessage.cs" />
-    <Compile Include="wx_CONST.cs" />
-    <Compile Include="wx_FUN.cs" />
-    <Compile Include="wx_WeiXin.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\FluorineFx.dll" />

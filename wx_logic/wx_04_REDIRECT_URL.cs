@@ -9,7 +9,7 @@ namespace wx_logic
     {
         void _4_REDIRECT_URL()
         {
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendRequest(@"GET {REDIRECT_URL} HTTP/1.1
 Host: wx.qq.com

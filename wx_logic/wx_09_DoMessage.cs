@@ -15,7 +15,7 @@ namespace wx_logic
             var fromUserName = GetUserFromDI(message.FromUserName);
             var toUserName = GetUserFromDI(message.ToUserName);
 
-            _ShowMessage($"[{message.MsgType}]{msg}", message);
+            ShowMessage($"[{message.MsgType}]{msg}", message);
 
             switch (message.MsgType)
             {
@@ -86,7 +86,7 @@ namespace wx_logic
                 return;
             }
 
-            if (message.FromUserName == UserName)
+            if (message.FromUserName == LoginUser.UserName)
             {
                 Console.WriteLine("5=>" + message.FromUserName + ">" + message.ToUserName);
                 return;
@@ -96,6 +96,32 @@ namespace wx_logic
             {
                 Console.WriteLine("6=>" + message.FromUserName + ">" + message.ToUserName);
                 return;
+            }
+        }
+
+        private string SubString(string objValue, string indexStr = "", string lastStr = "", string iDefault = "", bool throwE = false)
+        {
+            try
+            {
+                int index = objValue.IndexOf(indexStr);
+                if (lastStr != "" && index > -1)
+                {
+                    objValue = objValue.Remove(0, index);
+                    index = objValue.IndexOf(indexStr);
+                }
+                int last = objValue.IndexOf(lastStr);
+                last = last == 0 ? objValue.Length : last;
+                return index > -1 && last > -1 ? objValue.Substring(index + indexStr.Length, last - (index + indexStr.Length)) : iDefault;
+
+            }
+            catch (Exception error)
+            {
+                if (throwE)
+                {
+                    throw error;
+                }
+
+                return iDefault;
             }
         }
     }

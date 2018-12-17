@@ -8,7 +8,7 @@ namespace wx_logic
     {
         void _6_WEBWXGETCONTACT()
         {
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
             var response = WEB.SendRequest(@"GET https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact?lang=zh_CN&pass_ticket={PASS_TICKET}&r={TIME}&seq=0&skey={SKEY} HTTP/1.1
 Host: wx.qq.com
 Connection: keep-alive

@@ -7,7 +7,7 @@ namespace wx_logic
     {
         byte[] _2_QRCODE()
         {
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendRequest(@"GET https://login.weixin.qq.com/qrcode/{UUID} HTTP/1.1
 Host: login.weixin.qq.com

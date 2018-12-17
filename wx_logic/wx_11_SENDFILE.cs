@@ -7,7 +7,7 @@ namespace wx_logic
     {
         void _11_SENDFILE(string userId, string filename)
         {
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var MediaId = _17_WEBWXUPLOADMEDIA(filename);
 
@@ -19,7 +19,7 @@ namespace wx_logic
             if (type.StartsWith("image/"))
             {
                 //·¢ËÍÍ¼Æ¬
-                _15_WEBWXSENDEMOTICON(userId, UserName, MediaId, 47);
+                _15_WEBWXSENDEMOTICON(userId, LoginUser.UserName, MediaId, 47);
             }
             else
             {
@@ -29,7 +29,7 @@ namespace wx_logic
                 Message = Message.Replace("{filelength}", "" + File.ReadAllBytes(filename).Length);
                 Message = Message.Replace("{filetype}", Path.GetExtension(filename).TrimStart(new char[] { '.' }));
 
-                _16_WEBWXSENDAPPMSG(userId, UserName, Message, 6);
+                _16_WEBWXSENDAPPMSG(userId, LoginUser.UserName, Message, 6);
             }
         }
     }

@@ -18,7 +18,7 @@ namespace wx_logic
         {
             for (int i = 0; i < LOGIN_TRY_TIMES; i++)
             {
-                _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+                ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
                 var response = WEB.SendRequest(@"GET https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid={UUID}&tip=0&r=-784071163&_={TIME} HTTP/1.1
 Host: login.weixin.qq.com
 Connection: keep-alive

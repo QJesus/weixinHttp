@@ -41,58 +41,53 @@
             // picErWeiMa
             // 
             this.picErWeiMa.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.picErWeiMa.Location = new System.Drawing.Point(417, 6);
-            this.picErWeiMa.Margin = new System.Windows.Forms.Padding(6);
+            this.picErWeiMa.Location = new System.Drawing.Point(208, 3);
             this.picErWeiMa.Name = "picErWeiMa";
-            this.picErWeiMa.Size = new System.Drawing.Size(600, 625);
+            this.picErWeiMa.Size = new System.Drawing.Size(300, 300);
             this.picErWeiMa.TabIndex = 0;
             this.picErWeiMa.TabStop = false;
             // 
             // txtBoxMessage
             // 
-            this.txtBoxMessage.Location = new System.Drawing.Point(617, 6);
-            this.txtBoxMessage.Margin = new System.Windows.Forms.Padding(6);
+            this.txtBoxMessage.Location = new System.Drawing.Point(308, 3);
             this.txtBoxMessage.Multiline = true;
             this.txtBoxMessage.Name = "txtBoxMessage";
-            this.txtBoxMessage.Size = new System.Drawing.Size(856, 565);
+            this.txtBoxMessage.Size = new System.Drawing.Size(430, 273);
             this.txtBoxMessage.TabIndex = 12;
             this.txtBoxMessage.Visible = false;
-            this.txtBoxMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtBoxMessage_KeyUp);
+            this.txtBoxMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TxtBoxMessage_KeyUp);
             // 
             // btnSendFile
             // 
-            this.btnSendFile.Location = new System.Drawing.Point(1122, 583);
-            this.btnSendFile.Margin = new System.Windows.Forms.Padding(6);
+            this.btnSendFile.Location = new System.Drawing.Point(561, 280);
             this.btnSendFile.Name = "btnSendFile";
-            this.btnSendFile.Size = new System.Drawing.Size(150, 48);
+            this.btnSendFile.Size = new System.Drawing.Size(75, 23);
             this.btnSendFile.TabIndex = 10;
             this.btnSendFile.Text = "发送文件";
             this.btnSendFile.UseVisualStyleBackColor = true;
             this.btnSendFile.Visible = false;
-            this.btnSendFile.Click += new System.EventHandler(this.btnSendFile_Click);
+            this.btnSendFile.Click += new System.EventHandler(this.BtnSendFile_Click);
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(1323, 583);
-            this.btnSend.Margin = new System.Windows.Forms.Padding(6);
+            this.btnSend.Location = new System.Drawing.Point(662, 280);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(150, 48);
+            this.btnSend.Size = new System.Drawing.Size(75, 23);
             this.btnSend.TabIndex = 11;
             this.btnSend.Text = "发送信息";
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Visible = false;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            this.btnSend.Click += new System.EventHandler(this.BtnSend_Click);
             // 
             // lstBoxUser
             // 
             this.lstBoxUser.FormattingEnabled = true;
-            this.lstBoxUser.ItemHeight = 25;
-            this.lstBoxUser.Location = new System.Drawing.Point(6, 6);
-            this.lstBoxUser.Margin = new System.Windows.Forms.Padding(6);
+            this.lstBoxUser.ItemHeight = 12;
+            this.lstBoxUser.Location = new System.Drawing.Point(3, 3);
             this.lstBoxUser.Name = "lstBoxUser";
             this.lstBoxUser.ScrollAlwaysVisible = true;
-            this.lstBoxUser.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lstBoxUser.Size = new System.Drawing.Size(599, 629);
+            this.lstBoxUser.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.lstBoxUser.Size = new System.Drawing.Size(302, 304);
             this.lstBoxUser.TabIndex = 8;
             this.lstBoxUser.Visible = false;
             // 
@@ -100,20 +95,19 @@
             // 
             this.lstMessage.FormattingEnabled = true;
             this.lstMessage.HorizontalScrollbar = true;
-            this.lstMessage.ItemHeight = 25;
-            this.lstMessage.Location = new System.Drawing.Point(6, 647);
-            this.lstMessage.Margin = new System.Windows.Forms.Padding(6);
+            this.lstMessage.ItemHeight = 12;
+            this.lstMessage.Location = new System.Drawing.Point(3, 311);
             this.lstMessage.Name = "lstMessage";
             this.lstMessage.ScrollAlwaysVisible = true;
-            this.lstMessage.Size = new System.Drawing.Size(1467, 479);
+            this.lstMessage.Size = new System.Drawing.Size(736, 232);
             this.lstMessage.TabIndex = 7;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1479, 1131);
+            this.ClientSize = new System.Drawing.Size(740, 495);
             this.Controls.Add(this.picErWeiMa);
             this.Controls.Add(this.txtBoxMessage);
             this.Controls.Add(this.btnSendFile);
@@ -122,7 +116,6 @@
             this.Controls.Add(this.lstMessage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "微信客户端";

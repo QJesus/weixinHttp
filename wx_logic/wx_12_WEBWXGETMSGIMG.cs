@@ -16,7 +16,7 @@ namespace wx_logic
         void _12_WEBWXGETMSGIMG(string MsgID, bool slave = false)
         {
             //&type=slave
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             Dictionary<string, string> KEYS = new Dictionary<string, string>();
             KEYS["MSGID"] = MsgID;
@@ -40,20 +40,15 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
         void _12_Response(LxwResponse o)
         {
-
-            var folders = CreateWeiXinFilesFolder();
-
-            Bitmap map = new Bitmap(o.BodyStream);
-            var type = o.ResponseHeader.ContentType.ToLower();
-            //if(type.StartsWith("audio/"))
-            //if (type.StartsWith("image/"))
-            //if (type.StartsWith("audio/"))
-            var ext = MimeMapping.GetExtByMime(type);
-            map.Save(Path.Combine(folders, DateTime.Now.ToString("yyyyMMddHHmmssfff") + generateDeviceId() + ext), MimeMapping.GetImageFormat(ext));
-
-            if (map != null)
+            var folder = CreateWeiXinFilesFolder();
+            using (var map = new Bitmap(o.BodyStream))
             {
-                map.Dispose();
+                var type = o.ResponseHeader.ContentType.ToLower();
+                //if(type.StartsWith("audio/"))
+                //if (type.StartsWith("image/"))
+                //if (type.StartsWith("audio/"))
+                var ext = MimeMapping.GetExtByMime(type);
+                map.Save(Path.Combine(folder, DateTime.Now.ToString("yyyyMMddHHmmssfff") + GenerateDeviceId() + ext), MimeMapping.GetImageFormat(ext));
             }
         }
     }

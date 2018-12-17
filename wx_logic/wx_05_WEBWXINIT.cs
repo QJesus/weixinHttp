@@ -10,7 +10,7 @@ namespace wx_logic
     {
         void _5_WEBWXINIT()
         {
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendRequest(@"POST https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=-784058664&lang=zh_CN&pass_ticket={PASS_TICKET} HTTP/1.1
 Host: wx.qq.com
@@ -39,8 +39,7 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             }
 
             // USER_INFO
-            UserName = login.User.UserName;
-            NickName = login.User.NickName;
+            LoginUser = login.User;
 
             WEB.Add(SYNCKEY, string.Join("|", login.SyncKey.List.Select(kv => $"{kv.Key}_{kv.Val}")));
             WEB.Add(SYNCKEY_LONG, JavaScriptConvert.SerializeObject(login.SyncKey));

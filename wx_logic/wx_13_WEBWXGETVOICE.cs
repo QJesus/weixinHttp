@@ -14,7 +14,7 @@ namespace wx_logic
         void _13_WEBWXGETVOICE(string MsgID)
         {
             //&type=slave
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             Dictionary<string, string> KEYS = new Dictionary<string, string>();
             KEYS["MSGID"] = MsgID;
@@ -38,18 +38,15 @@ Range: bytes=0-
 
         void _13_Response(LxwResponse o)
         {
-
-            var folders = CreateWeiXinFilesFolder();
-
+            var folder = CreateWeiXinFilesFolder();
             //Bitmap map = new Bitmap(o.BodyStream);
             var type = o.ResponseHeader.ContentType.ToLower();
             //if(type.StartsWith("audio/"))
             //if (type.StartsWith("image/"))
             //if (type.StartsWith("audio/"))
             var ext = MimeMapping.GetExtByMime(type);
-
             //Ð´ÈëÎÄ¼þ
-            using (var fs = new FileStream(Path.Combine(folders, DateTime.Now.ToString("yyyyMMddHHmmssfff") + generateDeviceId() + ext), FileMode.OpenOrCreate))
+            using (var fs = new FileStream(Path.Combine(folder, DateTime.Now.ToString("yyyyMMddHHmmssfff") + GenerateDeviceId() + ext), FileMode.OpenOrCreate))
             {
                 fs.Write(o.Body, 0, o.Body.Length);
             }

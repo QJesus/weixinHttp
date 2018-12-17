@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -44,7 +46,7 @@ namespace demo_win_httpsocket
                 {
                     Invoke((Action)delegate ()
                     {
-                        Text = wx.NickName + $">>>微信客户端 V2.0";
+                        Text = wx.LoginUser.NickName + $">>>微信客户端 V2.0";
                         foreach (Control c in Controls)
                         {
                             c.Visible = c.GetType() != typeof(PictureBox);
@@ -58,8 +60,8 @@ namespace demo_win_httpsocket
 
                 wx.MessageStream.Subscribe(((string msg, MessageObject obj) data) =>
                 {
-                    var from = data.obj == null ? null : wx.GetUserFromDI(data.obj.FromUserName);
-                    var to = data.obj == null ? null : wx.GetUserFromDI(data.obj.ToUserName);
+                    var from = data.obj == null ? null : wx[data.obj.FromUserName];
+                    var to = data.obj == null ? null : wx[data.obj.ToUserName];
                     var row = data.obj == null ? $"noJson\t{data.msg}" : $"{from}>{to}\t{data.msg}";
                     Invoke((Action)delegate ()
                     {
@@ -105,7 +107,7 @@ namespace demo_win_httpsocket
             };
         }
 
-        private void btnSendFile_Click(object sender, EventArgs e)
+        private void BtnSendFile_Click(object sender, EventArgs e)
         {
             if (lstBoxUser.SelectedItems.Count <= 0)
             {
@@ -142,7 +144,7 @@ namespace demo_win_httpsocket
 
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
+        private void BtnSend_Click(object sender, EventArgs e)
         {
             if (lstBoxUser.SelectedItems.Count <= 0)
             {
@@ -167,7 +169,7 @@ namespace demo_win_httpsocket
             }
         }
 
-        private void txtBoxMessage_KeyUp(object sender, KeyEventArgs e)
+        private void TxtBoxMessage_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -180,9 +182,46 @@ namespace demo_win_httpsocket
                 }
                 else
                 {
-                    btnSend_Click(sender, e);
+                    BtnSend_Click(sender, e);
                 }
             }
+        }
+    }
+
+    public class EmptyToNullStringResolver : DefaultContractResolver
+    {
+        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+        {
+            return type.GetProperties().Select(p =>
+            {
+                var jp = base.CreateProperty(p, memberSerialization);
+                jp.ValueProvider = new EmptyToNullStringValueProvider(p);
+                return jp;
+            }).ToList();
+        }
+    }
+
+    public class EmptyToNullStringValueProvider : IValueProvider
+    {
+        PropertyInfo propertyInfo;
+        public EmptyToNullStringValueProvider(PropertyInfo memberInfo)
+        {
+            propertyInfo = memberInfo;
+        }
+
+        public object GetValue(object target)
+        {
+            object result = propertyInfo.GetValue(target);
+            if (propertyInfo.PropertyType == typeof(string) && (string)result == string.Empty)
+            {
+                result = null;
+            }
+            return result;
+        }
+
+        public void SetValue(object target, object value)
+        {
+            propertyInfo.SetValue(target, value);
         }
     }
 }

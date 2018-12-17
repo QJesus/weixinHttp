@@ -1,5 +1,7 @@
 using FluorineFx.Json;
 using HttpSocket;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 
@@ -30,7 +32,7 @@ namespace wx_logic
             KEYS["webwx_data_ticket"] = WEB["webwx_data_ticket"];
             KEYS["pass_ticket"] = WEB["PASS_TICKET"];
 
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendUpload(@"POST https://file.wx.qq.com/cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json HTTP/1.1
 Host: file.wx.qq.com
@@ -49,9 +51,7 @@ filename, KEYS);
 
         string _17_Response(LxwResponse o)
         {
-            var obj = JavaScriptConvert.DeserializeObject(o.Value) as JavaScriptObject;
-            var MediaId = obj["MediaId"] + "";
-            return MediaId;
+            return JObject.Parse(o.Value)["MediaId"]?.Value<string>();
         }
     }
 }

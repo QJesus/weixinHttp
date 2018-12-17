@@ -6,7 +6,7 @@ namespace wx_logic
     {
         void _1_JSLOGIN()
         {
-            _ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendRequest(@"GET https://login.weixin.qq.com/jslogin?appid={APPID}&redirect_uri=https%3A%2F%2Fwx.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=zh_CN&_=1452483004640 HTTP/1.1
 Host: login.weixin.qq.com
