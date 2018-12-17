@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.SignalR.Client;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -22,8 +21,6 @@ namespace demo_win_httpsocket
     {
         private readonly WXLogic wx = new WXLogic();
         private string hubServer;
-        private IHubProxy hubProxy;
-        private HubConnection hubConnection;
 
         public MainForm()
         {
@@ -83,23 +80,6 @@ namespace demo_win_httpsocket
                                 ContractResolver = new EmptyToNullStringResolver(),
                             }), System.Text.Encoding.UTF8);
                         }, JsonConvert.SerializeObject(data.obj));
-                    }
-
-                    if (data.msg.Contains("can -o"))
-                    {
-                        var cmd = data.msg.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Skip(2).ToArray();
-                        var no = cmd.ElementAt(0);
-                        var qty = int.Parse(cmd.ElementAtOrDefault(1) ?? "0");
-
-                        var server = $"http://{no.Split(new[] { ':' })[0]}:8001";
-                        if (server != hubServer)
-                        {
-                            hubConnection = new HubConnection(server) { TraceLevel = TraceLevels.All, TraceWriter = Console.Out, };
-                            hubProxy = hubConnection.CreateHubProxy("hwSfraHub");
-                            hubConnection.Start().Wait();
-                            hubServer = server;
-                        }
-                        hubProxy.Invoke("Open", no, qty, 1, 1);
                     }
                 });
 
