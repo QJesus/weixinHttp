@@ -21,9 +21,6 @@ namespace demo_win_httpsocket
     public partial class MainForm : Form
     {
         private readonly WXLogic wx = new WXLogic();
-        private string hubServer;
-        private IHubProxy hubProxy;
-        private HubConnection hubConnection;
 
         public MainForm()
         {
@@ -91,15 +88,24 @@ namespace demo_win_httpsocket
                         var no = cmd.ElementAt(0);
                         var qty = int.Parse(cmd.ElementAtOrDefault(1) ?? "0");
 
-                        var server = $"http://{no.Split(new[] { ':' })[0]}:8001";
-                        if (server != hubServer)
+                        try
                         {
-                            hubConnection = new HubConnection(server) { TraceLevel = TraceLevels.All, TraceWriter = Console.Out, };
-                            hubProxy = hubConnection.CreateHubProxy("hwSfraHub");
-                            hubConnection.Start().Wait();
-                            hubServer = server;
+                            var server = $"http://{no.Split(new[] { ':' })[0]}:8001";
+                            using (var hubConnection = new HubConnection(server) { TraceLevel = TraceLevels.All, TraceWriter = Console.Out, })
+                            {
+                                IHubProxy hubProxy = hubConnection.CreateHubProxy("hwSfraHub");
+                                hubConnection.Start().Wait();
+                                hubProxy.Invoke("Open", no, qty, 1, 1);
+                            }
                         }
-                        hubProxy.Invoke("Open", no, qty, 1, 1);
+                        catch (Exception ex)
+                        {
+                            Invoke((Action)delegate ()
+                            {
+                                lstMessage.Items.Insert(0, ex.StackTrace);
+                                lstMessage.SelectedIndex = 0;
+                            });
+                        }
                     }
                 });
 
