@@ -1,4 +1,3 @@
-using FluorineFx.Json;
 using HttpSocket;
 using Newtonsoft.Json;
 using System;
@@ -42,7 +41,7 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             LoginUser = login.User;
 
             WEB.Add(SYNCKEY, string.Join("|", login.SyncKey.List.Select(kv => $"{kv.Key}_{kv.Val}")));
-            WEB.Add(SYNCKEY_LONG, JavaScriptConvert.SerializeObject(login.SyncKey));
+            WEB.Add(SYNCKEY_LONG, JsonConvert.SerializeObject(login.SyncKey));
 
             foreach (var item in login.ContactList.Where(c => string.IsNullOrEmpty(c.KeyWord)).OrderByDescending(c => c.ContactFlag))
             {

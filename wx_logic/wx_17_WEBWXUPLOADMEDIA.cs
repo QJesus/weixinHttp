@@ -1,6 +1,4 @@
-using FluorineFx.Json;
 using HttpSocket;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -18,17 +16,16 @@ namespace wx_logic
         /// <param name="type"></param>
         string _17_WEBWXUPLOADMEDIA(string filename)
         {
-            Dictionary<string, string> KEYS = new Dictionary<string, string>();
-            KEYS["id"] = "WU_FILE_0";
-            KEYS["name"] = Path.GetFileName(filename);
-            KEYS["type"] = MimeMapping.GetMimeMappingByFile(filename);
-            KEYS["lastModifiedDate"] = "Thu Jan 07 2016 20:33:28 GMT+0800 (中国标准时间)";
-            KEYS["size"] = File.ReadAllBytes(filename).Length + "";
-            KEYS["mediatype"] = "doc";
-
-            KEYS["uploadmediarequest"] =
-                WEB.FormatKeys(@"{""BaseRequest"":{""Uin"":{WXUIN},""Sid"":""{WXSID}"",""Skey"":""{SKEY}"",""DeviceID"":""{DEVICEID}""},""ClientMediaId"":{TIME}363,""TotalLen"":" + KEYS["size"] + @",""StartPos"":0,""DataLen"":" + KEYS["size"] + @",""MediaType"":4}");
-
+            var KEYS = new Dictionary<string, string>
+            {
+                ["id"] = "WU_FILE_0",
+                ["name"] = Path.GetFileName(filename),
+                ["type"] = MimeMapping.GetMimeMappingByFile(filename),
+                ["lastModifiedDate"] = "Thu Jan 07 2016 20:33:28 GMT+0800 (中国标准时间)",
+                ["size"] = File.ReadAllBytes(filename).Length + "",
+                ["mediatype"] = "doc"
+            };
+            KEYS["uploadmediarequest"] = WEB.FormatKeys(@"{""BaseRequest"":{""Uin"":{WXUIN},""Sid"":""{WXSID}"",""Skey"":""{SKEY}"",""DeviceID"":""{DEVICEID}""},""ClientMediaId"":{TIME}363,""TotalLen"":" + KEYS["size"] + @",""StartPos"":0,""DataLen"":" + KEYS["size"] + @",""MediaType"":4}");
             KEYS["webwx_data_ticket"] = WEB["webwx_data_ticket"];
             KEYS["pass_ticket"] = WEB["PASS_TICKET"];
 

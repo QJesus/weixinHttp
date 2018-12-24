@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluorineFx, Version=1.0.0.15, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\FluorineFx.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -91,9 +87,6 @@
     <Compile Include="wx_07_SYNCCHECK.cs" />
     <Compile Include="wx_08_WEBWXSYNC.cs" />
     <Compile Include="wx_09_DoMessage.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="lib\FluorineFx.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
