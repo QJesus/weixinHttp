@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo_win_httpsocket", "demo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wx_logic", "wx_logic\wx_logic.csproj", "{4905F1DA-D36A-4CE7-B04D-1D2299A6747F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChat", "WeChat\WeChat.csproj", "{1CDBE879-E56F-4AFC-9D2B-79EEEDDC245A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChat.Api", "WeChat.Api\WeChat.Api.csproj", "{2F3CAD9D-A1AF-4291-BD8F-02122E79589A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{4905F1DA-D36A-4CE7-B04D-1D2299A6747F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4905F1DA-D36A-4CE7-B04D-1D2299A6747F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4905F1DA-D36A-4CE7-B04D-1D2299A6747F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CDBE879-E56F-4AFC-9D2B-79EEEDDC245A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CDBE879-E56F-4AFC-9D2B-79EEEDDC245A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CDBE879-E56F-4AFC-9D2B-79EEEDDC245A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CDBE879-E56F-4AFC-9D2B-79EEEDDC245A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F3CAD9D-A1AF-4291-BD8F-02122E79589A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F3CAD9D-A1AF-4291-BD8F-02122E79589A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F3CAD9D-A1AF-4291-BD8F-02122E79589A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F3CAD9D-A1AF-4291-BD8F-02122E79589A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
