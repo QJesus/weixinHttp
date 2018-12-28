@@ -10,7 +10,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WeiXinZhuaFaWang.lib
+#if WeChat
+namespace WeChat.Lib
+#else
+namespace HttpSocket
+#endif
 {
     public class HttpResponse
     {

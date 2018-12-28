@@ -1,15 +1,23 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
 using Newtonsoft.Json;
 using System;
 using System.Linq;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
         void _5_WEBWXINIT()
         {
-            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            RecordMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendRequest(@"POST https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=-784058664&lang=zh_CN&pass_ticket={PASS_TICKET} HTTP/1.1
 Host: wx.qq.com

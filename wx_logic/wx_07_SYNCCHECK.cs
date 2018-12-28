@@ -1,14 +1,22 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
 using System.Threading;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
         bool bFirst = true;
         void _7_SYNCCHECK()
         {
-            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            RecordMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             bool bRun = true;
             ThreadPool.QueueUserWorkItem(new WaitCallback(delegate
@@ -42,13 +50,13 @@ Cookie: ts_uid=7490200750; o_cookie=7103505; pgv_pvid=4255253068; pt_clientip=4c
             string value = o.Value;
             if (value.Contains("1101"))
             {
-                ShowMessage("µÇÂ¼Ê§°Ü£¬Çë¹Ø±ÕÖØÐÂ³¢ÊÔ:" + WEB[SYNCKEY], null);
+                RecordMessage("µÇÂ¼Ê§°Ü£¬Çë¹Ø±ÕÖØÐÂ³¢ÊÔ:" + WEB[SYNCKEY], null);
                 return false;
             }
 
             if (bFirst)
             {
-                ShowMessage("µÇÂ¼³É¹¦!", null);
+                RecordMessage("µÇÂ¼³É¹¦!", null);
                 bFirst = false;
             }
             //1=>window.synccheck={retcode:"0",selector:"2"}

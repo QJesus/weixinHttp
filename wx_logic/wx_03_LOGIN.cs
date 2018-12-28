@@ -1,6 +1,16 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
+using System;
+using System.Text.RegularExpressions;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
@@ -18,7 +28,7 @@ namespace wx_logic
         {
             for (int i = 0; i < LOGIN_TRY_TIMES; i++)
             {
-                ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+                RecordMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
                 var response = WEB.SendRequest(@"GET https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid={UUID}&tip=0&r=-784071163&_={TIME} HTTP/1.1
 Host: login.weixin.qq.com
 Connection: keep-alive
@@ -55,6 +65,28 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// 查找对应Key的Value
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="code"></param>
+        /// <param name="regex"></param>
+        /// <returns></returns>
+        private string SearchKey(string result, string code, string regex)
+        {
+            if (result.IndexOf(code) != -1)
+            {
+                var m = new Regex(regex).Match(result);
+                if (m.Success)
+                {
+                    return m.Groups[1].Value;
+                }
+            }
+
+            //没有找到
+            throw new Exception("SearchKey not find \"" + code + "\"");
         }
     }
 }

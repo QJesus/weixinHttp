@@ -4,10 +4,49 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;WeChat</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\wx_logic\lib\ArraySegmentList.cs" Link="Lib\ArraySegmentList.cs" />
+    <Compile Include="..\wx_logic\lib\HttpCore.cs" Link="Lib\HttpCore.cs" />
+    <Compile Include="..\wx_logic\lib\LxwCookie.cs" Link="Lib\LxwCookie.cs" />
+    <Compile Include="..\wx_logic\lib\LxwHttp.cs" Link="Lib\LxwHttp.cs" />
+    <Compile Include="..\wx_logic\lib\LxwHttpSocket.cs" Link="Lib\LxwHttpSocket.cs" />
+    <Compile Include="..\wx_logic\lib\LxwRequestHeader.cs" Link="Lib\LxwRequestHeader.cs" />
+    <Compile Include="..\wx_logic\lib\LxwResponse.cs" Link="Lib\LxwResponse.cs" />
+    <Compile Include="..\wx_logic\lib\LxwResponseHeader.cs" Link="Lib\LxwResponseHeader.cs" />
+    <Compile Include="..\wx_logic\lib\LxwUploadBody.cs" Link="Lib\LxwUploadBody.cs" />
+    <Compile Include="..\wx_logic\lib\MimeMapping.cs" Link="Lib\MimeMapping.cs" />
+    <Compile Include="..\wx_logic\wx.cs" Link="wx.cs" />
+    <Compile Include="..\wx_logic\wx_01_JSLOGIN.cs" Link="wx_01_JSLOGIN.cs" />
+    <Compile Include="..\wx_logic\wx_02_QRCODE.cs" Link="wx_02_QRCODE.cs" />
+    <Compile Include="..\wx_logic\wx_03_LOGIN.cs" Link="wx_03_LOGIN.cs" />
+    <Compile Include="..\wx_logic\wx_04_REDIRECT_URL.cs" Link="wx_04_REDIRECT_URL.cs" />
+    <Compile Include="..\wx_logic\wx_05_WEBWXINIT.cs" Link="wx_05_WEBWXINIT.cs" />
+    <Compile Include="..\wx_logic\wx_06_WEBWXGETCONTACT.cs" Link="wx_06_WEBWXGETCONTACT.cs" />
+    <Compile Include="..\wx_logic\wx_07_SYNCCHECK.cs" Link="wx_07_SYNCCHECK.cs" />
+    <Compile Include="..\wx_logic\wx_08_WEBWXSYNC.cs" Link="wx_08_WEBWXSYNC.cs" />
+    <Compile Include="..\wx_logic\wx_09_DoMessage.cs" Link="wx_09_DoMessage.cs" />
+    <Compile Include="..\wx_logic\wx_10_WEBWXSENDMSG.cs" Link="wx_10_WEBWXSENDMSG.cs" />
+    <Compile Include="..\wx_logic\wx_11_SENDFILE.cs" Link="wx_11_SENDFILE.cs" />
+    <Compile Include="..\wx_logic\wx_12_WEBWXGETMSGIMG.cs" Link="wx_12_WEBWXGETMSGIMG.cs" />
+    <Compile Include="..\wx_logic\wx_13_WEBWXGETVOICE.cs" Link="wx_13_WEBWXGETVOICE.cs" />
+    <Compile Include="..\wx_logic\wx_14_WEBWXGETMEDIA.cs" Link="wx_14_WEBWXGETMEDIA.cs" />
+    <Compile Include="..\wx_logic\wx_15_WEBWXSENDEMOTICON.cs" Link="wx_15_WEBWXSENDEMOTICON.cs" />
+    <Compile Include="..\wx_logic\wx_16_WEBWXSENDAPPMSG.cs" Link="wx_16_WEBWXSENDAPPMSG.cs" />
+    <Compile Include="..\wx_logic\wx_17_WEBWXUPLOADMEDIA.cs" Link="wx_17_WEBWXUPLOADMEDIA.cs" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
     <PackageReference Include="System.Reactive.Core" Version="4.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Lib\" />
   </ItemGroup>
 
 </Project>

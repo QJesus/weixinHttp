@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Linq;
 
+#if WeChat
+namespace WeChat.Lib
+#else
 namespace HttpSocket
+#endif
 {
     public static class MimeMapping
     {

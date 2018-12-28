@@ -1,12 +1,20 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
         void _1_JSLOGIN()
         {
-            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            RecordMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendRequest(@"GET https://login.weixin.qq.com/jslogin?appid={APPID}&redirect_uri=https%3A%2F%2Fwx.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=zh_CN&_=1452483004640 HTTP/1.1
 Host: login.weixin.qq.com

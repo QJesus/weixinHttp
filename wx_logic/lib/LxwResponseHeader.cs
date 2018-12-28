@@ -3,7 +3,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
+#if WeChat
+namespace WeChat.Lib
+#else
 namespace HttpSocket
+#endif
 {
     public class LxwResponseHeader
     {

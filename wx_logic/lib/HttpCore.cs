@@ -3,7 +3,11 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
+#if WeChat
+namespace WeChat.Lib
+#else
 namespace HttpSocket
+#endif
 {
     public class HttpCore
     {

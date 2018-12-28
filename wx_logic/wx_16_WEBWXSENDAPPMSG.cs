@@ -1,7 +1,15 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
 using System.Collections.Generic;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
@@ -20,7 +28,7 @@ namespace wx_logic
             KEYS["MSG"] = message;
             KEYS["TYPE"] = type + "";
 
-            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            RecordMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendRequest(@"POST https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxsendappmsg?fun=async&f=json&lang=zh_CN&pass_ticket={PASS_TICKET} HTTP/1.1
 Host: wx.qq.com

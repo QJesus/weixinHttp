@@ -1,13 +1,21 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
 using System.IO;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
         void _11_SENDFILE(string userId, string filename)
         {
-            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            RecordMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var MediaId = _17_WEBWXUPLOADMEDIA(filename);
 

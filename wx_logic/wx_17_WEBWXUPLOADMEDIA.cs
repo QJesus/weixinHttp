@@ -1,9 +1,17 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
@@ -29,7 +37,7 @@ namespace wx_logic
             KEYS["webwx_data_ticket"] = WEB["webwx_data_ticket"];
             KEYS["pass_ticket"] = WEB["PASS_TICKET"];
 
-            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            RecordMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendUpload(@"POST https://file.wx.qq.com/cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json HTTP/1.1
 Host: file.wx.qq.com

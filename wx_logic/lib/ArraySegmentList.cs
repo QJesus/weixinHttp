@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#if WeChat
+namespace WeChat.Lib
+#else
 namespace HttpSocket
+#endif
 {
     class ArraySegmentList<T>
     {

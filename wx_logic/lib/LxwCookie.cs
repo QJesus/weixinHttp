@@ -1,4 +1,8 @@
-﻿namespace HttpSocket
+﻿#if WeChat
+namespace WeChat.Lib
+#else
+namespace HttpSocket
+#endif
 {
     /// <summary>
     /// 存储Cookies

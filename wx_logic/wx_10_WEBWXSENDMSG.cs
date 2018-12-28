@@ -1,7 +1,15 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
 using System.Collections.Generic;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
@@ -15,7 +23,7 @@ namespace wx_logic
                 ["TYPE"] = type + ""
             };
 
-            ShowMessage(message, new MessageObject { FromUserName = ToUserName, ToUserName = FromUserName, Content = message, MsgType = 1, });
+            RecordMessage(message, new MessageObject { FromUserName = ToUserName, ToUserName = FromUserName, Content = message, MsgType = 1, });
 
             var response = WEB.SendRequest(@"POST https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?lang=zh_CN&pass_ticket={PASS_TICKET} HTTP/1.1
 Host: wx.qq.com

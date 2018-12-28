@@ -24,7 +24,11 @@ using System.Threading.Tasks;
 /// OD OA OD OA问题
 /// 
 /// </summary>
+#if WeChat
+namespace WeChat.Lib
+#else
 namespace HttpSocket
+#endif
 {
     class LxwHttpSocket
     {

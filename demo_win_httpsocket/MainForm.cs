@@ -20,71 +20,70 @@ namespace demo_win_httpsocket
     public partial class MainForm : Form
     {
         private readonly WXLogic wx = new WXLogic();
-        private string hubServer;
 
         public MainForm()
         {
             InitializeComponent();
 
+            wx.MessageStream.Subscribe(data =>
+            {
+                var obj = data.obj;
+                var msg = data.msg;
+                var users = wx.GetUsers();
+                var from = obj == null ? null : users.FirstOrDefault(x => x.UserName == obj.FromUserName);
+                var to = obj == null ? null : users.FirstOrDefault(x => x.UserName == obj.ToUserName);
+                var row = obj == null ? $"noJson\t{msg}" : $"{from}>{to}\t{msg}";
+                Invoke((Action)delegate ()
+                {
+                    lstMessage.Items.Insert(0, row);
+                    lstMessage.SelectedIndex = 0;
+                });
+
+                if (obj != null && obj.MsgType != 51)  // 51 没有内容，可能是心跳包
+                {
+                    var log = JsonConvert.DeserializeObject<MessageObject>(JsonConvert.SerializeObject(obj));
+                    log.FromUserName = from?.ToString() ?? log.FromUserName;
+                    log.ToUserName = to?.ToString() ?? log.ToUserName;
+                    File.AppendAllText("message.json", JsonConvert.SerializeObject(log, new JsonSerializerSettings
+                    {
+                        DefaultValueHandling = DefaultValueHandling.Ignore,
+                        Formatting = Formatting.Indented,
+                        ContractResolver = new EmptyToNullStringResolver(),
+                    }), System.Text.Encoding.UTF8);
+                }
+            });
+
             Load += (s, e) =>
             {
-                wx.QRCodeStream.Subscribe(qrcode =>
-                {
-                    Invoke((Action)delegate ()
-                    {
-                        using (Stream stream = new MemoryStream(qrcode))
-                        {
-                            picErWeiMa.BackgroundImage = Image.FromStream(stream);
-                        }
-                    });
-                });
+                Task.Run(() => Login());
+            };
+        }
 
-                wx.UsersStream.Subscribe(users =>
+        private void Login()
+        {
+            var qrcode = wx.GetQRCode();
+            Invoke((Action)delegate ()
+            {
+                using (Stream stream = new MemoryStream(qrcode))
                 {
-                    Invoke((Action)delegate ()
-                    {
-                        Text = wx.LoginUser.NickName + $">>>微信客户端 V2.0";
-                        foreach (Control c in Controls)
-                        {
-                            c.Visible = c.GetType() != typeof(PictureBox);
-                        }
-                        foreach (var item in users)
-                        {
-                            lstBoxUser.Items.Add(item);
-                        }
-                    });
-                });
-
-                wx.MessageStream.Subscribe(((string msg, MessageObject obj) data) =>
+                    picErWeiMa.BackgroundImage = Image.FromStream(stream);
+                }
+            });
+            if (wx.DoLogin())
+            {
+                Invoke((Action)delegate ()
                 {
-                    var from = data.obj == null ? null : wx[data.obj.FromUserName];
-                    var to = data.obj == null ? null : wx[data.obj.ToUserName];
-                    var row = data.obj == null ? $"noJson\t{data.msg}" : $"{from}>{to}\t{data.msg}";
-                    Invoke((Action)delegate ()
+                    Text = wx.LoginUser.NickName + $">>>微信客户端 V2.0";
+                    foreach (Control c in Controls)
                     {
-                        lstMessage.Items.Insert(0, row);
-                        lstMessage.SelectedIndex = 0;
-                    });
-
-                    if (data.obj != null && data.obj.MsgType != 51)  // 51 没有内容，可能是心跳包
+                        c.Visible = c.GetType() != typeof(PictureBox);
+                    }
+                    foreach (var item in wx.GetUsers())
                     {
-                        Task.Factory.StartNew((json) =>
-                        {
-                            var log = JsonConvert.DeserializeObject<MessageObject>(json as string);
-                            log.FromUserName = from?.ToString() ?? log.FromUserName;
-                            log.ToUserName = to?.ToString() ?? log.ToUserName;
-                            File.AppendAllText("message.json", JsonConvert.SerializeObject(log, new JsonSerializerSettings
-                            {
-                                DefaultValueHandling = DefaultValueHandling.Ignore,
-                                Formatting = Formatting.Indented,
-                                ContractResolver = new EmptyToNullStringResolver(),
-                            }), System.Text.Encoding.UTF8);
-                        }, JsonConvert.SerializeObject(data.obj));
+                        lstBoxUser.Items.Add(item);
                     }
                 });
-
-                Task.Run(() => wx.Run());
-            };
+            }
         }
 
         private void BtnSendFile_Click(object sender, EventArgs e)

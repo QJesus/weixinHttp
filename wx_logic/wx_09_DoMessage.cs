@@ -1,6 +1,11 @@
 using System;
+using System.Linq;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
@@ -15,7 +20,7 @@ namespace wx_logic
             var fromUserName = GetUserFromDI(message.FromUserName);
             var toUserName = GetUserFromDI(message.ToUserName);
 
-            ShowMessage($"[{message.MsgType}]{msg}", message);
+            RecordMessage($"[{message.MsgType}]{msg}", message);
 
             switch (message.MsgType)
             {
@@ -124,6 +129,8 @@ namespace wx_logic
                 return iDefault;
             }
         }
+
+        private MemberItem GetUserFromDI(string userName) => USER_DI.FirstOrDefault(f => f.UserName == userName).User ?? new MemberItem { UserName = userName, };
     }
 
 

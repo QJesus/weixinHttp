@@ -1,15 +1,23 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
 using Newtonsoft.Json.Linq;
 using System;
 using System.Xml;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
         void _4_REDIRECT_URL()
         {
-            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            RecordMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             var response = WEB.SendRequest(@"GET {REDIRECT_URL} HTTP/1.1
 Host: wx.qq.com

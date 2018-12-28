@@ -1,4 +1,8 @@
-﻿using HttpSocket;
+﻿#if WeChat
+using WeChat.Lib;
+#else
+using HttpSocket;
+#endif
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +11,11 @@ using System.Linq;
 using System.Reactive.Subjects;
 using System.Text.RegularExpressions;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
@@ -38,50 +46,58 @@ namespace wx_logic
         /// </summary>
         public string MediaFileDirecotory { get; set; } = AppDomain.CurrentDomain.BaseDirectory;
 
-        public MemberItem this[string skey]
-        {
-            get
-            {
-                var user = USER_DI.FirstOrDefault(f => f.UserName == skey).User;
-                return user == null ? null : JsonConvert.DeserializeObject<MemberItem>(JsonConvert.SerializeObject(user));
-            }
-        }
-
-        // 对外监听
-        public Subject<byte[]> QRCodeStream = new Subject<byte[]>();
-        public Subject<MemberItem[]> UsersStream = new Subject<MemberItem[]>();
         public Subject<(string msg, MessageObject obj)> MessageStream = new Subject<(string, MessageObject)>();
 
-        public void Run()
+        public byte[] GetQRCode()
         {
             WEB.Add("DEVICEID", GenerateDeviceId());
             WEB.Add("APPID", "wx782c26e4c19acffb");
             //第一步
             _1_JSLOGIN();
-
             //第二个 获取二维码
-            var qrcode = _2_QRCODE();
-            QRCodeStream.OnNext(qrcode);
+            return _2_QRCODE();
+        }
 
+        private string GenerateDeviceId()
+        {
+            // e + 15 个随机数字
+            var ran = new Random();
+            return new string(Enumerable.Range(0, 16).Select(idx => idx == 0 ? 'e' : (char)(ran.Next(10) + '0')).ToArray());
+        }
+
+        public bool DoLogin()
+        {
             if (_3_LOGIN())
             {
                 _4_REDIRECT_URL();
-
                 _5_WEBWXINIT();
-
-                _6_WEBWXGETCONTACT();
-                UsersStream.OnNext(USER_DI.Select(u => u.User).ToArray());
-
+                var members = _6_WEBWXGETCONTACT();
+                foreach (var member in members.OrderBy(m => m.VerifyFlag).OrderByDescending(m => m.ContactFlag))
+                {
+                    var find = USER_DI.FirstOrDefault(f => f.UserName == member.UserName);
+                    if (find.User == null)
+                    {
+                        USER_DI.Add((member.UserName, member));
+                    }
+                    else
+                    {
+                        find.User = member;
+                    }
+                }
                 //第七步心跳检测
                 _7_SYNCCHECK();
+                return true;
             }
+            return false;
         }
 
-        public void SendFile(MemberItem user, string file) => _11_SENDFILE(user.ToString().Substring(user.ToString().LastIndexOf('>') + 1), file);
+        public MemberItem[] GetUsers(bool fresh = false) => fresh ? _6_WEBWXGETCONTACT() : USER_DI.Select(u => u.User).ToArray();
 
         public void SendText(MemberItem user, string text) => _10_WEBWXSENDMSG(user.UserName, LoginUser.UserName, text);
 
-        private void ShowMessage(string msg, MessageObject obj) => MessageStream.OnNext((msg, obj));
+        private void RecordMessage(string msg, MessageObject obj) => MessageStream.OnNext((msg, obj));
+
+        public void SendFile(MemberItem user, string file) => _11_SENDFILE(user.ToString().Substring(user.ToString().LastIndexOf('>') + 1), file);
 
         ///// <summary>
         ///// 得到文件类型
@@ -99,53 +115,5 @@ namespace wx_logic
         //    }
         //    return mimeType;
         //}
-
-
-        /// <summary>
-        /// 查找对应Key的Value
-        /// </summary>
-        /// <param name="result"></param>
-        /// <param name="code"></param>
-        /// <param name="regex"></param>
-        /// <returns></returns>
-        private string SearchKey(string result, string code, string regex)
-        {
-            if (result.IndexOf(code) != -1)
-            {
-                var m = new Regex(regex).Match(result);
-                if (m.Success)
-                {
-                    return m.Groups[1].Value;
-                }
-            }
-
-            //没有找到
-            throw new Exception("SearchKey not find \"" + code + "\"");
-        }
-
-        private MemberItem GetUserFromDI(string userName) => USER_DI.FirstOrDefault(f => f.UserName == userName).User ?? new MemberItem { UserName = userName, };
-
-        private string GenerateDeviceId()
-        {
-            // e + 15 个随机数字
-            var ran = new Random();
-            return new string(Enumerable.Range(0, 16).Select(idx => idx == 0 ? 'e' : (char)(ran.Next(10) + '0')).ToArray());
-        }
-
-        /// <summary>
-        ///     存储到本地
-        /// </summary>
-        /// <param name="directory"></param>
-        /// <param name="folder"></param>
-        /// <returns></returns>
-        private string CreateWeiXinFilesFolder(string folder = "files")
-        {
-            var filesFolder = Path.Combine(MediaFileDirecotory, folder);
-            if (!Directory.Exists(filesFolder))
-            {
-                Directory.CreateDirectory(filesFolder);
-            }
-            return filesFolder;
-        }
     }
 }

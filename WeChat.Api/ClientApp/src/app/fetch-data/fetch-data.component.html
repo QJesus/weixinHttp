@@ -1,24 +1,35 @@
-<h1>Weather forecast</h1>
+<ng-container *ngIf="qrcode">
+  <img [src]="qrcode" width="25%" height="25%" />
+</ng-container>
 
-<p>This component demonstrates fetching data from the server.</p>
+<ng-container *ngIf="login != null">
+  <span *ngIf="login">登录成功</span>
+  <span *ngIf="!login">登录失败</span>
+</ng-container>
 
-<p *ngIf="!forecasts"><em>Loading...</em></p>
-
-<table class='table' *ngIf="forecasts">
-  <thead>
+<ng-container *ngIf="keys!=null && users!=null">
+  <table border="1">
     <tr>
-      <th>Date</th>
-      <th>Temp. (C)</th>
-      <th>Temp. (F)</th>
-      <th>Summary</th>
+      <th>序号</th>
+      <th *ngFor="let k of keys">{{k}}</th>
     </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let forecast of forecasts">
-      <td>{{ forecast.dateFormatted }}</td>
-      <td>{{ forecast.temperatureC }}</td>
-      <td>{{ forecast.temperatureF }}</td>
-      <td>{{ forecast.summary }}</td>
+    <tr *ngFor="let u of users;let idx=index">
+      <td>{{idx+1}}</td>
+      <td *ngFor="let k of keys">
+        <ng-container [ngSwitch]="k">
+          <ng-container *ngSwitchCase="'memberList'">
+            <p *ngFor="let m of u[k]; let x = index"> {{m['UserName']}}</p>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'headImgUrl'">
+            <img [src]="'https://web.wechat.com' + u[k]" />
+          </ng-container>
+
+          <ng-container *ngSwitchDefault>
+            <span>{{u[k]}}</span>
+          </ng-container>
+        </ng-container>
+      </td>
     </tr>
-  </tbody>
-</table>
+  </table>
+</ng-container>

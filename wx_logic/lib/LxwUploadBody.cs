@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+#if WeChat
+namespace WeChat.Lib
+#else
 namespace HttpSocket
+#endif
 {
     public class LxwUploadBody
     {

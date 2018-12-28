@@ -1,10 +1,18 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
@@ -16,7 +24,7 @@ namespace wx_logic
         void _12_WEBWXGETMSGIMG(string MsgID, bool slave = false)
         {
             //&type=slave
-            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            RecordMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
 
             Dictionary<string, string> KEYS = new Dictionary<string, string>();
             KEYS["MSGID"] = MsgID;
@@ -50,6 +58,22 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
                 var ext = MimeMapping.GetExtByMime(type);
                 map.Save(Path.Combine(folder, DateTime.Now.ToString("yyyyMMddHHmmssfff") + GenerateDeviceId() + ext), MimeMapping.GetImageFormat(ext));
             }
+        }
+
+        /// <summary>
+        ///     ´æ´¢µ½±¾µØ
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="folder"></param>
+        /// <returns></returns>
+        private string CreateWeiXinFilesFolder(string folder = "files")
+        {
+            var filesFolder = Path.Combine(MediaFileDirecotory, folder);
+            if (!Directory.Exists(filesFolder))
+            {
+                Directory.CreateDirectory(filesFolder);
+            }
+            return filesFolder;
         }
     }
 }

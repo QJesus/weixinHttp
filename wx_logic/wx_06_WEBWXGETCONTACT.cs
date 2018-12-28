@@ -1,14 +1,22 @@
+#if WeChat
+using WeChat.Lib;
+#else
 using HttpSocket;
+#endif
 using Newtonsoft.Json;
 using System.Linq;
 
+#if WeChat
+namespace WeChat
+#else
 namespace wx_logic
+#endif
 {
     public partial class WXLogic
     {
-        void _6_WEBWXGETCONTACT()
+        MemberItem[] _6_WEBWXGETCONTACT()
         {
-            ShowMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
+            RecordMessage(System.Reflection.MethodBase.GetCurrentMethod().Name, null);
             var response = WEB.SendRequest(@"GET https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact?lang=zh_CN&pass_ticket={PASS_TICKET}&r={TIME}&seq=0&skey={SKEY} HTTP/1.1
 Host: wx.qq.com
 Connection: keep-alive
@@ -21,24 +29,13 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
 
 
 ");
-            _6_Response(response);
+            return _6_Response(response);
         }
 
-        void _6_Response(LxwResponse o)
+        MemberItem[] _6_Response(LxwResponse o)
         {
             var ro = JsonConvert.DeserializeObject<WEBWXGETCONTACTRootObject>(o.Value);
-            foreach (var item in ro.MemberList.OrderBy(m => m.VerifyFlag).OrderByDescending(m => m.ContactFlag))
-            {
-                var find = USER_DI.FirstOrDefault(f => f.UserName == item.UserName);
-                if (find.User == null)
-                {
-                    USER_DI.Add((item.UserName, item));
-                }
-                else
-                {
-                    find.User = item;
-                }
-            }
+            return ro.MemberList;
         }
     }
 

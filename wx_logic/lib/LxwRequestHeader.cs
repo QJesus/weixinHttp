@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Text;
 
+#if WeChat
+namespace WeChat.Lib
+#else
 namespace HttpSocket
+#endif
 {
 
     public class LxwRequestHeader
