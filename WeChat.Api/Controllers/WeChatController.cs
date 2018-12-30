@@ -11,7 +11,7 @@ namespace WeChat.Api.Controllers
     [ApiController]
     public class WeChatController : ControllerBase
     {
-        private static readonly Dictionary<string, WXLogic> WeChatCache = new Dictionary<string, WXLogic>();
+        private static readonly Dictionary<string, (WXLogic wx, IDisposable mg)> WeChatCache = new Dictionary<string, (WXLogic, IDisposable)>();
 
         [HttpGet]
         public IActionResult AccessToken()
@@ -19,11 +19,14 @@ namespace WeChat.Api.Controllers
             lock (WeChatCache)
             {
                 var key = HttpContext.Connection.RemoteIpAddress.ToString();
-                if (!WeChatCache.TryGetValue(key, out var x) || x.LoginUser == null)
+                if (!WeChatCache.TryGetValue(key, out var x) || x.wx.LoginUser == null)
                 {
-                    var wx = x ?? new WXLogic();
+                    var wx = x.wx ?? new WXLogic();
                     var bytes = wx.GetQRCode();
-                    WeChatCache[key] = wx;
+                    WeChatCache[key] = (wx, wx.MessageStream.Subscribe(data =>
+                    {
+
+                    }));
                     return new JsonResult(new { token = key, qrcode = $"data:image/jpeg;base64,{Convert.ToBase64String(bytes)}" });
                 }
                 return new JsonResult(new { token = key, qrcode = (string)null });
@@ -33,10 +36,10 @@ namespace WeChat.Api.Controllers
         [HttpGet]
         public IActionResult Login(string token)
         {
-            if (WeChatCache.TryGetValue(token, out var wx))
+            if (WeChatCache.TryGetValue(token, out var x))
             {
-                var b = wx.DoLogin();
-                return new JsonResult(new { login = b, users = UserInfo(wx.GetUsers(false)), });
+                var b = x.wx.DoLogin();
+                return new JsonResult(new { login = b, users = UserInfo(x.wx.GetUsers(false)), });
             }
             return new JsonResult(new { login = false });
         }
@@ -66,10 +69,22 @@ namespace WeChat.Api.Controllers
         [HttpGet]
         public IActionResult Users(string token)
         {
-            if (WeChatCache.TryGetValue(token, out var wx))
+            if (WeChatCache.TryGetValue(token, out var x))
             {
-                var users = wx.GetUsers(true);
-                return new JsonResult(new { users = UserInfo(wx.GetUsers(false)), });
+                return new JsonResult(new
+                {
+                    users = UserInfo(x.wx.GetUsers(true)),
+                });
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public IActionResult SendText(string token, string user, string text)
+        {
+            if (WeChatCache.TryGetValue(token, out var x))
+            {
+                x.wx.SendText(new MemberItem { UserName = user, }, text);
             }
             return null;
         }

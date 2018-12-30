@@ -13,17 +13,17 @@ namespace wx_logic
 {
     public partial class WXLogic
     {
-        void _10_WEBWXSENDMSG(string FromUserName, string ToUserName, string message, int type = 1)
+        void _10_WEBWXSENDMSG(string fromUserName, string toUserName, string message, int type = 1)
         {
             var KEYS = new Dictionary<string, string>
             {
-                ["FROMUSERNAME"] = ToUserName,
-                ["TOUSERNAME"] = FromUserName,
+                ["FROMUSERNAME"] = fromUserName,
+                ["TOUSERNAME"] = toUserName,
                 ["MSG"] = message,
                 ["TYPE"] = type + ""
             };
 
-            RecordMessage(message, new MessageObject { FromUserName = ToUserName, ToUserName = FromUserName, Content = message, MsgType = 1, });
+            RecordMessage(message, new MessageObject { FromUserName = fromUserName, ToUserName = toUserName, Content = message, MsgType = 1, });
 
             var response = WEB.SendRequest(@"POST https://wx{NUMBER}.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?lang=zh_CN&pass_ticket={PASS_TICKET} HTTP/1.1
 Host: wx.qq.com
