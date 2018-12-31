@@ -10,7 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 
-import { MatGridListModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatGridListModule, MatCardModule, MatButtonModule, MatInputModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { MatGridListModule } from '@angular/material';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ]),
-    MatGridListModule
+    BrowserAnimationsModule,
+    MatGridListModule, MatCardModule, MatButtonModule, MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
