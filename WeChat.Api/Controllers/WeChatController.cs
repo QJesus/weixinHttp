@@ -11,7 +11,7 @@ namespace WeChat.Api.Controllers
     [ApiController]
     public class WeChatController : ControllerBase
     {
-        private static readonly Dictionary<string, (WXLogic wx, IDisposable mg)> WeChatCache = new Dictionary<string, (WXLogic, IDisposable)>();
+        private static readonly Dictionary<string, (WXLogic wx, IDisposable stream)> WeChatCache = new Dictionary<string, (WXLogic, IDisposable)>();
 
         [HttpGet]
         public IActionResult AccessToken()
@@ -71,10 +71,7 @@ namespace WeChat.Api.Controllers
         {
             if (WeChatCache.TryGetValue(token, out var x))
             {
-                return new JsonResult(new
-                {
-                    users = UserInfo(x.wx.GetUsers(true)),
-                });
+                return new JsonResult(new { users = UserInfo(x.wx.GetUsers(true)), });
             }
             return null;
         }

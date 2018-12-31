@@ -1,4 +1,11 @@
-<ng-container *ngIf="qrcode">
+<mat-grid-list cols="4" rowHeight="100px">
+  <mat-grid-tile *ngFor="let tile of users" [colspan]="1" [rowspan]="1">
+    {{tile.nickName}}
+  </mat-grid-tile>
+</mat-grid-list>
+
+
+<!-- <ng-container *ngIf="qrcode">
   <img [src]="qrcode" width="25%" height="25%" />
 </ng-container>
 
@@ -32,4 +39,4 @@
       </td>
     </tr>
   </table>
-</ng-container>
+</ng-container> -->

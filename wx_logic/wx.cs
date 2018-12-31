@@ -72,7 +72,7 @@ namespace wx_logic
                 _4_REDIRECT_URL();
                 _5_WEBWXINIT();
                 var members = _6_WEBWXGETCONTACT();
-                foreach (var member in members.OrderBy(m => m.VerifyFlag).OrderByDescending(m => m.ContactFlag))
+                foreach (var member in members)
                 {
                     var find = USER_DI.FirstOrDefault(f => f.UserName == member.UserName);
                     if (find.User == null)
@@ -91,7 +91,10 @@ namespace wx_logic
             return false;
         }
 
-        public MemberItem[] GetUsers(bool fresh = false) => fresh ? _6_WEBWXGETCONTACT() : USER_DI.Select(u => u.User).ToArray();
+        public MemberItem[] GetUsers(bool fresh = false)
+        {
+            return (fresh ? _6_WEBWXGETCONTACT() : USER_DI.Select(u => u.User).ToArray()).OrderByDescending(a => a.ContactFlag & 2048).ToArray();
+        }
 
         public void SendText(MemberItem user, string text) => _10_WEBWXSENDMSG(user.UserName, LoginUser.UserName, text);
 

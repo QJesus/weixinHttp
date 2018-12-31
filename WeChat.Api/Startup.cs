@@ -19,6 +19,7 @@ namespace WeChat.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory
@@ -40,6 +41,7 @@ namespace WeChat.Api
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseCors(o => o.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

@@ -11,8 +11,7 @@ export class FetchDataComponent implements OnInit {
     users: User[];
     keys: string[];
 
-    constructor(private http: HttpClient,
-        @Inject('BASE_URL') private baseUrl: string) { }
+    constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
     async ngOnInit() {
         const t = await this.http.get<{ token: string, qrcode: string }>(`${this.baseUrl}api/WeChat/AccessToken`).toPromise();
@@ -21,21 +20,43 @@ export class FetchDataComponent implements OnInit {
             const r = await this.http.get<{ login: boolean, users: User[] }>(`${this.baseUrl}api/WeChat/Login?token=${t.token}`).toPromise();
             this.login = r.login;
             this.users = r.users;
-            return;
+        } else {
+            const u = await this.http.get<{ users: User[] }>(`${this.baseUrl}api/WeChat/Users?token=${t.token}`).toPromise();
+            this.login = true;
+            this.users = u.users;
         }
-        this.login = true;
-        const u = await this.http.get<{ users: User[] }>(`${this.baseUrl}api/WeChat/Users?token=${t.token}`).toPromise();
-        this.users = u.users;
-        this.keys = Object.keys(u.users[0]).filter(k => ![
-            'userName'
-        ].includes(k));
+        this.keys = Object.keys(this.users[0]).filter(k => !['userName'].includes(k));
     }
 }
 
 class User {
-    key: string;
-    name: string;
-    group: string;
+    userName: string;
+    province: string;
+    city: string;
+    headImgUrl: string;
+    nickName: string;
+    pyInitial: string;
+    pyQuanPin: string;
+    remarkName: string;
+    remarkPYInitial: string;
+    remarkPYQuanPin: string;
+    sex: number;
+    signature: string;
+    memberCount: number;
+    memberList: Member[];
+    group: boolean;
 }
 
-
+class Member {
+    UserName: string;
+    DisplayName: string;
+    AttrStatus: number;
+    KeyWord: string;
+    Uin: number;
+    NickName: string;
+    PYInitial: string;
+    PYQuanPin: string;
+    MemberStatus: number;
+    RemarkPYInitial: string;
+    RemarkPYQuanPin: string;
+}
