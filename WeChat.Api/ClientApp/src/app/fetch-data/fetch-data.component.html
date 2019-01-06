@@ -1,4 +1,48 @@
 <style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.input-zone {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+
+.input-zone-input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.message-author {
+    font-weight: bold;
+}
+
+.messages {
+    border: 1px solid #000;
+    margin: 10px;
+    max-height: 300px;
+    min-height: 300px;
+    overflow-y: auto;
+    padding: 5px;
+}
+</style>
+
+<div id="divMessages" class="messages"></div>
+<div class="input-zone">
+  <label id="lblMessage" for="tbMessage">Message:</label>
+  <input id="tbMessage" class="input-zone-input" type="text" />
+  <button id="btnSend">Send</button>
+</div>
+
+
+<!-- <style>
   .login_box {
     display: block;
     position: absolute;
@@ -51,39 +95,4 @@
     </mat-grid-list>
   </div>
 </div>
-
-
-
-<!-- 
-
-<ng-container *ngIf="login != null">
-  <span *ngIf="login">登录成功</span>
-  <span *ngIf="!login">登录失败</span>
-</ng-container>
-
-<ng-container *ngIf="keys!=null && users!=null">
-  <table border="1">
-    <tr>
-      <th>序号</th>
-      <th *ngFor="let k of keys">{{k}}</th>
-    </tr>
-    <tr *ngFor="let u of users;let idx=index">
-      <td>{{idx+1}}</td>
-      <td *ngFor="let k of keys">
-        <ng-container [ngSwitch]="k">
-          <ng-container *ngSwitchCase="'memberList'">
-            <p *ngFor="let m of u[k]; let x = index"> {{m['UserName']}}</p>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'headImgUrl'">
-            <img [src]="'https://wx.qq.com' + u[k]" />
-          </ng-container>
-
-          <ng-container *ngSwitchDefault>
-            <span>{{u[k]}}</span>
-          </ng-container>
-        </ng-container>
-      </td>
-    </tr>
-  </table>
-</ng-container> -->
+ -->

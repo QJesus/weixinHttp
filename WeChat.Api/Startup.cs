@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WeChat.Api.Hubs;
 
 namespace WeChat.Api
 {
@@ -27,6 +28,7 @@ namespace WeChat.Api
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,8 +44,14 @@ namespace WeChat.Api
             }
 
             app.UseCors(o => o.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseSignalR(options =>
+            {
+                options.MapHub<ChatHub>("/hub");
+            });
 
             app.UseMvc(routes =>
             {
