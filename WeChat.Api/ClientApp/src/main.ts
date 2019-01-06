@@ -5,7 +5,7 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
-  return 'http://127.0.0.1:5000/';
+  return 'http://127.0.0.1:53290/';
 }
 
 const providers = [

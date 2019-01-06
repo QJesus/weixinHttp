@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace WeChat.Api.Controllers
 {
@@ -12,25 +13,37 @@ namespace WeChat.Api.Controllers
     public class WeChatController : ControllerBase
     {
         private static readonly Dictionary<string, (WXLogic wx, IDisposable stream)> WeChatCache = new Dictionary<string, (WXLogic, IDisposable)>();
+        private static HubConnection connection;
 
         [HttpGet]
-        public IActionResult AccessToken()
+        [ActionNameAttribute("AccessToken")]
+        public async Task<IActionResult> AccessTokenAsync()
         {
-            lock (WeChatCache)
+            if (connection == null)
             {
-                var key = HttpContext.Connection.RemoteIpAddress.ToString();
-                if (!WeChatCache.TryGetValue(key, out var x) || x.wx.LoginUser == null)
+                connection = new HubConnectionBuilder().WithUrl("http://127.0.0.1:53290/hub").Build();
+                connection.Closed += async (error) =>
                 {
-                    var wx = x.wx ?? new WXLogic();
-                    var bytes = wx.GetQRCode();
-                    WeChatCache[key] = (wx, wx.MessageStream.Subscribe(data =>
-                    {
-
-                    }));
-                    return new JsonResult(new { token = key, qrcode = $"data:image/jpeg;base64,{Convert.ToBase64String(bytes)}" });
-                }
-                return new JsonResult(new { token = key, qrcode = (string)null });
+                    await Task.Delay(new Random().Next(0, 5) * 1000);
+                    await connection.StartAsync();
+                };
+                await connection.StartAsync();
             }
+
+            var key = HttpContext.Connection.RemoteIpAddress.ToString();
+            if (!WeChatCache.TryGetValue(key, out var x) || x.wx.LoginUser == null)
+            {
+                var wx = x.wx ?? new WXLogic();
+                var bytes = wx.GetQRCode();
+                WeChatCache[key] = (wx, wx.MessageStream.Subscribe(async data =>
+                {
+                    var username = wx.GetUsers(false).FirstOrDefault(f => f.UserName == data.obj?.ToUserName)?.NickName ?? string.Empty;
+                    var message = data.obj?.Content ?? data.msg ?? string.Empty;
+                    await connection.InvokeAsync(nameof(Hubs.ChatHub.NewMessage), username, message);
+                }));
+                return new JsonResult(new { token = key, qrcode = $"data:image/jpeg;base64,{Convert.ToBase64String(bytes)}" });
+            }
+            return new JsonResult(new { token = key, qrcode = (string)null });
         }
 
         [HttpGet]
