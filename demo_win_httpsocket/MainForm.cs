@@ -56,6 +56,31 @@ namespace demo_win_httpsocket
             Load += (s, e) =>
             {
                 Task.Run(() => Login());
+                Task.Run(() =>
+                {
+                    var random = new Random();
+                    while (true)
+                    {
+                        var user = lstBoxUser.Items.Cast<MemberItem>().FirstOrDefault(o => o.NickName == "月半");
+                        if (user != null)
+                        {
+                            var ts = kyfw12306.TrainsDetails().Where(t =>
+                            {
+                                return t.GetType().GetProperty("车次")?.GetValue(t)?.ToString() == "G89";
+                            })
+                            .Select(t =>
+                            {
+                                var ps = t.GetType().GetProperties();
+                                return string.Join("\r\n", ps.Select(p => $"{p.Name}: {p.GetValue(t)}"));
+                            });
+                            foreach (var text in ts)
+                            {
+                                wx.SendText(user, text);
+                            }
+                        }
+                        Thread.Sleep(TimeSpan.FromSeconds(3 + random.Next(0, 7)));
+                    }
+                });
             };
         }
 
