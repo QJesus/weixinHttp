@@ -17,8 +17,8 @@ namespace wx_logic
         {
             var KEYS = new Dictionary<string, string>
             {
-                ["FROMUSERNAME"] = fromUserName,
-                ["TOUSERNAME"] = toUserName,
+                ["FROMUSERNAME"] = toUserName,
+                ["TOUSERNAME"] = fromUserName,
                 ["MSG"] = message,
                 ["TYPE"] = type + ""
             };
