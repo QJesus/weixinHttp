@@ -90,7 +90,6 @@ namespace demo_win_httpsocket
                                 }
                                 lastMessage = msg;
                                 lastNotifyTime = DateTime.Now;
-                                return;
                             }
                         }
                         Thread.Sleep(TimeSpan.FromSeconds(3 + random.Next(0, 7)));

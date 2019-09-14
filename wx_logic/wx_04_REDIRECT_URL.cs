@@ -40,7 +40,7 @@ Cookie: pgv_pvid=5421692288; ptcz=4e0a323b1662b719e627137efa1221bb5c435b44a27cba
             var value = o.Value;
             if (value.IndexOf("pass_ticket") == -1)
             {
-                throw new Exception("没有得到wxsid信息");
+                throw new Exception("没有得到wxsid信息" + value);
             }
 
             var weixin = Xml2Json<WeiXinTicket>(value);
