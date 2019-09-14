@@ -61,6 +61,7 @@ namespace demo_win_httpsocket
                     var random = new Random();
                     string lastMessage = null;
                     DateTime lastNotifyTime = DateTime.MinValue;
+                    PropertyInfo[] properties = null;
                     while (true)
                     {
                         var user = lstBoxUser.Items.Cast<MemberItem>().FirstOrDefault(o => o.NickName == txtNickName.Text);
@@ -77,8 +78,8 @@ namespace demo_win_httpsocket
                             })
                             .Select(t =>
                             {
-                                var ps = t.GetType().GetProperties();
-                                return string.Join("\r\n", ps.Select(p => $"{p.Name}: {p.GetValue(t)}"));
+                                properties = properties ?? t.GetType().GetProperties();
+                                return string.Join("\r\n", properties.Select(p => $"{p.Name}: {p.GetValue(t)}"));
                             }).ToArray();
 
                             var msg = string.Join(Environment.NewLine, ts);
