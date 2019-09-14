@@ -14,18 +14,16 @@ namespace demo_win_httpsocket
 {
     public class kyfw12306
     {
-        public static object[] TrainsDetails(string date = "2019-10-01")
+        public static object[] TrainsDetails(string train_date, string from_station, string to_station, string purpose_codes = "ADULT")
         {
             var random = new Random();
             RootObject[] values;
-            while ((values = GetLeftTickets(date)) == null)
+            while ((values = GetLeftTickets(train_date, from_station, to_station, purpose_codes)) == null)
             // while ((values = Test()) == null)
             {
                 Thread.Sleep(TimeSpan.FromSeconds(random.Next(1, 5)));
             }
 
-
-            var tour_flag = "";
             var trains = values
                 // .Where(v => new[] { 'G', 'D' }.Contains(v.queryLeftNewDTO.station_train_code[0])) // 只看高铁或动车
                 .Select(train =>
@@ -35,7 +33,7 @@ namespace demo_win_httpsocket
                     var t2 = t.lishi.Split(':').Select(int.Parse).ToArray();
                     return new
                     {
-                        日期 = date,
+                        日期 = t.start_train_date,
                         车次 = t.station_train_code,
                         出发站 = t.from_station_name,
                         到达站 = t.to_station_name,
@@ -69,47 +67,19 @@ namespace demo_win_httpsocket
             string cs(string c6, string c2, string cX, string c3, string cU, string cR, RootObject cT)
             {
                 var cN = cT.queryLeftNewDTO;
-                var cY = b0(date + " " + cN.start_time);
-                if (string.IsNullOrEmpty(cT.secretStr) || "null" == cT.secretStr)
-                {
-                    cY = false;
-                }
-                if ("1" != cN.houbu_train_flag)
-                {
-                    cY = false;
-                }
-                if (tour_flag == "fc" || tour_flag == "gc")
-                {
-                    cY = false;
-                }
+                var cY = true;
                 if ("无" == c6 && "WZ_" != c2 && "QT_" != c2 && cY)
                 {
                     c6 = "候补";
                 }
                 return c6;
             }
-
-            bool b0(string cQ)
-            {
-                try
-                {
-                    var cM = DateTime.Now.AddHours(3);
-                    var cO = cM.Ticks;
-                    var cP = DateTime.Parse(cQ).Ticks;
-                    if (cP <= cO)
-                    {
-                        return false;
-                    }
-                }
-                catch { }
-                return true;
-            }
         }
 
-        private static RootObject[] GetLeftTickets(string date)
+        private static RootObject[] GetLeftTickets(string train_date, string from_station, string to_station, string purpose_codes = "ADULT")
         {
             // 参考链接 https://blog.csdn.net/xiahn1a/article/details/42584507
-            var url = $@"https://kyfw.12306.cn/otn/leftTicket/queryA?leftTicketDTO.train_date={date}&leftTicketDTO.from_station=BJP&leftTicketDTO.to_station=CDW&purpose_codes=ADULT";
+            var url = $@"https://kyfw.12306.cn/otn/leftTicket/queryA?leftTicketDTO.train_date={train_date}&leftTicketDTO.from_station={from_station}&leftTicketDTO.to_station={to_station}&purpose_codes={purpose_codes}";
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.CookieContainer = new CookieContainer();

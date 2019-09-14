@@ -59,23 +59,38 @@ namespace demo_win_httpsocket
                 Task.Run(() =>
                 {
                     var random = new Random();
+                    string lastMessage = null;
+                    DateTime lastNotifyTime = DateTime.MinValue;
                     while (true)
                     {
-                        var user = lstBoxUser.Items.Cast<MemberItem>().FirstOrDefault(o => o.NickName == "月半");
+                        var user = lstBoxUser.Items.Cast<MemberItem>().FirstOrDefault(o => o.NickName == txtNickName.Text);
                         if (user != null)
                         {
-                            var ts = kyfw12306.TrainsDetails().Where(t =>
+                            string train_date = txt_train_date.Text;
+                            string from_station = txt_from_station.Text;
+                            string to_station = txt_to_station.Text;
+                            string purpose_codes = cbStudent.Checked ? "0X00" : "ADULT";
+                            var ts = kyfw12306.TrainsDetails(train_date, from_station, to_station, purpose_codes).Where(t =>
                             {
-                                return t.GetType().GetProperty("车次")?.GetValue(t)?.ToString() == "G89";
+                                var code = t.GetType().GetProperty("车次")?.GetValue(t)?.ToString();
+                                return txt_station_train_code.Text.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).Any(o => string.Equals(o, code, StringComparison.OrdinalIgnoreCase));
                             })
                             .Select(t =>
                             {
                                 var ps = t.GetType().GetProperties();
                                 return string.Join("\r\n", ps.Select(p => $"{p.Name}: {p.GetValue(t)}"));
-                            });
-                            foreach (var text in ts)
+                            }).ToArray();
+
+                            var msg = string.Join(Environment.NewLine, ts);
+                            if ((cbChanged.Checked && msg != lastMessage) || (cbEveryHour.Checked && DateTime.Now - lastNotifyTime >= TimeSpan.FromHours(1)))
                             {
-                                wx.SendText(user, text);
+                                foreach (var text in ts)
+                                {
+                                    wx.SendText(user, text);
+                                }
+                                lastMessage = msg;
+                                lastNotifyTime = DateTime.Now;
+                                return;
                             }
                         }
                         Thread.Sleep(TimeSpan.FromSeconds(3 + random.Next(0, 7)));
