@@ -30,7 +30,7 @@ namespace WeChat.Lib
 namespace HttpSocket
 #endif
 {
-    class LxwHttpSocket
+    public class LxwHttpSocket
     {
         /// <summary>
         /// 存储cookies

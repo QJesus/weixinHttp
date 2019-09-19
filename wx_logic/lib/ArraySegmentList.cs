@@ -7,7 +7,7 @@ namespace WeChat.Lib
 namespace HttpSocket
 #endif
 {
-    class ArraySegmentList<T>
+    public class ArraySegmentList<T>
     {
         List<ArraySegment<T>> m_SegmentList = new List<ArraySegment<T>>();
         public ArraySegmentList() { }

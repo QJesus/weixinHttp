@@ -29,7 +29,7 @@ namespace HttpSocket
         public byte[] Body { get; private set; }
     }
 
-    class lxwHttp
+    public class lxwHttp
     {
         public HttpResponse SendHeader(string RequestHeader, string filePath, int TimeOut = 3)
         {
