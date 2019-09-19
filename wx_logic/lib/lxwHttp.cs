@@ -50,7 +50,8 @@ namespace HttpSocket
                     sslStream.AuthenticateAsClient(send.Uri.Host, store.Certificates, System.Security.Authentication.SslProtocols.Default, false);
                     if (sslStream.IsAuthenticated)
                     {
-                        FileStream fs2 = new FileStream(@"C:\Users\Administrator\Desktop\aa2144.data", FileMode.Create);
+                        var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "aa2144.data");
+                        FileStream fs2 = new FileStream(file, FileMode.Create);
                         fs2.Write(send.HeaderByte, 0, send.HeaderByte.Length);
                         fs2.Close();
 
@@ -94,7 +95,8 @@ namespace HttpSocket
 
                     if (sslStream.IsAuthenticated)
                     {
-                        FileStream fs2 = new FileStream(@"C:\Users\Administrator\Desktop\aa214422.data", FileMode.Create);
+                        var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "aa214422.data");
+                        FileStream fs2 = new FileStream(file, FileMode.Create);
                         var t = Encoding.UTF8.GetBytes(newSend);
                         fs2.Write(t, 0, t.Length);
                         fs2.Write(body.HeaderByte, 0, body.HeaderByte.Length);

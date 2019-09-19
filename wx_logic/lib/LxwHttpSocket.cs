@@ -173,7 +173,8 @@ namespace HttpSocket
 
             if (write)
             {
-                FileStream fs = new FileStream(Environment.SpecialFolder.Desktop + DateTime.Now.ToString("yyyyMMddHHmmss") + ".data", FileMode.CreateNew);
+                var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyyMMddHHmmssfff") + "_ssl.data");
+                FileStream fs = new FileStream(file, FileMode.CreateNew);
                 fs.Write(sendHeader.HeaderByte, 0, sendHeader.HeaderByte.Length);
                 fs.Write(LINE, 0, LINE.Length);
                 fs.Write(LINE, 0, LINE.Length);
@@ -219,7 +220,8 @@ namespace HttpSocket
 
             if (write)
             {
-                FileStream fs = new FileStream(Environment.SpecialFolder.Desktop + DateTime.Now.ToString("yyyyMMddHHmmss") + ".data", FileMode.CreateNew);
+                var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyyMMddHHmmssfff") + "_nossl.data");
+                FileStream fs = new FileStream(file, FileMode.CreateNew);
                 fs.Write(sendHeader.HeaderByte, 0, sendHeader.HeaderByte.Length);
                 fs.Write(LINE, 0, LINE.Length);
                 fs.Write(LINE, 0, LINE.Length);
